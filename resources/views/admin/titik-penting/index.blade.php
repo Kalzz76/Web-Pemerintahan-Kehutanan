@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'B. Titik Penting')
+@section('title', 'Titik Penting')
 
 @section('content')
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">B. Titik Penting</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Titik Penting</h1>
         <p class="text-stone-500 text-sm mt-1">Daftar pos jaga, pos pemadam, sumber air, jalur evakuasi, dan pemukiman warga.</p>
     </div>
     <a href="{{ route('admin.titik-penting.create') }}" class="inline-flex items-center px-5 py-3 bg-green-700 hover:bg-green-600 text-white font-bold rounded-xl shadow transition active:scale-95 text-sm shrink-0">

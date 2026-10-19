@@ -56,7 +56,7 @@
                 <div class="flex items-start space-x-3">
                     <span class="w-6 h-6 rounded-full bg-green-100 text-green-800 font-bold flex items-center justify-center text-xs shrink-0 mt-0.5">2</span>
                     <p>
-                        <strong>Reset Lewat Menu Akun Admin:</strong> Rekan admin dapat membuka menu <em>K. Akun Admin</em> pada dashboard administrator, lalu menekan tombol <em>Edit</em> pada baris akun Anda untuk menentukan kata sandi baru.
+                        <strong>Reset Lewat Menu Akun Admin:</strong> Rekan admin dapat membuka menu <em>Akun Admin</em> pada dashboard administrator, lalu menekan tombol <em>Edit</em> pada baris akun Anda untuk menentukan kata sandi baru.
                     </p>
                 </div>
 

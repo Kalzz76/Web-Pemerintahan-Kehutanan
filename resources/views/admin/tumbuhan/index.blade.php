@@ -6,7 +6,7 @@
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-black text-stone-900 tracking-tight">F. Tumbuhan Rimba</h1>
+            <h1 class="text-2xl font-black text-stone-900 tracking-tight">Tumbuhan Rimba</h1>
             <p class="text-sm text-stone-500 mt-1">
                 Kelola data keanekaragaman flora, jenis habitus pohon/herba, manfaat obat atau ekologis, dan kawasan sebarannya.
             </p>

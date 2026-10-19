@@ -5,7 +5,7 @@
 @section('content')
 <div class="mb-8">
     <div class="flex items-center space-x-2 text-xs text-stone-500 mb-2">
-        <a href="{{ route('admin.kawasan.index') }}" class="hover:text-green-700">A. Kawasan Hutan</a>
+        <a href="{{ route('admin.kawasan.index') }}" class="hover:text-green-700">Kawasan Hutan</a>
         <i class="fa-solid fa-chevron-right text-[10px]"></i>
         <span class="text-stone-800 font-semibold">Edit Kawasan</span>
     </div>

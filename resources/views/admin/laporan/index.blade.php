@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'C. Kelola Laporan Darurat')
+@section('title', 'Kelola Laporan Darurat')
 
 @section('content')
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">C. Kelola Laporan Darurat</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Kelola Laporan Darurat</h1>
         <p class="text-stone-500 text-sm mt-1">Verifikasi laporan darurat warga desa, tentukan kawasan, dan berikan catatan tindak lanjut.</p>
     </div>
 </div>

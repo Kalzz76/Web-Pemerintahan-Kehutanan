@@ -1,10 +1,10 @@
 @extends('layouts.admin')
 
-@section('title', 'L. Pengaturan Sistem')
+@section('title', 'Pengaturan Sistem')
 
 @section('content')
 <div class="mb-8">
-    <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">L. Pengaturan Sistem</h1>
+    <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Pengaturan Sistem</h1>
     <p class="text-stone-500 text-sm mt-1">Konfigurasi identitas desa, koordinat pusat peta, dan parameter pencarian titik api satelit.</p>
 </div>
 

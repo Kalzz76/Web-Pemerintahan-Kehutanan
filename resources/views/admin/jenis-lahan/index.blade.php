@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'J. Jenis Lahan')
+@section('title', 'Jenis Lahan')
 
 @section('content')
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">J. Jenis Lahan</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Jenis Lahan</h1>
         <p class="text-stone-500 text-sm mt-1">Daftar tipe vegetasi dan nilai laju dasar perambatan api (meter per jam).</p>
     </div>
     <button type="button" onclick="bukaModalTambah()" class="inline-flex items-center px-5 py-3 bg-green-700 hover:bg-green-600 text-white font-bold rounded-xl shadow transition active:scale-95 text-sm shrink-0">

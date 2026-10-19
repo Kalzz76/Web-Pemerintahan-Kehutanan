@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'D. Prediksi Kebakaran')
+@section('title', 'Prediksi Kebakaran')
 
 @section('content')
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">D. Prediksi Perambatan Kebakaran</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Prediksi Perambatan Kebakaran</h1>
         <p class="text-stone-500 text-sm mt-1">Simulasi perambatan elips api berbasis arah angin, kecepatan, kelembapan, dan tutupan lahan.</p>
     </div>
 

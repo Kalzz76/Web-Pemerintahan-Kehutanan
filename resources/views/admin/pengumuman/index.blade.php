@@ -6,7 +6,7 @@
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-black text-stone-900 tracking-tight">G. Pengumuman & Kabar Hutan</h1>
+            <h1 class="text-2xl font-black text-stone-900 tracking-tight">Pengumuman & Kabar Hutan</h1>
             <p class="text-sm text-stone-500 mt-1">
                 Publikasikan kabar desa, pengumuman kedaruratan, dan tips keselamatan hutan kepada warga.
             </p>

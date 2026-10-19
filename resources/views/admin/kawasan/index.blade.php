@@ -1,11 +1,11 @@
 @extends('layouts.admin')
 
-@section('title', 'A. Kawasan Hutan')
+@section('title', 'Kawasan Hutan')
 
 @section('content')
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
     <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">A. Kawasan Hutan</h1>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight">Kawasan Hutan</h1>
         <p class="text-stone-500 text-sm mt-1">Daftar blok kawasan hutan, batas wilayah poligon, dan jenis tutupan lahan.</p>
     </div>
     <a href="{{ route('admin.kawasan.create') }}" class="inline-flex items-center px-5 py-3 bg-green-700 hover:bg-green-600 text-white font-bold rounded-xl shadow transition active:scale-95 text-sm shrink-0">
