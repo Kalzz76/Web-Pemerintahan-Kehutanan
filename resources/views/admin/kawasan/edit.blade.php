@@ -2,13 +2,15 @@
 
 @section('title', 'Edit Kawasan Hutan')
 
+@section('breadcrumb')
+    <span class="text-stone-300">/</span>
+    <a href="{{ route('admin.kawasan.index') }}" class="hover:text-[#0F8179] transition">Kawasan Hutan</a>
+    <span class="text-stone-300">/</span>
+    <span class="text-stone-800 font-semibold">Edit Kawasan</span>
+@endsection
+
 @section('content')
 <div class="mb-5">
-    <div class="flex items-center space-x-2 text-xs text-stone-400 mb-1.5">
-        <a href="{{ route('admin.kawasan.index') }}" class="hover:text-stone-800 transition">Kawasan Hutan</a>
-        <i class="fa-solid fa-chevron-right text-[9px]"></i>
-        <span class="text-stone-800 font-semibold">Edit Kawasan</span>
-    </div>
     <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight">Edit Kawasan: {{ $kawasan->nama }}</h1>
     <p class="text-stone-500 text-xs mt-0.5">Perbarui batas wilayah poligon atau informasi konservasi kawasan hutan.</p>
 </div>

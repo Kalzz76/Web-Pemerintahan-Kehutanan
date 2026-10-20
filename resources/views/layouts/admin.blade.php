@@ -241,6 +241,13 @@
 </head>
 <body class="bg-white text-stone-800 font-sans antialiased h-screen overflow-hidden">
     <div class="app flex h-screen w-full overflow-hidden bg-white" id="appRoot">
+        <script>
+            try {
+                if (window.innerWidth >= 768 && localStorage.getItem('admin_sidebar_collapsed') === 'true') {
+                    document.getElementById('appRoot').classList.add('sidebar-collapsed');
+                }
+            } catch (e) {}
+        </script>
         @include('layouts.admin-sidebar')
 
         <div id="admin-main-wrapper" class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden bg-white">
@@ -278,6 +285,9 @@
 
             if (window.innerWidth >= 768) {
                 appRoot.classList.toggle('sidebar-collapsed');
+                try {
+                    localStorage.setItem('admin_sidebar_collapsed', appRoot.classList.contains('sidebar-collapsed') ? 'true' : 'false');
+                } catch (e) {}
             } else {
                 const isHidden = sidebar.classList.contains('-translate-x-full');
                 if (isHidden) {

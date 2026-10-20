@@ -2,13 +2,15 @@
 
 @section('title', 'Detail Laporan ' . $laporan->kode)
 
+@section('breadcrumb')
+    <span class="text-stone-300">/</span>
+    <a href="{{ route('admin.laporan.index') }}" class="hover:text-[#0F8179] transition">Kelola Laporan</a>
+    <span class="text-stone-300">/</span>
+    <span class="text-stone-800 font-semibold font-mono">{{ $laporan->kode }}</span>
+@endsection
+
 @section('content')
 <div class="mb-5">
-    <div class="flex items-center space-x-2 text-xs text-stone-500 mb-1.5">
-        <a href="{{ route('admin.laporan.index') }}" class="hover:text-stone-900">Kelola Laporan</a>
-        <i class="fa-solid fa-chevron-right text-[9px] text-stone-400"></i>
-        <span class="text-stone-800 font-semibold">{{ $laporan->kode }}</span>
-    </div>
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
             <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight flex items-center space-x-3">

@@ -19,8 +19,12 @@
                     <i class="fa-solid fa-house text-[10px] mr-1.5"></i>
                     <span>Admin</span>
                 </a>
-                <span class="text-stone-300">/</span>
-                <span class="text-stone-800 font-semibold">@yield('title', 'Dashboard')</span>
+                @hasSection('breadcrumb')
+                    @yield('breadcrumb')
+                @else
+                    <span class="text-stone-300">/</span>
+                    <span class="text-stone-800 font-semibold">@yield('title', 'Dashboard')</span>
+                @endif
             </nav>
         </div>
     </div>

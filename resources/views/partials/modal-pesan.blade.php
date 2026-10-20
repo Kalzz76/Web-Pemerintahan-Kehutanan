@@ -1,27 +1,28 @@
 @if (session('sukses') || session('info') || session('error'))
-<div id="modal-pesan" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-sm">
-    <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center transform transition-all">
-        @if (session('sukses'))
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
+<div id="modal-pesan" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/50 backdrop-blur-xs transition-opacity duration-200">
+    <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl border border-stone-200/80 text-center transform transition-all duration-200">
+        <div class="w-12 h-12 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center mx-auto mb-4 text-base">
+            @if (session('sukses'))
                 <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <h3 class="text-xl font-bold text-stone-900 mb-2">Berhasil</h3>
-            <p class="text-stone-600 text-sm mb-6">{{ session('sukses') }}</p>
-        @elseif (session('error'))
-            <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
+            @elseif (session('error'))
                 <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <h3 class="text-xl font-bold text-stone-900 mb-2">Terjadi Kesalahan</h3>
-            <p class="text-stone-600 text-sm mb-6">{{ session('error') }}</p>
-        @else
-            <div class="w-16 h-16 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl">
+            @else
                 <i class="fa-solid fa-circle-info"></i>
-            </div>
-            <h3 class="text-xl font-bold text-stone-900 mb-2">Informasi</h3>
-            <p class="text-stone-600 text-sm mb-6">{{ session('info') }}</p>
+            @endif
+        </div>
+
+        @if (session('sukses'))
+            <h3 class="text-base font-bold text-stone-900 mb-1.5">Berhasil</h3>
+            <p class="text-stone-500 text-xs leading-relaxed mb-6">{{ session('sukses') }}</p>
+        @elseif (session('error'))
+            <h3 class="text-base font-bold text-stone-900 mb-1.5">Terjadi Kesalahan</h3>
+            <p class="text-stone-500 text-xs leading-relaxed mb-6">{{ session('error') }}</p>
+        @else
+            <h3 class="text-base font-bold text-stone-900 mb-1.5">Informasi</h3>
+            <p class="text-stone-500 text-xs leading-relaxed mb-6">{{ session('info') }}</p>
         @endif
 
-        <button type="button" onclick="tutupModalPesan()" class="w-full py-3 px-6 bg-green-700 hover:bg-green-600 text-white font-semibold rounded-xl transition">
+        <button type="button" onclick="tutupModalPesan()" class="w-full py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold transition cursor-pointer shadow-xs">
             Mengerti
         </button>
     </div>
@@ -34,5 +35,16 @@ function tutupModalPesan() {
         modal.classList.add('hidden');
     }
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    var modal = document.getElementById('modal-pesan');
+    if (modal) {
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) {
+                tutupModalPesan();
+            }
+        });
+    }
+});
 </script>
 @endif
