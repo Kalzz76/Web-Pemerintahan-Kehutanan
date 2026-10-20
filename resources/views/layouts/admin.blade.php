@@ -353,6 +353,43 @@
                 document.documentElement.requestFullscreen().catch(function () {});
             }
         });
+
+        window.modalNotifikasiTerbuka = false;
+
+        function updateKunciScrollHalaman(terbuka) {
+            window.modalNotifikasiTerbuka = terbuka;
+            const wrapper = document.getElementById('admin-main-wrapper');
+            if (!wrapper) return;
+            if (terbuka) {
+                wrapper.classList.remove('overflow-y-auto');
+                wrapper.classList.add('overflow-hidden');
+            } else {
+                wrapper.classList.remove('overflow-hidden');
+                wrapper.classList.add('overflow-y-auto');
+            }
+        }
+
+        window.addEventListener('status-modal-notif', function (event) {
+            const detail = Array.isArray(event.detail) ? event.detail[0] : (event.detail || {});
+            const terbuka = Boolean(detail.terbuka);
+            updateKunciScrollHalaman(terbuka);
+        });
+
+        function handleDeteksiScrollLuar(e) {
+            if (!window.modalNotifikasiTerbuka) return;
+            const wadahModal = document.getElementById('wadah-dropdown-notifikasi');
+            if (wadahModal && wadahModal.contains(e.target)) {
+                return;
+            }
+            updateKunciScrollHalaman(false);
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('tutup-notifikasi-otomatis');
+            }
+        }
+
+        window.addEventListener('wheel', handleDeteksiScrollLuar, { passive: true, capture: true });
+        window.addEventListener('touchmove', handleDeteksiScrollLuar, { passive: true, capture: true });
+        window.addEventListener('scroll', handleDeteksiScrollLuar, { passive: true, capture: true });
     </script>
     @yield('scripts')
     @livewireScripts

@@ -88,30 +88,8 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-12 bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h2 class="text-sm sm:text-base font-bold text-stone-900">Grafik Laporan Masuk</h2>
-                    <p class="text-[11px] text-stone-500 mt-0.5">Tren jumlah laporan warga selama 6 bulan terakhir</p>
-                </div>
-                <span class="text-[11px] font-semibold text-stone-600 bg-stone-100 px-2.5 py-0.5 rounded-full border border-stone-200">
-                    6 Bulan
-                </span>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-1">
-                @foreach ($grafikBulanan as $gb)
-                    <div class="space-y-1.5 p-3 rounded-xl bg-stone-50/60 border border-stone-200/80">
-                        <div class="flex justify-between items-center text-xs">
-                            <span class="font-semibold text-stone-700">{{ $gb['label'] }}</span>
-                            <span class="font-bold text-stone-900">{{ $gb['jumlah'] }}</span>
-                        </div>
-                        <div class="w-full h-2.5 bg-stone-200 rounded-full overflow-hidden">
-                            <div class="h-full bg-stone-800 rounded-full transition-all duration-500" style="width: {{ max(4, $gb['persen']) }}%;"></div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+        <div class="lg:col-span-12">
+            <livewire:admin.grafik-laporan />
         </div>
 
         <div class="lg:col-span-6 bg-white p-5 rounded-2xl border border-stone-200/80 shadow-sm space-y-4">

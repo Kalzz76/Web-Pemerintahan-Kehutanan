@@ -147,7 +147,7 @@
                 </div>
                 <div class="info truncate flex-1">
                     <div class="text-xs font-bold text-white leading-tight truncate">{{ Auth::user()->name ?? 'Administrator' }}</div>
-                    <div class="text-[10px] text-white/75 font-semibold">Administrator Desa</div>
+                    <div class="text-[10px] text-white/75 font-semibold">Administrator</div>
                 </div>
             </div>
 
