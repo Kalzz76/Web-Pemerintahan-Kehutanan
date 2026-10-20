@@ -24,11 +24,14 @@
                 <input type="checkbox" id="centang-laporan" checked onchange="alihLapisan('laporan')" class="rounded border-stone-300 text-red-600 focus:ring-red-500">
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-600 mr-1.5 inline-block"></span> Laporan Terverifikasi</span>
             </label>
-        </div>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-sm border border-stone-100 p-4 relative overflow-hidden mb-8">
-        <div id="peta-publik" class="w-full h-[70vh] rounded-2xl overflow-hidden z-10"></div>
+    <div class="mb-4">
+        <livewire:pilih-wilayah />
+    </div>
+
+    <div class="bg-white rounded-3xl shadow-sm border border-stone-100 p-4 relative mb-8">
+        <livewire:peta-layar-penuh id-peta="peta-publik" tinggi="70vh" />
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
@@ -196,7 +199,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var dataLaporan = @json($daftarLaporan);
     dataLaporan.forEach(function (l) {
-        var warna = l.jenis === 'Kebakaran' ? '#dc2626' : '#ea580c';
+        var warna = '#57534e';
+        if (l.jenis === 'Kebakaran') {
+            warna = '#dc2626';
+        } else if (l.jenis === 'Hewan Masuk Kampung') {
+            warna = '#ea580c';
+        } else if (l.jenis === 'Orang Hilang') {
+            warna = '#0284c7';
+        }
 
         var marker = L.circleMarker([l.latitude, l.longitude], {
             radius: 9,
@@ -221,6 +231,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         marker.bindPopup(popupContent);
         layerLaporan.addLayer(marker);
+    });
+
+    window.addEventListener('peta-toggle-layar-penuh', function () {
+        setTimeout(function () {
+            if (typeof map !== 'undefined' && map) {
+                map.invalidateSize();
+            }
+        }, 200);
+    });
+
+    window.addEventListener('peta-terbang', function (e) {
+        var detail = e.detail;
+        if (Array.isArray(detail)) {
+            detail = detail[0] || {};
+        }
+        var lat = detail.lat;
+        var long = detail.long;
+        var zoom = detail.zoom || 12;
+        if (typeof map !== 'undefined' && map && lat && long) {
+            map.flyTo([lat, long], zoom);
+        }
     });
 });
 </script>

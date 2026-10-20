@@ -58,6 +58,7 @@
         }
     </style>
     @yield('styles')
+    @livewireStyles
 </head>
 <body class="bg-stone-50 text-stone-800 font-sans antialiased min-h-screen flex flex-col justify-between">
     @php
@@ -297,5 +298,6 @@
     })();
     </script>
     @yield('scripts')
+    @livewireScripts
 </body>
 </html>

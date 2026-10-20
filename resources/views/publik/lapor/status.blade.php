@@ -70,12 +70,20 @@
                     <div class="font-bold text-stone-800 flex items-center">
                         @if ($laporan->jenis === 'Kebakaran')
                             <i class="fa-solid fa-fire text-red-600 mr-2"></i>
-                        @else
+                        @elseif ($laporan->jenis === 'Hewan Masuk Kampung')
                             <i class="fa-solid fa-paw text-amber-600 mr-2"></i>
+                        @elseif ($laporan->jenis === 'Orang Hilang')
+                            <i class="fa-solid fa-person-hiking text-sky-600 mr-2"></i>
+                        @else
+                            <i class="fa-solid fa-triangle-exclamation text-stone-600 mr-2"></i>
                         @endif
                         <span>{{ $laporan->jenis }}</span>
-                        @if ($laporan->jenis_hewan)
+                        @if ($laporan->jenis === 'Hewan Masuk Kampung' && $laporan->jenis_hewan)
                             <span class="text-stone-500 font-normal ml-1">({{ $laporan->jenis_hewan }})</span>
+                        @elseif ($laporan->jenis === 'Orang Hilang' && !empty($laporan->detail_kejadian['nama_korban']))
+                            <span class="text-stone-500 font-normal ml-1">({{ $laporan->detail_kejadian['nama_korban'] }})</span>
+                        @elseif ($laporan->jenis === 'Lainnya' && !empty($laporan->detail_kejadian['kategori_lainnya']))
+                            <span class="text-stone-500 font-normal ml-1">({{ $laporan->detail_kejadian['kategori_lainnya'] }})</span>
                         @endif
                     </div>
                 </div>
@@ -93,6 +101,22 @@
                         {{ $laporan->deskripsi }}
                     </p>
                 </div>
+
+                @if ($laporan->detail_kejadian && is_array($laporan->detail_kejadian) && count($laporan->detail_kejadian) > 0)
+                    <div class="sm:col-span-2">
+                        <span class="text-stone-400 text-xs block mb-2 font-bold uppercase tracking-wider">Rincian Tambahan Kejadian</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            @foreach ($laporan->detail_kejadian as $kunci => $nilai)
+                                @if (!empty($nilai))
+                                    <div class="p-3 rounded-xl bg-stone-50 border border-stone-100">
+                                        <span class="text-stone-400 text-[11px] block capitalize">{{ str_replace('_', ' ', $kunci) }}</span>
+                                        <span class="font-semibold text-stone-800">{{ $nilai }}</span>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
 
                 @if ($laporan->foto)
                     <div class="sm:col-span-2">

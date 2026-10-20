@@ -65,7 +65,7 @@
                             </div>
                         </div>
 
-                        <div id="peta-peringatan" class="w-full h-[520px] z-10"></div>
+                        <livewire:peta-layar-penuh id-peta="peta-peringatan" tinggi="520px" />
                     </div>
                 </div>
 
@@ -300,6 +300,14 @@
         if (bounds.length > 0) {
             peta.fitBounds(bounds, { padding: [40, 40] });
         }
+
+        window.addEventListener('peta-toggle-layar-penuh', function () {
+            setTimeout(function () {
+                if (typeof peta !== 'undefined' && peta) {
+                    peta.invalidateSize();
+                }
+            }, 200);
+        });
     });
 
     function fokusPrediksi(lat, lng) {

@@ -37,7 +37,7 @@
         <span>Klik pada titik api di peta atau klik koordinat mana saja untuk mengisi formulir simulasi di bawah.</span>
     </div>
 
-    <div id="peta-prediksi" class="w-full h-[500px] rounded-xl border border-stone-200 overflow-hidden z-10"></div>
+    <livewire:peta-layar-penuh id-peta="peta-prediksi" tinggi="500px" />
 </div>
 
 @if ($prediksiAktif)
@@ -357,7 +357,10 @@ function pasangTitikSimulasi(lat, lng) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
+function inisialisasiPetaPrediksi() {
+    var petaEl = document.getElementById('peta-prediksi');
+    if (!petaEl || petaEl._leaflet_id) return;
+
     var latPusat = {{ $pengaturan->lat_pusat ?? -6.87 }};
     var longPusat = {{ $pengaturan->long_pusat ?? 107.60 }};
     var zoomAwal = {{ $pengaturan->zoom_awal ?? 8 }};
@@ -470,6 +473,17 @@ document.addEventListener('DOMContentLoaded', function () {
         pasangTitikSimulasi({{ $prediksiAktif->latitude }}, {{ $prediksiAktif->longitude }});
         map.setView([{{ $prediksiAktif->latitude }}, {{ $prediksiAktif->longitude }}], 14);
     @endif
-});
+
+    window.addEventListener('peta-toggle-layar-penuh', function () {
+        setTimeout(function () {
+            if (typeof map !== 'undefined' && map) {
+                map.invalidateSize();
+            }
+        }, 200);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', inisialisasiPetaPrediksi);
+document.addEventListener('livewire:navigated', inisialisasiPetaPrediksi);
 </script>
 @endsection

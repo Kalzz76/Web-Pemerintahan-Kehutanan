@@ -7,11 +7,11 @@
     <div class="flex flex-col h-full overflow-hidden">
         <div class="brand flex items-center justify-between h-11 pr-4 pl-1 shrink-0">
             <div class="brand-left flex items-center space-x-3 overflow-hidden">
-                <div class="brand-logo w-9 h-9 rounded-xl bg-white text-[#0F8179] flex items-center justify-center font-black text-lg shrink-0 shadow-sm">
+                <div class="brand-logo w-9 h-9 rounded-xl bg-white text-[#064B38] flex items-center justify-center font-black text-lg shrink-0 shadow-sm">
                     @if ($pengaturanGlobal && $pengaturanGlobal->logo)
                         <img src="{{ asset('storage/' . $pengaturanGlobal->logo) }}" alt="Logo" class="w-6 h-6 object-contain rounded-lg">
                     @else
-                        <i class="fa-solid fa-tree text-[#0F8179]"></i>
+                        <i class="fa-solid fa-tree text-[#064B38]"></i>
                     @endif
                 </div>
                 <div class="brand-text truncate">
@@ -32,7 +32,7 @@
                     Menu Utama
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ route('admin.dashboard') }}" class="admin-nav-item {{ request()->routeIs('admin.dashboard') ? 'on' : '' }}" title="Dashboard">
+                    <a href="{{ route('admin.dashboard') }}" wire:navigate class="admin-nav-item {{ request()->routeIs('admin.dashboard') ? 'on' : '' }}" title="Dashboard">
                         <i class="fa-solid fa-gauge w-5 text-center text-sm shrink-0"></i>
                         <span>Dashboard</span>
                     </a>
@@ -44,7 +44,7 @@
                     Pemantauan & Patroli
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ Route::has('admin.laporan.index') ? route('admin.laporan.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/laporan*') ? 'on' : '' }}" title="Kelola Laporan">
+                    <a href="{{ Route::has('admin.laporan.index') ? route('admin.laporan.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/laporan*') ? 'on' : '' }}" title="Kelola Laporan">
                         <i class="fa-solid fa-triangle-exclamation w-5 text-center text-sm shrink-0"></i>
                         <span>Kelola Laporan</span>
                         @if ($jumlahLaporanBaru > 0)
@@ -54,12 +54,12 @@
                         @endif
                     </a>
 
-                    <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/prediksi*') ? 'on' : '' }}" title="Prediksi Kebakaran">
+                    <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/prediksi*') ? 'on' : '' }}" title="Prediksi Kebakaran">
                         <i class="fa-solid fa-fire-flame-curved w-5 text-center text-sm shrink-0"></i>
                         <span>Prediksi Kebakaran</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.jadwal-patroli.index') ? route('admin.jadwal-patroli.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/jadwal-patroli*') ? 'on' : '' }}" title="Jadwal Patroli">
+                    <a href="{{ Route::has('admin.jadwal-patroli.index') ? route('admin.jadwal-patroli.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/jadwal-patroli*') ? 'on' : '' }}" title="Jadwal Patroli">
                         <i class="fa-regular fa-calendar-check w-5 text-center text-sm shrink-0"></i>
                         <span>Jadwal Patroli</span>
                     </a>
@@ -71,17 +71,17 @@
                     Pemetaan & Wilayah
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ Route::has('admin.kawasan.index') ? route('admin.kawasan.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/kawasan*') ? 'on' : '' }}" title="Kawasan Hutan">
+                    <a href="{{ Route::has('admin.kawasan.index') ? route('admin.kawasan.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/kawasan*') ? 'on' : '' }}" title="Kawasan Hutan">
                         <i class="fa-solid fa-mountain-sun w-5 text-center text-sm shrink-0"></i>
                         <span>Kawasan Hutan</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.titik-penting.index') ? route('admin.titik-penting.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/titik-penting*') ? 'on' : '' }}" title="Titik Penting">
+                    <a href="{{ Route::has('admin.titik-penting.index') ? route('admin.titik-penting.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/titik-penting*') ? 'on' : '' }}" title="Titik Penting">
                         <i class="fa-solid fa-location-dot w-5 text-center text-sm shrink-0"></i>
                         <span>Titik Penting</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.jenis-lahan.index') ? route('admin.jenis-lahan.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/jenis-lahan*') ? 'on' : '' }}" title="Jenis Lahan">
+                    <a href="{{ Route::has('admin.jenis-lahan.index') ? route('admin.jenis-lahan.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/jenis-lahan*') ? 'on' : '' }}" title="Jenis Lahan">
                         <i class="fa-solid fa-layer-group w-5 text-center text-sm shrink-0"></i>
                         <span>Jenis Lahan</span>
                     </a>
@@ -93,12 +93,12 @@
                     Keanekaragaman Hayati
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ Route::has('admin.primata.index') ? route('admin.primata.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/primata*') ? 'on' : '' }}" title="Satwa Primata">
+                    <a href="{{ Route::has('admin.primata.index') ? route('admin.primata.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/primata*') ? 'on' : '' }}" title="Satwa Primata">
                         <i class="fa-solid fa-paw w-5 text-center text-sm shrink-0"></i>
                         <span>Satwa Primata</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.tumbuhan.index') ? route('admin.tumbuhan.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/tumbuhan*') ? 'on' : '' }}" title="Tumbuhan Rimba">
+                    <a href="{{ Route::has('admin.tumbuhan.index') ? route('admin.tumbuhan.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/tumbuhan*') ? 'on' : '' }}" title="Tumbuhan Rimba">
                         <i class="fa-solid fa-seedling w-5 text-center text-sm shrink-0"></i>
                         <span>Tumbuhan Rimba</span>
                     </a>
@@ -110,12 +110,12 @@
                     Informasi & Layanan
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ Route::has('admin.pengumuman.index') ? route('admin.pengumuman.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/pengumuman*') ? 'on' : '' }}" title="Pengumuman">
+                    <a href="{{ Route::has('admin.pengumuman.index') ? route('admin.pengumuman.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/pengumuman*') ? 'on' : '' }}" title="Pengumuman">
                         <i class="fa-solid fa-bullhorn w-5 text-center text-sm shrink-0"></i>
                         <span>Pengumuman</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.kontak-darurat.index') ? route('admin.kontak-darurat.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/kontak-darurat*') ? 'on' : '' }}" title="Kontak Darurat">
+                    <a href="{{ Route::has('admin.kontak-darurat.index') ? route('admin.kontak-darurat.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/kontak-darurat*') ? 'on' : '' }}" title="Kontak Darurat">
                         <i class="fa-solid fa-phone-volume w-5 text-center text-sm shrink-0"></i>
                         <span>Kontak Darurat</span>
                     </a>
@@ -127,12 +127,12 @@
                     Sistem & Konfigurasi
                 </div>
                 <div class="space-y-1.5">
-                    <a href="{{ Route::has('admin.akun.index') ? route('admin.akun.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/akun*') ? 'on' : '' }}" title="Akun Admin">
+                    <a href="{{ Route::has('admin.akun.index') ? route('admin.akun.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/akun*') ? 'on' : '' }}" title="Akun Admin">
                         <i class="fa-solid fa-users-gear w-5 text-center text-sm shrink-0"></i>
                         <span>Akun Admin</span>
                     </a>
 
-                    <a href="{{ Route::has('admin.pengaturan.index') ? route('admin.pengaturan.index') : '#' }}" class="admin-nav-item {{ request()->is('admin/pengaturan*') ? 'on' : '' }}" title="Pengaturan Sistem">
+                    <a href="{{ Route::has('admin.pengaturan.index') ? route('admin.pengaturan.index') : '#' }}" wire:navigate class="admin-nav-item {{ request()->is('admin/pengaturan*') ? 'on' : '' }}" title="Pengaturan Sistem">
                         <i class="fa-solid fa-sliders w-5 text-center text-sm shrink-0"></i>
                         <span>Pengaturan Sistem</span>
                     </a>
@@ -142,7 +142,7 @@
 
         <div class="pt-3 pb-1 pr-4 pl-1 border-t border-white/20 shrink-0 space-y-2.5">
             <div class="sidebar-user flex items-center gap-2.5 px-3 py-2 rounded-2xl bg-white/10 border border-white/15">
-                <div class="avatar w-8 h-8 rounded-full bg-white text-[#0F8179] font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
+                <div class="avatar w-8 h-8 rounded-full bg-white text-[#064B38] font-bold text-xs flex items-center justify-center shrink-0 shadow-sm">
                     {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 2)) }}
                 </div>
                 <div class="info truncate flex-1">

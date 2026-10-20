@@ -15,6 +15,7 @@ class Laporan extends Model
         'kode',
         'jenis',
         'jenis_hewan',
+        'detail_kejadian',
         'latitude',
         'longitude',
         'deskripsi',
@@ -34,6 +35,7 @@ class Laporan extends Model
         return [
             'latitude' => 'float',
             'longitude' => 'float',
+            'detail_kejadian' => 'array',
         ];
     }
 

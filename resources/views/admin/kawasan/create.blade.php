@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <span class="text-stone-300">/</span>
-    <a href="{{ route('admin.kawasan.index') }}" class="hover:text-[#0F8179] transition">Kawasan Hutan</a>
+    <a href="{{ route('admin.kawasan.index') }}" class="hover:text-[#064B38] transition">Kawasan Hutan</a>
     <span class="text-stone-300">/</span>
     <span class="text-stone-800 font-semibold">Tambah Kawasan</span>
 @endsection

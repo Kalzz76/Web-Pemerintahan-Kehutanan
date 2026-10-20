@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\KabupatenKota;
+use App\Models\KawasanHutan;
 use App\Models\Laporan;
 use App\Models\PengaturanHutan;
 use Illuminate\Http\Request;
@@ -22,27 +23,94 @@ class LaporController extends Controller
         return $kode;
     }
 
+    private function susunDetailKejadian(Request $request, string $jenis): ?array
+    {
+        $data = [];
+
+        if ($jenis === 'Kebakaran') {
+            $data = [
+                'tipe_vegetasi' => $request->input('tipe_vegetasi'),
+                'perkiraan_luas' => $request->input('perkiraan_luas'),
+                'kondisi_api' => $request->input('kondisi_api'),
+                'arah_angin' => $request->input('arah_angin'),
+                'potensi_bahaya' => $request->input('potensi_bahaya'),
+            ];
+        } elseif ($jenis === 'Hewan Masuk Kampung') {
+            $data = [
+                'jenis_hewan' => $request->input('jenis_hewan'),
+                'jumlah_satwa' => $request->input('jumlah_satwa'),
+                'aktivitas_satwa' => $request->input('aktivitas_satwa'),
+                'posisi_satwa' => $request->input('posisi_satwa'),
+            ];
+        } elseif ($jenis === 'Orang Hilang') {
+            $data = [
+                'nama_korban' => $request->input('nama_korban'),
+                'usia_korban' => $request->input('usia_korban'),
+                'gender_korban' => $request->input('gender_korban'),
+                'jumlah_korban' => $request->input('jumlah_korban'),
+                'kontak_terakhir' => $request->input('kontak_terakhir'),
+                'jalur_pendakian' => $request->input('jalur_pendakian'),
+                'ciri_pakaian' => $request->input('ciri_pakaian'),
+                'kondisi_bekal' => $request->input('kondisi_bekal'),
+            ];
+        } elseif ($jenis === 'Lainnya') {
+            $data = [
+                'kategori_lainnya' => $request->input('kategori_lainnya'),
+                'tingkat_urgensi' => $request->input('tingkat_urgensi'),
+            ];
+        }
+
+        $filtered = array_filter($data, function ($val) {
+            return !is_null($val) && $val !== '';
+        });
+
+        return count($filtered) > 0 ? $filtered : null;
+    }
+
     public function index(Request $request)
     {
         $jenisTerpilih = $request->query('jenis');
-        if ($jenisTerpilih !== 'Kebakaran' && $jenisTerpilih !== 'Hewan Masuk Kampung') {
+        $daftarJenis = ['Kebakaran', 'Hewan Masuk Kampung', 'Orang Hilang', 'Lainnya'];
+        if (!in_array($jenisTerpilih, $daftarJenis)) {
             $jenisTerpilih = null;
         }
 
         $pengaturan = PengaturanHutan::first();
         $kabupatenKota = KabupatenKota::orderBy('nama')->get();
+        $daftarKawasan = KawasanHutan::with('kabupatenKota:id,nama')
+            ->select('id', 'nama', 'kategori', 'lat_pusat', 'long_pusat', 'geojson')
+            ->orderBy('nama')
+            ->get();
 
-        return view('publik.lapor.index', compact('jenisTerpilih', 'pengaturan', 'kabupatenKota'));
+        return view('publik.lapor.index', compact('jenisTerpilih', 'pengaturan', 'kabupatenKota', 'daftarKawasan'));
     }
 
     public function simpan(Request $request)
     {
         $request->validate([
-            'jenis' => 'required|in:Kebakaran,Hewan Masuk Kampung',
-            'jenis_hewan' => 'nullable|max:100',
+            'jenis' => 'required|in:Kebakaran,Hewan Masuk Kampung,Orang Hilang,Lainnya',
+            'tipe_vegetasi' => 'required_if:jenis,Kebakaran|nullable|max:100',
+            'perkiraan_luas' => 'required_if:jenis,Kebakaran|nullable|max:100',
+            'kondisi_api' => 'required_if:jenis,Kebakaran|nullable|max:100',
+            'arah_angin' => 'required_if:jenis,Kebakaran|nullable|max:100',
+            'potensi_bahaya' => 'required_if:jenis,Kebakaran|nullable|max:100',
+            'jenis_hewan' => 'required_if:jenis,Hewan Masuk Kampung|nullable|max:100',
+            'jumlah_satwa' => 'required_if:jenis,Hewan Masuk Kampung|nullable|max:100',
+            'aktivitas_satwa' => 'required_if:jenis,Hewan Masuk Kampung|nullable|max:150',
+            'posisi_satwa' => 'required_if:jenis,Hewan Masuk Kampung|nullable|max:100',
+            'nama_korban' => 'required_if:jenis,Orang Hilang|nullable|max:150',
+            'usia_korban' => 'required_if:jenis,Orang Hilang|nullable|max:50',
+            'gender_korban' => 'required_if:jenis,Orang Hilang|nullable|max:50',
+            'jumlah_korban' => 'required_if:jenis,Orang Hilang|nullable|max:50',
+            'kontak_terakhir' => 'required_if:jenis,Orang Hilang|nullable|max:100',
+            'jalur_pendakian' => 'required_if:jenis,Orang Hilang|nullable|max:150',
+            'ciri_pakaian' => 'required_if:jenis,Orang Hilang|nullable|max:255',
+            'kondisi_bekal' => 'required_if:jenis,Orang Hilang|nullable|max:150',
+            'kategori_lainnya' => 'required_if:jenis,Lainnya|nullable|max:100',
+            'tingkat_urgensi' => 'required_if:jenis,Lainnya|nullable|max:100',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
-            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
+            'id_kabupaten_kota' => 'required|exists:kabupaten_kota,id',
             'deskripsi' => 'required|max:1000',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'nama_pelapor' => 'nullable|max:100',
@@ -54,6 +122,7 @@ class LaporController extends Controller
             'latitude.between' => 'Koordinat latitude tidak valid.',
             'longitude.required' => 'Lokasi kejadian wajib ditentukan.',
             'longitude.between' => 'Koordinat longitude tidak valid.',
+            'id_kabupaten_kota.required' => 'Wilayah kabupaten atau kota wajib dipilih.',
             'id_kabupaten_kota.exists' => 'Kabupaten atau kota tidak valid.',
             'deskripsi.required' => 'Deskripsi kejadian wajib diisi.',
             'deskripsi.max' => 'Deskripsi maksimal 1000 karakter.',
@@ -82,11 +151,13 @@ class LaporController extends Controller
         }
 
         $kode = $this->buatKodeLaporan();
+        $detailKejadian = $this->susunDetailKejadian($request, $request->jenis);
 
         $laporan = Laporan::create([
             'kode' => $kode,
             'jenis' => $request->jenis,
             'jenis_hewan' => $request->jenis === 'Hewan Masuk Kampung' ? $request->jenis_hewan : null,
+            'detail_kejadian' => $detailKejadian,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'id_kabupaten_kota' => $request->id_kabupaten_kota,
@@ -107,7 +178,7 @@ class LaporController extends Controller
     public function sinkron(Request $request)
     {
         $request->validate([
-            'jenis' => 'required|in:Kebakaran,Hewan Masuk Kampung',
+            'jenis' => 'required|in:Kebakaran,Hewan Masuk Kampung,Orang Hilang,Lainnya',
             'jenis_hewan' => 'nullable|max:100',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
@@ -133,11 +204,13 @@ class LaporController extends Controller
         }
 
         $kode = $this->buatKodeLaporan();
+        $detailKejadian = $this->susunDetailKejadian($request, $request->jenis);
 
         $laporan = Laporan::create([
             'kode' => $kode,
             'jenis' => $request->jenis,
             'jenis_hewan' => $request->jenis === 'Hewan Masuk Kampung' ? $request->jenis_hewan : null,
+            'detail_kejadian' => $detailKejadian,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'id_kabupaten_kota' => $request->id_kabupaten_kota,

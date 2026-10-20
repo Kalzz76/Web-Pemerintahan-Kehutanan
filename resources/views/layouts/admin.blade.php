@@ -15,9 +15,9 @@
                 extend: {
                     colors: {
                         tealForest: {
-                            DEFAULT: '#0F8179',
-                            dark: '#0A5F59',
-                            light: '#E6F5F4'
+                            DEFAULT: '#064B38',
+                            dark: '#0B3D2E',
+                            light: '#E7F2EE'
                         }
                     },
                     fontFamily: {
@@ -29,9 +29,9 @@
     </script>
     <style>
         :root {
-            --teal: #0F8179;
-            --teal-dark: #0A5F59;
-            --teal-light: #E6F5F4;
+            --teal: #064B38;
+            --teal-dark: #0B3D2E;
+            --teal-light: #E7F2EE;
             --sidebar-w: 260px;
             --sidebar-w-collapsed: 80px;
         }
@@ -50,7 +50,7 @@
             width: var(--sidebar-w);
             height: 100vh;
             flex-shrink: 0;
-            background: #0F8179;
+            background: #064B38;
             color: #ffffff;
             transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
@@ -94,11 +94,10 @@
         }
 
         .admin-nav-item.on .badge-counter-pill {
-            background: #0F8179;
+            background: #064B38;
             color: #ffffff;
         }
 
-        /* Mode Mobile (default / < 768px) */
         @media (max-width: 767.98px) {
             .sidebar {
                 width: 285px !important;
@@ -122,7 +121,7 @@
                 width: 100% !important;
                 right: 0 !important;
                 background: #ffffff !important;
-                color: #0F8179 !important;
+                color: #064B38 !important;
                 box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
             }
 
@@ -152,7 +151,6 @@
             }
         }
 
-        /* Mode Desktop (>= 768px) */
         @media (min-width: 768px) {
             .sidebar {
                 width: var(--sidebar-w);
@@ -168,7 +166,7 @@
 
             .admin-nav-item.on {
                 background: #ffffff;
-                color: #0F8179;
+                color: #064B38;
                 font-weight: 700;
                 position: relative;
                 right: -2px;
@@ -238,6 +236,7 @@
             }
         }
     </style>
+    @livewireStyles
 </head>
 <body class="bg-white text-stone-800 font-sans antialiased h-screen overflow-hidden">
     <div class="app flex h-screen w-full overflow-hidden bg-white" id="appRoot">
@@ -302,52 +301,60 @@
             }
         }
 
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        if (sidebarToggle) {
-            sidebarToggle.onclick = toggleSidebar;
-        }
+        function pasangEventSidebar() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.onclick = toggleSidebar;
+            }
 
-        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
-        if (sidebarCloseBtn) {
-            sidebarCloseBtn.onclick = toggleSidebar;
-        }
+            const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+            if (sidebarCloseBtn) {
+                sidebarCloseBtn.onclick = toggleSidebar;
+            }
 
-        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-        if (sidebarBackdrop) {
-            sidebarBackdrop.onclick = toggleSidebar;
-        }
-
-        const btnFullscreen = document.getElementById('btnFullscreen');
-        const fsIconExpand = document.getElementById('fsIconExpand');
-        const fsIconCompress = document.getElementById('fsIconCompress');
-
-        function updateFullscreenIcons() {
-            if (document.fullscreenElement) {
-                if (fsIconExpand) fsIconExpand.style.display = 'none';
-                if (fsIconCompress) fsIconCompress.style.display = 'block';
-                if (btnFullscreen) btnFullscreen.setAttribute('title', 'Keluar Layar Penuh (Esc)');
-            } else {
-                if (fsIconExpand) fsIconExpand.style.display = 'block';
-                if (fsIconCompress) fsIconCompress.style.display = 'none';
-                if (btnFullscreen) btnFullscreen.setAttribute('title', 'Mode Layar Penuh');
+            const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+            if (sidebarBackdrop) {
+                sidebarBackdrop.onclick = toggleSidebar;
             }
         }
 
-        if (btnFullscreen) {
-            btnFullscreen.addEventListener('click', function () {
-                if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(function (err) {
-                        console.warn('Gagal masuk mode layar penuh:', err.message);
-                    });
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    }
+        pasangEventSidebar();
+        document.addEventListener('livewire:navigated', pasangEventSidebar);
+
+        function toggleBrowserFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function (err) {
+                    console.warn('Gagal masuk mode layar penuh:', err.message);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
                 }
-            });
-            document.addEventListener('fullscreenchange', updateFullscreenIcons);
+            }
         }
+
+        document.addEventListener('fullscreenchange', function () {
+            const isFs = !!document.fullscreenElement;
+            sessionStorage.setItem('admin_layar_penuh', isFs ? '1' : '0');
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('fullscreen-berubah', { status: isFs });
+            }
+        });
+
+        document.addEventListener('livewire:navigated', function () {
+            const isFs = !!document.fullscreenElement;
+            if (typeof Livewire !== 'undefined') {
+                Livewire.dispatch('fullscreen-berubah', { status: isFs });
+            }
+        });
+
+        document.addEventListener('click', function () {
+            if (sessionStorage.getItem('admin_layar_penuh') === '1' && !document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function () {});
+            }
+        });
     </script>
     @yield('scripts')
+    @livewireScripts
 </body>
 </html>

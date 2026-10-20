@@ -27,7 +27,8 @@ class LaporanController extends Controller
                   ->orWhere('deskripsi', 'like', '%' . $cari . '%')
                   ->orWhere('nama_pelapor', 'like', '%' . $cari . '%')
                   ->orWhere('no_hp', 'like', '%' . $cari . '%')
-                  ->orWhere('jenis_hewan', 'like', '%' . $cari . '%');
+                  ->orWhere('jenis_hewan', 'like', '%' . $cari . '%')
+                  ->orWhere('detail_kejadian', 'like', '%' . $cari . '%');
             });
         }
 

@@ -35,15 +35,16 @@ Kode di project ini harus sederhana dan bersih, terlihat ditulis manual oleh pel
 7. Validasi memakai `$request->validate([...], [...pesan...])` langsung di controller. Tidak perlu Form Request class.
 8. **DILARANG mengubah struktur tabel lewat kode di controller atau model.** Struktur tabel hanya lewat file migration. Data awal (akun admin, pengaturan, jenis lahan, kontak darurat) lewat seeder.
 9. Query memakai Eloquent atau Query Builder. Kalau perlu query mentah, wajib pakai binding parameter, tidak boleh menyambung string dari input pengguna.
-10. Tampilan memakai **Blade + Tailwind CSS (CDN) + Font Awesome**. Tidak memakai Livewire, Inertia, Vue, React, atau Alpine. JavaScript ditulis sederhana dalam bentuk fungsi biasa (`bukaModal`, `tutupModal`, `kirimLaporan`, dst).
-11. Library tambahan yang diizinkan hanya: **Leaflet** dan **Leaflet.draw** (peta dan gambar poligon), keduanya lewat CDN cdnjs. Pemanggilan API luar memakai `Http` bawaan Laravel (bukan package Composer tambahan). Library atau package lain tanya dulu.
+10. Tampilan memakai **Blade + Tailwind CSS (CDN) + Font Awesome**. Pengecualian: **Livewire 3** diizinkan HANYA untuk tiga hal: dropdown, pencarian, dan mode fullscreen. Inertia, Vue, React tetap dilarang. Jangan menulis direktif Alpine sendiri (x-data dan sejenisnya); Livewire sudah membawa Alpine, tetapi kita hanya memakai atribut `wire:`. Di luar tiga hal tersebut, JavaScript tetap ditulis sederhana dalam bentuk fungsi biasa (`bukaModal`, `tutupModal`, `kirimLaporan`, dst).
+11. Library tambahan yang diizinkan: **Leaflet** dan **Leaflet.draw** (peta dan gambar poligon, keduanya lewat CDN cdnjs) serta package **livewire/livewire** (Livewire 3 untuk dropdown, pencarian, dan fullscreen). Pemanggilan API luar memakai `Http` bawaan Laravel (bukan package Composer tambahan). Library atau package lain tanya dulu.
 12. Fitur yang tidak ada di `CLAUDE.md` ini tidak boleh ditambahkan hanya karena ada di PRD atau terpikir bagus. Kalau ragu, tanya dulu.
 
 Aturan ini berlaku untuk semua perubahan berikutnya, tanpa perlu diingatkan lagi.
 
 ## Tech Stack
 
-- **Backend**: Laravel 11, PHP 8.2+
+- **Backend**: Laravel 11/12, PHP 8.2+
+- **Frontend Reaktif**: Livewire 3 (khusus dropdown, pencarian, dan mode fullscreen)
 - **Database**: MySQL (XAMPP/Laragon saat development)
 - **Tampilan**: Blade + Tailwind CSS lewat CDN (`https://cdn.tailwindcss.com`) + Font Awesome 6.4 + font Inter (Google Fonts)
 - **Autentikasi**: login manual dengan `Auth::attempt` (username + password), tanpa Breeze/Jetstream. Hanya untuk admin.
@@ -72,6 +73,7 @@ jaga-hutan-desa/
 │   │   │                                   JenisLahanController, LaporanController, TitikApiController, PrediksiController,
 │   │   │                                   PrimataController, TumbuhanController, PengumumanController,
 │   │   │                                   JadwalPatroliController, KontakDaruratController, AkunController
+│   ├── Livewire/                           komponen pencarian, dropdown, dan mode fullscreen
 │   └── Models/                             satu model per tabel
 ├── database/
 │   ├── migrations/
@@ -79,6 +81,7 @@ jaga-hutan-desa/
 ├── resources/views/
 │   ├── layouts/                            publik.blade.php, admin.blade.php (sidebar)
 │   ├── partials/                           modal-pesan.blade.php
+│   ├── livewire/                           tampilan komponen Livewire
 │   ├── publik/
 │   ├── admin/
 │   └── login.blade.php
@@ -504,6 +507,34 @@ Tiga tulisan singkat dan umum, ditulis seperti pengumuman biasa:
 - Berita dan jurnal: Mongabay Indonesia (status kawasan Kamojang dan Papandayan, surili, owa jawa), Kompas Lestari (daftar taman nasional dan cagar alam), Good News from Indonesia (sebaran surili), jurnal IPB dan UIN Sunan Gunung Djati (primata di Burangrang dan Gunung Tilu), Gridoto (nomor darurat Jawa Barat).
 
 Semua angka dan nama di atas boleh dikoreksi admin lewat halaman admin tanpa mengubah kode.
+
+## Livewire
+
+Livewire 3 digunakan sebagai pengecualian khusus **HANYA untuk 3 hal: dropdown, pencarian, dan mode fullscreen**. Di luar tiga hal tersebut, tetap menggunakan Blade biasa dan JavaScript sederhana.
+
+### Aturan Penggunaan Livewire
+- Dilarang menulis direktif Alpine sendiri (`x-data`, `x-init`, dsb). Gunakan atribut `wire:`.
+- Tetap patuhi aturan umum kode: **tanpa komentar di dalam kode**, kode sederhana tanpa computed property atau pola rumit, query Eloquent biasa, semua teks berbahasa Indonesia, tampilan Tailwind konsisten.
+- Gunakan `wire:model.live.debounce.300ms` untuk input pencarian.
+- Gunakan trait `WithPagination` dan panggil `resetPage()` saat nilai pencarian atau filter dropdown berubah.
+- Tampilkan indikator teks "Memuat..." menggunakan `wire:loading`.
+- Halaman Blade yang sudah ada hanya memanggil komponennya (`@livewire(...)` atau `<livewire:... />`) tanpa mengubah URL rute.
+- **Form Lapor Darurat dan Cek Status DILARANG diubah ke Livewire** karena menggunakan mode offline (`localStorage`) dan rute pengecualian CSRF.
+
+### Daftar Komponen
+
+1. **Pencarian & Dropdown Publik:**
+   - `PrimataIndex`: pencarian nama lokal dan nama ilmiah, dropdown Kabupaten/Kota, dropdown Kawasan bertingkat (mengikuti Kabupaten/Kota terpilih; reset ke semua kawasan jika Kabupaten/Kota dikosongkan).
+   - `TumbuhanIndex`: sama seperti Primata, ditambah dropdown Jenis (Pohon, Perdu, Herba, Liana, Lainnya).
+
+2. **Pencarian & Dropdown Admin:**
+   - `LaporanTable`: pencarian kode dan deskripsi, dropdown Status, Jenis, dan Kabupaten/Kota.
+   - Tabel CRUD Admin (`KawasanTable`, `TitikPentingTable`, `PrimataTable`, `TumbuhanTable`, `PengumumanTable`): pencarian nama (satu komponen per tabel). Tombol Edit tetap memakai atribut `data-*` dan modal JavaScript yang sudah ada, tombol Hapus tetap form dengan `@csrf`, `@method('DELETE')`, dan `confirm()`.
+
+3. **Peta & Fullscreen:**
+   - `PetaLayarPenuh` (reusable): menerima parameter `id` peta dan `tinggi`. Berisi pembungkus, tombol "Layar Penuh" / "Keluar Layar Penuh", dan div peta. Properti `$layarPenuh` diubah lewat tombol (saat `true` memakai kelas `fixed inset-0 z-50 bg-white`; saat `false` kelas normal). Div peta **WAJIB** memakai `wire:ignore` agar Leaflet tidak terganggu saat re-render. Setelah toggle, dispatch event ke browser untuk memanggil `peta.invalidateSize()`.
+   - Dipasang pada: Peta Hutan (publik), Peringatan (publik), dan Prediksi Kebakaran (admin). Form prediksi admin tetap form biasa.
+   - `PilihWilayah` (khusus Peta Hutan): dropdown Kabupaten/Kota dan Kawasan bertingkat. Saat kawasan dipilih, kirim event (`lat_pusat`, `long_pusat`, `zoom`) agar peta terbang (`flyTo`) ke lokasi. Zoom ditentukan dengan `if/else` dari radius kawasan (<= 2 km: zoom 13, <= 5 km: zoom 12, <= 9 km: zoom 11, selain itu: zoom 10). Jika Kabupaten/Kota dipilih tanpa kawasan, saring daftar kawasan di dropdown sesuai kabupaten tersebut.
 
 ## Keamanan
 

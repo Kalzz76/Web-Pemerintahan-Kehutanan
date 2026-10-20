@@ -4,7 +4,7 @@
 
 @section('breadcrumb')
     <span class="text-stone-300">/</span>
-    <a href="{{ route('admin.laporan.index') }}" class="hover:text-[#0F8179] transition">Kelola Laporan</a>
+    <a href="{{ route('admin.laporan.index') }}" class="hover:text-[#064B38] transition">Kelola Laporan</a>
     <span class="text-stone-300">/</span>
     <span class="text-stone-800 font-semibold font-mono">{{ $laporan->kode }}</span>
 @endsection
@@ -72,6 +72,136 @@
                         {{ $laporan->deskripsi }}
                     </p>
                 </div>
+
+                @if ($laporan->detail_kejadian && is_array($laporan->detail_kejadian) && count($laporan->detail_kejadian) > 0)
+                    <div class="sm:col-span-2 pt-3 border-t border-stone-100">
+                        <span class="text-xs font-bold uppercase tracking-wider text-stone-500 block mb-3 flex items-center">
+                            <i class="fa-solid fa-list-check text-stone-700 mr-2"></i>
+                            <span>Rincian Khusus Kejadian Lapangan</span>
+                        </span>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            @if ($laporan->jenis === 'Kebakaran')
+                                @if (!empty($laporan->detail_kejadian['tipe_vegetasi']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Vegetasi / Bahan Terbakar</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['tipe_vegetasi'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['perkiraan_luas']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Perkiraan Luas Area</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['perkiraan_luas'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['kondisi_api']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Kondisi Api & Asap</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['kondisi_api'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['arah_angin']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Arah Tiupan Angin</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['arah_angin'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['potensi_bahaya']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70 sm:col-span-2">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Posisi / Kerentanan Area</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['potensi_bahaya'] }}</span>
+                                    </div>
+                                @endif
+
+                            @elseif ($laporan->jenis === 'Hewan Masuk Kampung')
+                                @if (!empty($laporan->detail_kejadian['jenis_hewan']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Jenis Satwa</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['jenis_hewan'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['jumlah_satwa']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Jumlah Satwa</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['jumlah_satwa'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['aktivitas_satwa']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Aktivitas / Dampak</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['aktivitas_satwa'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['posisi_satwa']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Posisi Satwa Saat Ini</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['posisi_satwa'] }}</span>
+                                    </div>
+                                @endif
+
+                            @elseif ($laporan->jenis === 'Orang Hilang')
+                                @if (!empty($laporan->detail_kejadian['nama_korban']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Nama Korban / Survivor</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['nama_korban'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['jumlah_korban']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Jumlah Orang Dicari</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['jumlah_korban'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['usia_korban']) || !empty($laporan->detail_kejadian['gender_korban']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Usia & Jenis Kelamin</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">
+                                            {{ $laporan->detail_kejadian['usia_korban'] ?? '-' }} / {{ $laporan->detail_kejadian['gender_korban'] ?? '-' }}
+                                        </span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['kontak_terakhir']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Kontak / Terlihat Terakhir</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['kontak_terakhir'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['jalur_pendakian']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Jalur Masuk / Pos</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['jalur_pendakian'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['kondisi_bekal']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Kondisi Bekal / Logistik</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['kondisi_bekal'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['ciri_pakaian']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70 sm:col-span-2">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Ciri Fisik & Pakaian Terakhir</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['ciri_pakaian'] }}</span>
+                                    </div>
+                                @endif
+
+                            @elseif ($laporan->jenis === 'Lainnya')
+                                @if (!empty($laporan->detail_kejadian['kategori_lainnya']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Kategori Kejadian</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['kategori_lainnya'] }}</span>
+                                    </div>
+                                @endif
+                                @if (!empty($laporan->detail_kejadian['tingkat_urgensi']))
+                                    <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-200/70">
+                                        <span class="text-[11px] text-stone-400 block mb-0.5">Tingkat Urgensi / Dampak</span>
+                                        <span class="font-bold text-stone-800 text-xs sm:text-sm">{{ $laporan->detail_kejadian['tingkat_urgensi'] }}</span>
+                                    </div>
+                                @endif
+                            @endif
+                        </div>
+                    </div>
+                @endif
 
                 @if ($laporan->foto)
                     <div class="sm:col-span-2">

@@ -16,14 +16,18 @@
                 {{ $pengaturan->deskripsi_singkat ?? 'Sistem informasi pengelolaan kawasan hutan Provinsi Jawa Barat, pemantauan titik api, dan respon darurat konflik satwa liar.' }}
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-4 pt-2">
-                <a href="{{ Route::has('lapor') ? route('lapor', ['jenis' => 'Kebakaran']) : url('/lapor?jenis=Kebakaran') }}" class="inline-flex items-center justify-center px-6 py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-xl transition transform active:scale-95 text-base group">
-                    <i class="fa-solid fa-fire-flame-curved text-xl mr-3 group-hover:scale-110 transition"></i>
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3.5 pt-2">
+                <a href="{{ Route::has('lapor') ? route('lapor', ['jenis' => 'Kebakaran']) : url('/lapor?jenis=Kebakaran') }}" class="inline-flex items-center justify-center px-5 py-3.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-2xl shadow-xl transition transform active:scale-95 text-sm sm:text-base group">
+                    <i class="fa-solid fa-fire-flame-curved text-lg mr-2.5 group-hover:scale-110 transition"></i>
                     <span>Lapor Kebakaran</span>
                 </a>
-                <a href="{{ Route::has('lapor') ? route('lapor', ['jenis' => 'Hewan Masuk Kampung']) : url('/lapor?jenis=Hewan Masuk Kampung') }}" class="inline-flex items-center justify-center px-6 py-4 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-2xl shadow-xl transition transform active:scale-95 text-base group">
-                    <i class="fa-solid fa-paw text-xl mr-3 group-hover:scale-110 transition"></i>
-                    <span>Lapor Hewan Masuk Kampung</span>
+                <a href="{{ Route::has('lapor') ? route('lapor', ['jenis' => 'Hewan Masuk Kampung']) : url('/lapor?jenis=Hewan Masuk Kampung') }}" class="inline-flex items-center justify-center px-5 py-3.5 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-2xl shadow-xl transition transform active:scale-95 text-sm sm:text-base group">
+                    <i class="fa-solid fa-paw text-lg mr-2.5 group-hover:scale-110 transition"></i>
+                    <span>Lapor Satwa Liar</span>
+                </a>
+                <a href="{{ Route::has('lapor') ? route('lapor', ['jenis' => 'Orang Hilang']) : url('/lapor?jenis=Orang Hilang') }}" class="inline-flex items-center justify-center px-5 py-3.5 bg-sky-700/80 hover:bg-sky-600 text-white font-bold rounded-2xl shadow-xl transition transform active:scale-95 text-sm sm:text-base group backdrop-blur border border-sky-400/30">
+                    <i class="fa-solid fa-person-hiking text-lg mr-2.5 group-hover:scale-110 transition"></i>
+                    <span>Lapor Orang Hilang</span>
                 </a>
             </div>
         </div>
