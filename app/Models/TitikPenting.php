@@ -20,6 +20,7 @@ class TitikPenting extends Model
         'foto',
         'kontak',
         'id_kawasan',
+        'id_kabupaten_kota',
     ];
 
     protected function casts(): array
@@ -33,5 +34,10 @@ class TitikPenting extends Model
     public function kawasanHutan()
     {
         return $this->belongsTo(KawasanHutan::class, 'id_kawasan');
+    }
+
+    public function kabupatenKota()
+    {
+        return $this->belongsTo(KabupatenKota::class, 'id_kabupaten_kota');
     }
 }

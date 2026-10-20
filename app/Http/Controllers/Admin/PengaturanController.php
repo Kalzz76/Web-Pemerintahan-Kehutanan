@@ -30,7 +30,10 @@ class PengaturanController extends Controller
             'lat_pusat' => 'required|numeric|between:-90,90',
             'long_pusat' => 'required|numeric|between:-180,180',
             'zoom_awal' => 'required|integer|between:1,20',
-            'radius_titik_api_km' => 'required|integer|min:1|max:200',
+            'bbox_barat' => 'required|numeric|between:-180,180',
+            'bbox_selatan' => 'required|numeric|between:-90,90',
+            'bbox_timur' => 'required|numeric|between:-180,180',
+            'bbox_utara' => 'required|numeric|between:-90,90',
         ], [
             'nama_aplikasi.required' => 'Nama aplikasi wajib diisi.',
             'nama_instansi.required' => 'Nama instansi wajib diisi.',
@@ -48,7 +51,10 @@ class PengaturanController extends Controller
             'long_pusat.required' => 'Longitude pusat wajib diisi.',
             'long_pusat.between' => 'Longitude harus bernilai antara -180 dan 180.',
             'zoom_awal.required' => 'Zoom awal peta wajib diisi.',
-            'radius_titik_api_km.required' => 'Radius titik api wajib diisi.',
+            'bbox_barat.required' => 'Batas barat (longitude) wajib diisi.',
+            'bbox_selatan.required' => 'Batas selatan (latitude) wajib diisi.',
+            'bbox_timur.required' => 'Batas timur (longitude) wajib diisi.',
+            'bbox_utara.required' => 'Batas utara (latitude) wajib diisi.',
         ]);
 
         $pengaturan = PengaturanHutan::first();
@@ -67,7 +73,10 @@ class PengaturanController extends Controller
             'lat_pusat' => $request->lat_pusat,
             'long_pusat' => $request->long_pusat,
             'zoom_awal' => $request->zoom_awal,
-            'radius_titik_api_km' => $request->radius_titik_api_km,
+            'bbox_barat' => $request->bbox_barat,
+            'bbox_selatan' => $request->bbox_selatan,
+            'bbox_timur' => $request->bbox_timur,
+            'bbox_utara' => $request->bbox_utara,
         ];
 
         if ($request->hasFile('logo')) {

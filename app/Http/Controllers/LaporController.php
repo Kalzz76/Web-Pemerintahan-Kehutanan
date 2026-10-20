@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KabupatenKota;
 use App\Models\Laporan;
 use App\Models\PengaturanHutan;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class LaporController extends Controller
         }
 
         $pengaturan = PengaturanHutan::first();
+        $kabupatenKota = KabupatenKota::orderBy('nama')->get();
 
-        return view('publik.lapor.index', compact('jenisTerpilih', 'pengaturan'));
+        return view('publik.lapor.index', compact('jenisTerpilih', 'pengaturan', 'kabupatenKota'));
     }
 
     public function simpan(Request $request)
@@ -40,6 +42,7 @@ class LaporController extends Controller
             'jenis_hewan' => 'nullable|max:100',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
             'deskripsi' => 'required|max:1000',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'nama_pelapor' => 'nullable|max:100',
@@ -51,6 +54,7 @@ class LaporController extends Controller
             'latitude.between' => 'Koordinat latitude tidak valid.',
             'longitude.required' => 'Lokasi kejadian wajib ditentukan.',
             'longitude.between' => 'Koordinat longitude tidak valid.',
+            'id_kabupaten_kota.exists' => 'Kabupaten atau kota tidak valid.',
             'deskripsi.required' => 'Deskripsi kejadian wajib diisi.',
             'deskripsi.max' => 'Deskripsi maksimal 1000 karakter.',
             'foto.image' => 'Berkas foto harus berupa gambar.',
@@ -59,6 +63,18 @@ class LaporController extends Controller
             'no_hp.regex' => 'Nomor HP hanya boleh berisi angka dan tanda +.',
             'no_hp.max' => 'Nomor HP maksimal 20 karakter.',
         ]);
+
+        $pengaturan = PengaturanHutan::first();
+        if ($pengaturan) {
+            if (
+                $request->latitude < $pengaturan->bbox_selatan ||
+                $request->latitude > $pengaturan->bbox_utara ||
+                $request->longitude < $pengaturan->bbox_barat ||
+                $request->longitude > $pengaturan->bbox_timur
+            ) {
+                return back()->withInput()->withErrors(['latitude' => 'Lokasi laporan harus berada di wilayah Jawa Barat.']);
+            }
+        }
 
         $fotoPath = null;
         if ($request->hasFile('foto')) {
@@ -73,6 +89,7 @@ class LaporController extends Controller
             'jenis_hewan' => $request->jenis === 'Hewan Masuk Kampung' ? $request->jenis_hewan : null,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'id_kabupaten_kota' => $request->id_kabupaten_kota,
             'deskripsi' => $request->deskripsi,
             'foto' => $fotoPath,
             'nama_pelapor' => $request->nama_pelapor,
@@ -94,10 +111,26 @@ class LaporController extends Controller
             'jenis_hewan' => 'nullable|max:100',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
             'deskripsi' => 'required|max:1000',
             'nama_pelapor' => 'nullable|max:100',
             'no_hp' => ['nullable', 'max:20', 'regex:/^[0-9\+\-\s]+$/'],
         ]);
+
+        $pengaturan = PengaturanHutan::first();
+        if ($pengaturan) {
+            if (
+                $request->latitude < $pengaturan->bbox_selatan ||
+                $request->latitude > $pengaturan->bbox_utara ||
+                $request->longitude < $pengaturan->bbox_barat ||
+                $request->longitude > $pengaturan->bbox_timur
+            ) {
+                return response()->json([
+                    'sukses' => false,
+                    'pesan' => 'Lokasi laporan harus berada di wilayah Jawa Barat.',
+                ], 422);
+            }
+        }
 
         $kode = $this->buatKodeLaporan();
 
@@ -107,6 +140,7 @@ class LaporController extends Controller
             'jenis_hewan' => $request->jenis === 'Hewan Masuk Kampung' ? $request->jenis_hewan : null,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'id_kabupaten_kota' => $request->id_kabupaten_kota,
             'deskripsi' => $request->deskripsi,
             'foto' => null,
             'nama_pelapor' => $request->nama_pelapor,
@@ -132,7 +166,7 @@ class LaporController extends Controller
         $pesanError = null;
 
         if ($kodeCari) {
-            $laporan = Laporan::where('kode', $kodeCari)->first();
+            $laporan = Laporan::with('kabupatenKota', 'kawasanHutan')->where('kode', $kodeCari)->first();
             if (!$laporan) {
                 $pesanError = 'Kode laporan tidak ditemukan.';
             }

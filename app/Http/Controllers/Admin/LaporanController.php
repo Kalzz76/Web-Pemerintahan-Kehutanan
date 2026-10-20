@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\KabupatenKota;
 use App\Models\KawasanHutan;
 use App\Models\Laporan;
 use Illuminate\Http\Request;
@@ -16,8 +17,9 @@ class LaporanController extends Controller
         $cari = $request->query('cari');
         $filterStatus = $request->query('status');
         $filterJenis = $request->query('jenis');
+        $filterKabupaten = $request->query('id_kabupaten_kota');
 
-        $query = Laporan::with(['kawasanHutan', 'admin']);
+        $query = Laporan::with(['kawasanHutan', 'kabupatenKota', 'admin']);
 
         if ($cari) {
             $query->where(function ($q) use ($cari) {
@@ -37,17 +39,23 @@ class LaporanController extends Controller
             $query->where('jenis', $filterJenis);
         }
 
-        $daftarLaporan = $query->latest('created_at')->paginate(10)->withQueryString();
+        if ($filterKabupaten) {
+            $query->where('id_kabupaten_kota', $filterKabupaten);
+        }
 
-        return view('admin.laporan.index', compact('daftarLaporan', 'cari', 'filterStatus', 'filterJenis'));
+        $daftarLaporan = $query->latest('created_at')->paginate(10)->withQueryString();
+        $daftarKabupaten = KabupatenKota::orderBy('nama')->get();
+
+        return view('admin.laporan.index', compact('daftarLaporan', 'daftarKabupaten', 'cari', 'filterStatus', 'filterJenis', 'filterKabupaten'));
     }
 
     public function show($id)
     {
-        $laporan = Laporan::with(['kawasanHutan', 'admin'])->findOrFail($id);
+        $laporan = Laporan::with(['kawasanHutan', 'kabupatenKota', 'admin'])->findOrFail($id);
         $daftarKawasan = KawasanHutan::orderBy('nama')->get();
+        $daftarKabupaten = KabupatenKota::orderBy('nama')->get();
 
-        return view('admin.laporan.show', compact('laporan', 'daftarKawasan'));
+        return view('admin.laporan.show', compact('laporan', 'daftarKawasan', 'daftarKabupaten'));
     }
 
     public function update(Request $request, $id)
@@ -57,17 +65,20 @@ class LaporanController extends Controller
         $request->validate([
             'status' => 'required|in:Baru,Diverifikasi,Ditangani,Selesai',
             'id_kawasan' => 'nullable|exists:kawasan_hutan,id',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
             'catatan_admin' => 'nullable|max:1000',
         ], [
             'status.required' => 'Status laporan wajib dipilih.',
             'status.in' => 'Status laporan tidak valid.',
             'id_kawasan.exists' => 'Kawasan hutan yang dipilih tidak valid.',
+            'id_kabupaten_kota.exists' => 'Kabupaten/Kota yang dipilih tidak valid.',
             'catatan_admin.max' => 'Catatan admin maksimal 1000 karakter.',
         ]);
 
         $laporan->update([
             'status' => $request->status,
             'id_kawasan' => $request->id_kawasan,
+            'id_kabupaten_kota' => $request->id_kabupaten_kota,
             'catatan_admin' => $request->catatan_admin,
             'id_admin' => Auth::id(),
         ]);

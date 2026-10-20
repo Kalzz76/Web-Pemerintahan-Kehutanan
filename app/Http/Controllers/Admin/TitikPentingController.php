@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\KabupatenKota;
 use App\Models\KawasanHutan;
 use App\Models\PengaturanHutan;
 use App\Models\TitikPenting;
@@ -16,7 +17,7 @@ class TitikPentingController extends Controller
         $cari = $request->query('cari');
         $filterJenis = $request->query('jenis');
 
-        $query = TitikPenting::with('kawasanHutan');
+        $query = TitikPenting::with(['kawasanHutan', 'kabupatenKota']);
 
         if ($cari) {
             $query->where(function ($q) use ($cari) {
@@ -38,10 +39,11 @@ class TitikPentingController extends Controller
     public function create()
     {
         $daftarKawasan = KawasanHutan::orderBy('nama')->get();
+        $daftarKabupaten = KabupatenKota::orderBy('nama')->get();
         $pengaturan = PengaturanHutan::first();
         $semuaKawasan = KawasanHutan::select('id', 'nama', 'geojson')->get();
 
-        return view('admin.titik-penting.create', compact('daftarKawasan', 'pengaturan', 'semuaKawasan'));
+        return view('admin.titik-penting.create', compact('daftarKawasan', 'daftarKabupaten', 'pengaturan', 'semuaKawasan'));
     }
 
     public function store(Request $request)
@@ -55,6 +57,7 @@ class TitikPentingController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'kontak' => 'nullable|max:100',
             'id_kawasan' => 'nullable|exists:kawasan_hutan,id',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
         ], [
             'nama.required' => 'Nama titik penting wajib diisi.',
             'jenis.required' => 'Jenis titik penting wajib dipilih.',
@@ -68,6 +71,7 @@ class TitikPentingController extends Controller
             'foto.mimes' => 'Format foto harus berupa JPG, JPEG, atau PNG.',
             'foto.max' => 'Ukuran foto maksimal 2MB.',
             'id_kawasan.exists' => 'Kawasan hutan yang dipilih tidak valid.',
+            'id_kabupaten_kota.exists' => 'Kabupaten/Kota yang dipilih tidak valid.',
         ]);
 
         $fotoPath = null;
@@ -84,6 +88,7 @@ class TitikPentingController extends Controller
             'foto' => $fotoPath,
             'kontak' => $request->kontak,
             'id_kawasan' => $request->id_kawasan,
+            'id_kabupaten_kota' => $request->id_kabupaten_kota,
         ]);
 
         return redirect()->route('admin.titik-penting.index')->with('sukses', 'Titik penting berhasil ditambahkan.');
@@ -93,10 +98,11 @@ class TitikPentingController extends Controller
     {
         $titik = TitikPenting::findOrFail($id);
         $daftarKawasan = KawasanHutan::orderBy('nama')->get();
+        $daftarKabupaten = KabupatenKota::orderBy('nama')->get();
         $pengaturan = PengaturanHutan::first();
         $semuaKawasan = KawasanHutan::select('id', 'nama', 'geojson')->get();
 
-        return view('admin.titik-penting.edit', compact('titik', 'daftarKawasan', 'pengaturan', 'semuaKawasan'));
+        return view('admin.titik-penting.edit', compact('titik', 'daftarKawasan', 'daftarKabupaten', 'pengaturan', 'semuaKawasan'));
     }
 
     public function update(Request $request, $id)
@@ -112,6 +118,7 @@ class TitikPentingController extends Controller
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'kontak' => 'nullable|max:100',
             'id_kawasan' => 'nullable|exists:kawasan_hutan,id',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
         ], [
             'nama.required' => 'Nama titik penting wajib diisi.',
             'jenis.required' => 'Jenis titik penting wajib dipilih.',
@@ -125,6 +132,7 @@ class TitikPentingController extends Controller
             'foto.mimes' => 'Format foto harus berupa JPG, JPEG, atau PNG.',
             'foto.max' => 'Ukuran foto maksimal 2MB.',
             'id_kawasan.exists' => 'Kawasan hutan yang dipilih tidak valid.',
+            'id_kabupaten_kota.exists' => 'Kabupaten/Kota yang dipilih tidak valid.',
         ]);
 
         $fotoPath = $titik->foto;
@@ -144,6 +152,7 @@ class TitikPentingController extends Controller
             'foto' => $fotoPath,
             'kontak' => $request->kontak,
             'id_kawasan' => $request->id_kawasan,
+            'id_kabupaten_kota' => $request->id_kabupaten_kota,
         ]);
 
         return redirect()->route('admin.titik-penting.index')->with('sukses', 'Titik penting berhasil diperbarui.');

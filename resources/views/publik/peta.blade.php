@@ -1,13 +1,13 @@
 @extends('layouts.publik')
 
-@section('title', 'Peta Kawasan Hutan')
+@section('title', 'Peta Kawasan Hutan Jawa Barat')
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
-            <h1 class="text-2xl md:text-3xl font-black text-stone-900 tracking-tight">Peta Kawasan & Titik Penting Hutan</h1>
-            <p class="text-stone-500 text-sm mt-1">Pantau batas wilayah zonasi hutan lindung, pos pantau siaga, sumber air, serta laporan tanggap darurat terkini.</p>
+            <h1 class="text-2xl md:text-3xl font-black text-stone-900 tracking-tight">Peta Kawasan Hutan Jawa Barat</h1>
+            <p class="text-stone-500 text-sm mt-1">Pantau batas wilayah zonasi hutan konservasi Jawa Barat, pos jaga, sumber air, permukiman warga, serta laporan darurat terverifikasi.</p>
         </div>
 
         <div class="flex flex-wrap items-center gap-3 bg-white p-3 rounded-2xl border border-stone-200 shadow-sm text-xs font-semibold text-stone-700">
@@ -105,11 +105,20 @@ function alihLapisan(nama) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    var latPusat = {{ $pengaturan->lat_pusat ?? -6.8921000 }};
-    var longPusat = {{ $pengaturan->long_pusat ?? 108.4112000 }};
-    var zoomAwal = {{ $pengaturan->zoom_awal ?? 13 }};
+    var latPusat = {{ $pengaturan->lat_pusat ?? -6.87 }};
+    var longPusat = {{ $pengaturan->long_pusat ?? 107.60 }};
+    var zoomAwal = {{ $pengaturan->zoom_awal ?? 8 }};
 
-    map = L.map('peta-publik').setView([latPusat, longPusat], zoomAwal);
+    var bboxBarat = {{ $pengaturan->bbox_barat ?? 106.36 }};
+    var bboxSelatan = {{ $pengaturan->bbox_selatan ?? -7.83 }};
+    var bboxTimur = {{ $pengaturan->bbox_timur ?? 108.85 }};
+    var bboxUtara = {{ $pengaturan->bbox_utara ?? -5.90 }};
+    var boundsJabar = L.latLngBounds([bboxSelatan, bboxBarat], [bboxUtara, bboxTimur]);
+
+    map = L.map('peta-publik', {
+        maxBounds: boundsJabar,
+        minZoom: 7
+    }).setView([latPusat, longPusat], zoomAwal);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -133,10 +142,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
 
-                var popupContent = '<div class="p-2 font-sans">' +
-                    '<div class="text-[10px] font-bold uppercase tracking-wider text-green-700 mb-1">Kawasan Hutan</div>' +
+                var labelPerkiraan = (!k.batas_resmi)
+                    ? '<div class="mb-2"><span class="inline-block text-[10px] font-semibold px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md">Batas perkiraan</span></div>'
+                    : '';
+
+                var kategoriInfo = k.kategori ? '<div class="text-[10px] font-bold uppercase tracking-wider text-green-700 mb-0.5">' + k.kategori + '</div>' : '<div class="text-[10px] font-bold uppercase tracking-wider text-green-700 mb-0.5">Kawasan Hutan</div>';
+                var pengelolaInfo = k.pengelola ? '<div class="text-[11px] text-stone-500 mb-1">Pengelola: ' + k.pengelola + '</div>' : '';
+
+                var popupContent = '<div class="p-2 font-sans max-w-xs">' +
+                    kategoriInfo +
                     '<h4 class="font-bold text-stone-900 text-sm mb-1">' + k.nama + '</h4>' +
-                    (k.jenis_lahan ? '<div class="text-xs text-stone-600 mb-1">Tipe: <strong>' + k.jenis_lahan.nama + '</strong></div>' : '') +
+                    labelPerkiraan +
+                    pengelolaInfo +
+                    (k.jenis_lahan ? '<div class="text-xs text-stone-600 mb-1">Tipe Lahan: <strong>' + k.jenis_lahan.nama + '</strong></div>' : '') +
                     (k.luas_ha ? '<div class="text-xs text-stone-600 mb-2">Luas: <strong>' + k.luas_ha + ' ha</strong></div>' : '') +
                     '<p class="text-xs text-stone-600 leading-relaxed">' + k.deskripsi + '</p>' +
                     '</div>';

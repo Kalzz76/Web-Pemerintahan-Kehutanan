@@ -13,9 +13,14 @@ class KawasanHutan extends Model
 
     protected $fillable = [
         'nama',
+        'kategori',
+        'pengelola',
         'deskripsi',
         'luas_ha',
+        'lat_pusat',
+        'long_pusat',
         'geojson',
+        'batas_resmi',
         'id_jenis_lahan',
     ];
 
@@ -23,6 +28,9 @@ class KawasanHutan extends Model
     {
         return [
             'luas_ha' => 'float',
+            'lat_pusat' => 'float',
+            'long_pusat' => 'float',
+            'batas_resmi' => 'boolean',
         ];
     }
 
@@ -39,6 +47,11 @@ class KawasanHutan extends Model
     public function laporan()
     {
         return $this->hasMany(Laporan::class, 'id_kawasan');
+    }
+
+    public function kabupatenKota()
+    {
+        return $this->belongsToMany(KabupatenKota::class, 'kawasan_kabupaten', 'id_kawasan', 'id_kabupaten_kota');
     }
 
     public function primata()

@@ -3,25 +3,25 @@
 @section('title', 'Kelola Tumbuhan Rimba')
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="space-y-5">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-            <h1 class="text-2xl font-black text-stone-900 tracking-tight">Tumbuhan Rimba</h1>
-            <p class="text-sm text-stone-500 mt-1">
+            <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight">Tumbuhan Rimba</h1>
+            <p class="text-xs text-stone-500 mt-0.5">
                 Kelola data keanekaragaman flora, jenis habitus pohon/herba, manfaat obat atau ekologis, dan kawasan sebarannya.
             </p>
         </div>
-        <button type="button" onclick="bukaModalTambah()" class="inline-flex items-center px-4 py-2.5 bg-green-700 hover:bg-green-600 text-white font-bold rounded-xl text-sm shadow transition">
-            <i class="fa-solid fa-plus mr-2"></i> Tambah Tumbuhan
+        <button type="button" onclick="bukaModalTambah()" class="inline-flex items-center px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-xl text-xs sm:text-sm shadow-sm transition active:scale-95 shrink-0">
+            <i class="fa-solid fa-plus mr-1.5 text-xs"></i> Tambah Tumbuhan
         </button>
     </div>
 
     @if ($errors->any())
-        <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-sm">
+        <div class="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-rose-700 text-xs">
             <div class="font-bold mb-1 flex items-center">
                 <i class="fa-solid fa-triangle-exclamation mr-2"></i> Terjadi kesalahan input:
             </div>
-            <ul class="list-disc list-inside space-y-1">
+            <ul class="list-disc list-inside space-y-0.5">
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -29,119 +29,111 @@
         </div>
     @endif
 
-    <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
-        <form method="GET" action="{{ route('admin.tumbuhan.index') }}" class="w-full md:w-auto flex flex-col sm:flex-row gap-3 flex-1">
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200/80 shadow-sm flex flex-col md:flex-row gap-2.5 items-stretch md:items-center justify-between">
+        <form method="GET" action="{{ route('admin.tumbuhan.index') }}" class="w-full flex flex-col sm:flex-row gap-2.5 flex-1">
             <div class="relative flex-1">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-stone-400 text-sm"></i>
-                <input type="text" name="cari" value="{{ $cari ?? '' }}" placeholder="Cari nama lokal, ilmiah, atau manfaat..." class="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-green-600">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-stone-400 text-xs"></i>
+                <input type="text" name="cari" value="{{ $cari ?? '' }}" placeholder="Cari nama lokal, ilmiah, atau manfaat..." class="w-full pl-9 pr-3.5 py-2 text-xs sm:text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-stone-800 focus:ring-1 focus:ring-stone-800 bg-stone-50/50 focus:bg-white">
             </div>
 
-            <select name="jenis" class="px-3 py-2 text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-green-600 bg-white">
-                <option value="">Semua Jenis Habitus</option>
-                <option value="Pohon" {{ ($jenis ?? '') == 'Pohon' ? 'selected' : '' }}>Pohon</option>
-                <option value="Perdu" {{ ($jenis ?? '') == 'Perdu' ? 'selected' : '' }}>Perdu</option>
-                <option value="Herba" {{ ($jenis ?? '') == 'Herba' ? 'selected' : '' }}>Herba</option>
-                <option value="Liana" {{ ($jenis ?? '') == 'Liana' ? 'selected' : '' }}>Liana</option>
-                <option value="Lainnya" {{ ($jenis ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-            </select>
+            <div class="w-full sm:w-48">
+                <select name="jenis" class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-stone-800 bg-stone-50/50 focus:bg-white text-stone-700">
+                    <option value="">Semua Habitus</option>
+                    <option value="Pohon" {{ ($jenis ?? '') == 'Pohon' ? 'selected' : '' }}>Pohon</option>
+                    <option value="Perdu" {{ ($jenis ?? '') == 'Perdu' ? 'selected' : '' }}>Perdu</option>
+                    <option value="Herba" {{ ($jenis ?? '') == 'Herba' ? 'selected' : '' }}>Herba</option>
+                    <option value="Liana" {{ ($jenis ?? '') == 'Liana' ? 'selected' : '' }}>Liana</option>
+                    <option value="Lainnya" {{ ($jenis ?? '') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                </select>
+            </div>
 
-            <select name="status_konservasi" class="px-3 py-2 text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-green-600 bg-white">
-                <option value="">Semua Status Konservasi</option>
-                <option value="CR" {{ ($statusKonservasi ?? '') == 'CR' ? 'selected' : '' }}>CR (Kritis)</option>
-                <option value="EN" {{ ($statusKonservasi ?? '') == 'EN' ? 'selected' : '' }}>EN (Genting)</option>
-                <option value="VU" {{ ($statusKonservasi ?? '') == 'VU' ? 'selected' : '' }}>VU (Rentan)</option>
-                <option value="NT" {{ ($statusKonservasi ?? '') == 'NT' ? 'selected' : '' }}>NT (Hampir Terancam)</option>
-                <option value="LC" {{ ($statusKonservasi ?? '') == 'LC' ? 'selected' : '' }}>LC (Risiko Rendah)</option>
-                <option value="DD" {{ ($statusKonservasi ?? '') == 'DD' ? 'selected' : '' }}>DD (Kurang Data)</option>
-            </select>
+            <div class="w-full sm:w-56">
+                <select name="status_konservasi" class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-stone-800 bg-stone-50/50 focus:bg-white text-stone-700">
+                    <option value="">Semua Status</option>
+                    <option value="CR" {{ ($statusKonservasi ?? '') == 'CR' ? 'selected' : '' }}>CR (Kritis)</option>
+                    <option value="EN" {{ ($statusKonservasi ?? '') == 'EN' ? 'selected' : '' }}>EN (Genting)</option>
+                    <option value="VU" {{ ($statusKonservasi ?? '') == 'VU' ? 'selected' : '' }}>VU (Rentan)</option>
+                    <option value="NT" {{ ($statusKonservasi ?? '') == 'NT' ? 'selected' : '' }}>NT (Hampir Terancam)</option>
+                    <option value="LC" {{ ($statusKonservasi ?? '') == 'LC' ? 'selected' : '' }}>LC (Risiko Rendah)</option>
+                    <option value="DD" {{ ($statusKonservasi ?? '') == 'DD' ? 'selected' : '' }}>DD (Kurang Data)</option>
+                    <option value="NE" {{ ($statusKonservasi ?? '') == 'NE' ? 'selected' : '' }}>NE (Belum Dinilai)</option>
+                </select>
+            </div>
 
-            <button type="submit" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl text-sm transition">
-                Filter
+            <button type="submit" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-filter text-xs"></i>
+                <span>Filter</span>
             </button>
 
             @if (!empty($cari) || !empty($jenis) || !empty($statusKonservasi))
-                <a href="{{ route('admin.tumbuhan.index') }}" class="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-xl text-sm transition text-center">
-                    Reset
+                <a href="{{ route('admin.tumbuhan.index') }}" class="px-3.5 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 font-semibold rounded-xl text-xs sm:text-sm transition text-center" title="Reset filter">
+                    <i class="fa-solid fa-rotate-left"></i>
                 </a>
             @endif
         </form>
     </div>
 
-    <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-2xl border border-stone-200/80 shadow-sm overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-stone-100 text-stone-700 uppercase text-xs">
+            <table class="w-full text-left text-xs sm:text-sm divide-y divide-stone-200/80">
+                <thead class="bg-stone-50/90 text-stone-600 uppercase text-[11px] font-bold tracking-wider">
                     <tr>
-                        <th class="py-3 px-4">Foto</th>
-                        <th class="py-3 px-4">Nama Lokal</th>
-                        <th class="py-3 px-4">Nama Ilmiah</th>
-                        <th class="py-3 px-4">Jenis</th>
-                        <th class="py-3 px-4">Status Konservasi</th>
-                        <th class="py-3 px-4">Dilindungi</th>
-                        <th class="py-3 px-4">Sebaran Kawasan</th>
-                        <th class="py-3 px-4 text-center">Aksi</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Foto</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Nama Lokal</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Nama Ilmiah</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Habitus</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Status</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">Dilindungi</th>
+                        <th class="py-3.5 px-4">Sebaran Kawasan</th>
+                        <th class="py-3.5 px-4 text-right whitespace-nowrap">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-stone-100">
+                <tbody class="divide-y divide-stone-100 text-stone-700 bg-white">
                     @forelse ($daftarTumbuhan as $tumbuhan)
-                        <tr class="hover:bg-stone-50 transition">
-                            <td class="py-3 px-4">
+                        <tr class="hover:bg-stone-50 transition-colors">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if ($tumbuhan->foto)
-                                    <img src="{{ asset('storage/' . $tumbuhan->foto) }}" alt="{{ $tumbuhan->nama_lokal }}" class="w-12 h-12 rounded-xl object-cover border border-stone-200">
+                                    <img src="{{ asset('storage/' . $tumbuhan->foto) }}" alt="{{ $tumbuhan->nama_lokal }}" class="w-10 h-10 rounded-xl object-cover border border-stone-200">
                                 @else
-                                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg border border-emerald-100">
+                                    <div class="w-10 h-10 rounded-xl bg-stone-100 text-stone-500 flex items-center justify-center text-sm border border-stone-200">
                                         <i class="fa-solid fa-seedling"></i>
                                     </div>
                                 @endif
                             </td>
-                            <td class="py-3 px-4 font-bold text-stone-900">
+                            <td class="py-3.5 px-4 font-bold text-stone-900 whitespace-nowrap">
                                 {{ $tumbuhan->nama_lokal }}
                             </td>
-                            <td class="py-3 px-4 italic text-stone-600">
+                            <td class="py-3.5 px-4 italic text-stone-600 whitespace-nowrap">
                                 {{ $tumbuhan->nama_ilmiah }}
                             </td>
-                            <td class="py-3 px-4">
-                                <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-stone-100 text-stone-800 border border-stone-200">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
+                                <span class="text-xs font-medium text-stone-800">
                                     {{ $tumbuhan->jenis }}
                                 </span>
                             </td>
-                            <td class="py-3 px-4">
-                                @if ($tumbuhan->status_konservasi == 'CR')
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-rose-600 text-white">CR (Kritis)</span>
-                                @elseif ($tumbuhan->status_konservasi == 'EN')
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-orange-600 text-white">EN (Genting)</span>
-                                @elseif ($tumbuhan->status_konservasi == 'VU')
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-amber-500 text-white">VU (Rentan)</span>
-                                @elseif ($tumbuhan->status_konservasi == 'NT')
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-yellow-500 text-stone-900">NT (Hampir Terancam)</span>
-                                @elseif ($tumbuhan->status_konservasi == 'LC')
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-emerald-600 text-white">LC (Risiko Rendah)</span>
-                                @else
-                                    <span class="px-2.5 py-1 rounded-full text-xs font-black bg-stone-500 text-white">{{ $tumbuhan->status_konservasi }}</span>
-                                @endif
+                            <td class="py-3.5 px-4 whitespace-nowrap">
+                                <span class="text-xs font-semibold text-stone-900">
+                                    {{ $tumbuhan->status_konservasi }}
+                                </span>
                             </td>
-                            <td class="py-3 px-4">
-                                @if ($tumbuhan->dilindungi)
-                                    <span class="inline-flex items-center text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
-                                        <i class="fa-solid fa-shield mr-1.5 text-emerald-600"></i> Ya
-                                    </span>
-                                @else
-                                    <span class="text-xs text-stone-400 font-medium">Tidak</span>
-                                @endif
+                            <td class="py-3.5 px-4 whitespace-nowrap">
+                                <span class="text-xs font-semibold text-stone-900">
+                                    {{ $tumbuhan->dilindungi ? 'Ya' : 'Tidak' }}
+                                </span>
                             </td>
-                            <td class="py-3 px-4 text-xs text-stone-600">
+                            <td class="py-3.5 px-4 text-xs text-stone-600">
                                 @if ($tumbuhan->kawasanHutan->count() > 0)
                                     <div class="flex flex-wrap gap-1">
                                         @foreach ($tumbuhan->kawasanHutan as $kws)
-                                            <span class="px-2 py-0.5 rounded-lg bg-stone-100 text-stone-700 font-medium">{{ $kws->nama }}</span>
+                                            <span class="inline-block text-stone-800 font-medium text-[11px]">{{ $kws->nama }}{{ !$loop->last ? ',' : '' }}</span>
                                         @endforeach
                                     </div>
                                 @else
-                                    <span class="text-stone-400 italic">Belum dipetakan</span>
+                                    <span class="text-stone-400 italic text-[11px]">Belum dipetakan</span>
                                 @endif
                             </td>
-                            <td class="py-3 px-4 text-center whitespace-nowrap">
-                                <div class="inline-flex items-center space-x-2">
+                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div class="inline-flex items-center gap-1.5 justify-end">
                                     <button type="button"
                                         onclick="bukaModalEdit(this)"
                                         data-id="{{ $tumbuhan->id }}"
@@ -154,15 +146,17 @@
                                         data-deskripsi="{{ $tumbuhan->deskripsi }}"
                                         data-kawasan="{{ json_encode($tumbuhan->kawasanHutan->pluck('id')) }}"
                                         data-foto-url="{{ $tumbuhan->foto ? asset('storage/' . $tumbuhan->foto) : '' }}"
-                                        class="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl text-xs font-bold transition">
-                                        <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
+                                        class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 font-semibold rounded-lg text-xs transition">
+                                        <i class="fa-solid fa-pen-to-square text-[11px] text-stone-600"></i>
+                                        <span>Edit</span>
                                     </button>
 
-                                    <form method="POST" action="{{ route('admin.tumbuhan.destroy', $tumbuhan->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data tumbuhan {{ $tumbuhan->nama_lokal }}?');" class="inline">
+                                    <form method="POST" action="{{ route('admin.tumbuhan.destroy', $tumbuhan->id) }}" class="inline" data-confirm="Apakah Anda yakin ingin menghapus data tumbuhan {{ $tumbuhan->nama_lokal }}?" data-confirm-title="Hapus Tumbuhan Rimba" data-confirm-ok="Ya, Hapus">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold transition">
-                                            <i class="fa-solid fa-trash mr-1"></i> Hapus
+                                        <button type="submit" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-white hover:bg-stone-100 text-stone-700 hover:text-stone-900 border border-stone-300 font-semibold rounded-lg text-xs transition">
+                                            <i class="fa-solid fa-trash text-[11px] text-stone-500"></i>
+                                            <span>Hapus</span>
                                         </button>
                                     </form>
                                 </div>
@@ -232,6 +226,7 @@
                         <option value="EN">EN - Genting</option>
                         <option value="CR">CR - Kritis</option>
                         <option value="DD">DD - Kurang Data</option>
+                        <option value="NE">NE - Belum Dinilai</option>
                     </select>
                 </div>
                 <div class="flex items-center pt-6">

@@ -1,0 +1,1617 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Admin - Sistem Informasi Kehutanan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal: #0F8179;
+  --teal-dark: #0A5F59;
+  --teal-light: #E6F5F4;
+  --teal-glow: rgba(15, 129, 121, 0.2);
+  --navy: #1B2559;
+  --yellow: #FFD95A;
+  --yellow-dark: #E6B800;
+  --bg: #F4F7FB;
+  --card: #FFFFFF;
+  --bar: #D5EEF7;
+  --bar-hi: #A9DCEE;
+  --line: #E2E8F0;
+  --muted: #64748B;
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 80px;
+  --topbar-h: 70px;
+}
+
+*{box-sizing:border-box}
+
+html, body{
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* App Container Full Screen */
+.app{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width: var(--sidebar-w);
+  height: 100vh;
+  flex-shrink: 0;
+  padding: 24px 0 20px 14px;
+  display: flex;
+  flex-direction: column;
+  background: var(--teal);
+  color: #fff;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 20;
+  position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sidebar::-webkit-scrollbar{
+  display: none;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 8px;
+  height: 46px;
+  flex-shrink: 0;
+}
+.brand-left{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-logo{
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  flex-shrink: 0;
+}
+.brand-text{
+  display: flex;
+  flex-direction: column;
+}
+.brand-text span{
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+.brand-text small{
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.divider{
+  height: 1px;
+  background: rgba(255,255,255,0.18);
+  margin: 20px 18px 20px 8px;
+  flex-shrink: 0;
+}
+
+.nav-section-title{
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  padding: 0 18px;
+  margin-bottom: 8px;
+  transition: opacity 0.2s;
+}
+
+.nav{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav a{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 48px;
+  padding: 0 20px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 28px 0 0 28px;
+  position: relative;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav a:hover{
+  background: rgba(255,255,255,0.14);
+}
+
+.nav svg{
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* Menu Aktif yang MENYATU MULUS dengan lengkungan lebih melengkung & tidak tajam */
+.nav a.on{
+  background: #ffffff;
+  color: var(--teal);
+  font-weight: 700;
+  position: relative;
+  right: -2px;
+  width: calc(100% + 2px);
+  z-index: 30;
+  border-radius: 28px 0 0 28px;
+}
+
+.nav a.on::before,
+.nav a.on::after{
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.nav a.on::before{
+  top: -32px;
+  background: radial-gradient(circle at 0 0, transparent 32px, #ffffff 32.5px);
+}
+
+.nav a.on::after{
+  bottom: -32px;
+  background: radial-gradient(circle at 0 100%, transparent 32px, #ffffff 32.5px);
+}
+
+.badge-counter{
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--yellow);
+  color: var(--navy);
+}
+
+.nav a.on .badge-counter{
+  background: var(--teal);
+  color: #fff;
+}
+
+.spacer{
+  flex: 1;
+  min-height: 20px;
+}
+
+/* Upgrade Card */
+.upgrade{
+  margin: 0 14px 10px 4px;
+  padding: 16px 14px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.upgrade-glow{
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--yellow);
+  opacity: 0.2;
+  filter: blur(20px);
+  pointer-events: none;
+}
+
+.upgrade h3{margin: 0; font-size: 15px; font-weight: 800}
+.upgrade p{margin: 0; font-size: 12px; line-height: 1.45; font-weight: 500; color: rgba(255,255,255,0.9)}
+.upgrade button{
+  margin-top: 8px;
+  align-self: flex-start;
+  height: 36px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--navy);
+  font: 700 12px 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+.upgrade button:hover{
+  background: #FFCB2E;
+  transform: translateY(-1px);
+}
+
+/* User sidebar preview mini */
+.sidebar-user{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px 6px 6px;
+  margin-top: 4px;
+}
+.sidebar-user .avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--teal);
+  font-weight: 800;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-user .info{
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-user .name{
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-user .role{
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+}
+
+/* ===== MAIN WRAPPER ===== */
+.main-wrapper{
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+/* Topbar Sticky Full Screen */
+.topbar{
+  height: var(--topbar-h);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--line);
+  flex-shrink: 0;
+  z-index: 20;
+}
+
+.topbar-left{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  max-width: 540px;
+}
+
+.btn-toggle-sidebar{
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-toggle-sidebar:hover{
+  background: var(--bg);
+  border-color: #CBD5E1;
+}
+
+.search-box{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 14px;
+  height: 42px;
+  flex: 1;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-box:focus-within{
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px var(--teal-glow);
+}
+.search-box svg{
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.search-box input{
+  border: 0;
+  outline: 0;
+  font: 500 13px 'Plus Jakarta Sans', sans-serif;
+  color: var(--navy);
+  background: transparent;
+  width: 100%;
+}
+.search-box .kbd{
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  background: var(--bg);
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.topbar-right{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.action-icon-btn{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s;
+}
+.action-icon-btn:hover{
+  background: var(--bg);
+  border-color: #CBD5E1;
+  color: var(--teal);
+}
+.action-icon-btn .dot{
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 8px;
+  height: 8px;
+  background: #EF4444;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.user-profile-badge{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 6px 4px 14px;
+  border-radius: 30px;
+  background: #fff;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.user-profile-badge:hover{
+  border-color: #CBD5E1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.user-meta{
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+.user-meta .u-name{
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.user-meta .u-role{
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--teal);
+}
+.user-profile-badge .avatar{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ===== MAIN CONTENT SCROLLABLE ===== */
+.main-content{
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.main-content::-webkit-scrollbar{
+  width: 6px;
+}
+.main-content::-webkit-scrollbar-track{
+  background: transparent;
+}
+.main-content::-webkit-scrollbar-thumb{
+  background: #CBD5E1;
+  border-radius: 6px;
+}
+.main-content::-webkit-scrollbar-thumb:hover{
+  background: #94A3B8;
+}
+
+/* Header Row / Breadcrumbs */
+.page-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-title-group h1{
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--navy);
+}
+.page-title-group p{
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.header-actions{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-secondary{
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--navy);
+  font: 700 13px 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.btn-secondary:hover{
+  background: #F8FAFC;
+  border-color: #CBD5E1;
+}
+
+.btn-primary{
+  height: 40px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--teal);
+  color: #fff;
+  font: 700 13px 'Plus Jakarta Sans', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px var(--teal-glow);
+  transition: all 0.15s;
+}
+.btn-primary:hover{
+  background: var(--teal-dark);
+  transform: translateY(-1px);
+}
+
+/* ===== KPI STATS CARDS ROW ===== */
+.stats-grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.stat-card{
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px 22px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+.stat-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.stat-title{
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.stat-icon-wrapper{
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.stat-icon-teal{background: var(--teal-light); color: var(--teal)}
+.stat-icon-yellow{background: #FFF9DB; color: #B48200}
+.stat-icon-blue{background: #EBF8FF; color: #0284C7}
+.stat-icon-purple{background: #F3E8FF; color: #7E22CE}
+
+.stat-val{
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--navy);
+  line-height: 1;
+}
+
+.stat-trend{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.trend-up{color: #10B981}
+.trend-down{color: #EF4444}
+.stat-period{color: var(--muted); font-weight: 500}
+
+/* ===== ANALYTICS MAIN CARD ===== */
+.chart-card{
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 28px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chart-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.chart-title-area h2{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.chart-title-area p{
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.chart-controls{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.period-pill-group{
+  display: flex;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: 12px;
+  gap: 2px;
+}
+.period-btn{
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font: 700 12px 'Plus Jakarta Sans', sans-serif;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.period-btn.active{
+  background: #fff;
+  color: var(--teal);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.legend-group{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.legend-item{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.legend-dot{
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Dynamic Interactive Bar Chart */
+.chart-container{
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5%;
+  height: 240px;
+  padding: 20px 8px 10px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.chart-col{
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.chart-bar-fill{
+  width: 100%;
+  max-width: 44px;
+  border-radius: 8px 8px 0 0;
+  background: var(--bar);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.chart-col:hover .chart-bar-fill{
+  filter: brightness(0.95);
+  transform: scaleY(1.03);
+  transform-origin: bottom;
+}
+
+.chart-bar-fill.hi{background: var(--bar-hi)}
+.chart-bar-fill.today{
+  background: var(--yellow);
+  box-shadow: 0 4px 12px rgba(255, 217, 90, 0.4);
+}
+
+/* Tooltip on bar hover */
+.chart-col .tooltip{
+  position: absolute;
+  top: -34px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: all 0.15s ease;
+  z-index: 10;
+}
+.chart-col .tooltip::after{
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px 4px 0 4px;
+  border-style: solid;
+  border-color: var(--navy) transparent transparent transparent;
+}
+.chart-col:hover .tooltip{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chart-labels-row{
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 6px 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ===== LOWER 2-COLUMN GRID ===== */
+.dashboard-grid{
+  display: grid;
+  grid-template-columns: 1.8fr 1.2fr;
+  gap: 24px;
+}
+
+/* Left: Activity Section */
+.data-card{
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 28px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.card-header h2{
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--navy);
+}
+.card-header a{
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.card-header a:hover{
+  text-decoration: underline;
+  color: var(--teal-dark);
+}
+
+.activity-table{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-row{
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.1s;
+}
+.activity-row:hover{
+  background: #FAFCFE;
+}
+
+.act-avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.act-details{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.act-title{
+  font-weight: 700;
+  color: var(--navy);
+}
+.act-time{
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.pill{
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.pill::before{
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.pill.ok{
+  background: #DDF2F0;
+  color: #0A5F59;
+}
+.pill.ok::before{background: #0A5F59}
+
+.pill.wait{
+  background: #FFF3D6;
+  color: #8C6100;
+}
+.pill.wait::before{background: #8C6100}
+
+.pill.prog{
+  background: #E0F2FE;
+  color: #0369A1;
+}
+.pill.prog::before{background: #0369A1}
+
+.act-val{
+  min-width: 80px;
+  text-align: right;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* Right: Quick Overview / Status Widget */
+.widget-card{
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 26px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.quick-stats-list{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quick-stat-item{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.qs-header{
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 700;
+}
+.qs-bar-bg{
+  height: 8px;
+  background: var(--bg);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.qs-bar-fill{
+  height: 100%;
+  border-radius: 999px;
+  background: var(--teal);
+  transition: width 0.4s ease;
+}
+
+.system-banner{
+  background: linear-gradient(135deg, #0F8179 0%, #159E94 100%);
+  color: #fff;
+  padding: 16px 18px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sb-text h4{margin: 0; font-size: 13px; font-weight: 800}
+.sb-text p{margin: 2px 0 0; font-size: 11px; opacity: 0.9}
+.sb-btn{
+  border: 0;
+  background: var(--yellow);
+  color: var(--navy);
+  font: 700 11px 'Plus Jakarta Sans', sans-serif;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* ===== COLLAPSED SIDEBAR STATE ===== */
+.app.sidebar-collapsed .sidebar{
+  width: var(--sidebar-w-collapsed);
+  padding-left: 10px;
+}
+.app.sidebar-collapsed .brand-text,
+.app.sidebar-collapsed .nav a span,
+.app.sidebar-collapsed .badge-counter,
+.app.sidebar-collapsed .upgrade,
+.app.sidebar-collapsed .sidebar-user .info,
+.app.sidebar-collapsed .nav-section-title{
+  display: none !important;
+}
+.app.sidebar-collapsed .brand{
+  padding: 0 4px;
+  justify-content: center;
+}
+.app.sidebar-collapsed .nav a{
+  padding: 0 0 0 16px;
+  justify-content: flex-start;
+}
+.app.sidebar-collapsed .divider{
+  margin: 16px 8px;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+@media (max-width: 1200px){
+  .stats-grid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dashboard-grid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px){
+  :root{
+    --sidebar-w: 80px;
+  }
+  .sidebar{
+    padding-left: 8px;
+  }
+  .brand-text, .nav a span, .upgrade, .badge-counter, .sidebar-user .info, .nav-section-title{
+    display: none !important;
+  }
+  .brand{
+    padding: 0;
+    justify-content: center;
+  }
+  .nav a{
+    padding: 0 0 0 16px;
+  }
+  .main-content{
+    padding: 20px 18px 32px;
+  }
+  .topbar{
+    padding: 0 18px;
+  }
+  .search-box{
+    max-width: 200px;
+  }
+  .search-box .kbd{
+    display: none;
+  }
+  .user-meta{
+    display: none;
+  }
+}
+
+@media (max-width: 600px){
+  .stats-grid{
+    grid-template-columns: 1fr;
+  }
+  .chart-header{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-actions{
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="appRoot">
+
+  <!-- SIDEBAR (Full Height 100vh) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="brand-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z"/>
+            <circle cx="12" cy="11" r="2.2"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span>AdminKu</span>
+          <small>Portal Kehutanan</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="nav-section-title">Menu Utama</div>
+    <nav class="nav" aria-label="Menu utama">
+      <a href="beranda.html" title="Beranda">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        <span>Beranda</span>
+      </a>
+      <a href="index.html" class="on" aria-current="page" title="Statistik">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+        <span>Statistik</span>
+        <span class="badge-counter">Live</span>
+      </a>
+      <a href="#" title="Pengguna">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.4c2 .8 3.5 2.6 3.5 5.6"/></svg>
+        <span>Pengguna</span>
+      </a>
+      <a href="#" title="Data Master">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+        <span>Data Master</span>
+      </a>
+      <a href="#" title="Laporan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg>
+        <span>Laporan</span>
+      </a>
+      <a href="#" title="Pengaturan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        <span>Pengaturan</span>
+      </a>
+    </nav>
+
+    <div class="divider"></div>
+
+    <div class="nav-section-title">Bantuan & Sesi</div>
+    <nav class="nav" aria-label="Menu bantuan">
+      <a href="#" title="Bantuan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg>
+        <span>Bantuan</span>
+      </a>
+      <a href="#" title="Keluar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        <span>Keluar</span>
+      </a>
+    </nav>
+
+    <div class="spacer"></div>
+
+    <!-- Upgrade Box -->
+    <div class="upgrade">
+      <div class="upgrade-glow"></div>
+      <svg width="68" height="48" viewBox="0 0 86 64" aria-hidden="true">
+        <circle cx="62" cy="22" r="20" fill="#F9C6D8"/>
+        <path d="M6 64V30a10 10 0 0 1 10-10h4v44z" fill="#1B2559"/>
+        <path d="M20 64V40a12 12 0 0 1 24 0v24z" fill="#1B2559"/>
+        <circle cx="14" cy="14" r="5" fill="#FFD95A"/>
+      </svg>
+      <h3>Upgrade Pro</h3>
+      <p>Akses fitur analitik peta spasial & laporan otomatis.</p>
+      <button type="button">Upgrade Sekarang</button>
+    </div>
+
+    <!-- User Info Footer -->
+    <div class="sidebar-user">
+      <div class="avatar">AD</div>
+      <div class="info">
+        <span class="name">Administrator</span>
+        <span class="role">Dinas Kehutanan</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER (Full Height & Full Width) -->
+  <div class="main-wrapper">
+
+    <!-- TOPBAR STICKY -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-toggle-sidebar" id="sidebarToggle" type="button" aria-label="Toggle Menu Sidebar" title="Buka/Tutup Sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="search-box">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>
+          </svg>
+          <input type="search" id="searchInput" placeholder="Cari data, laporan, wilayah hutan..." aria-label="Cari data">
+          <span class="kbd">⌘K</span>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Fullscreen Button -->
+        <button class="action-icon-btn" id="btnFullscreen" type="button" aria-label="Toggle Layar Penuh" title="Mode Layar Penuh">
+          <svg id="fsIconExpand" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+          </svg>
+          <svg id="fsIconCompress" style="display:none;" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+          </svg>
+        </button>
+
+        <!-- Notification Button -->
+        <button class="action-icon-btn" type="button" aria-label="Pemberitahuan" title="Notifikasi Baru">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8M10 20a2 2 0 0 0 4 0"/>
+          </svg>
+          <span class="dot"></span>
+        </button>
+
+        <!-- User profile badge -->
+        <div class="user-profile-badge">
+          <div class="user-meta">
+            <span class="u-name">Admin Utama</span>
+            <span class="u-role">Super Admin</span>
+          </div>
+          <div class="avatar">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT SCROLLABLE AREA -->
+    <main class="main-content">
+
+      <!-- Page Title & Actions -->
+      <div class="page-header">
+        <div class="page-title-group">
+          <h1>Statistik & Analitik</h1>
+          <p>Pantau rekapan data perizinan, luas area hutan, dan aktivitas operasional secara komprehensif.</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn-secondary" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Periode 14 Hari</span>
+          </button>
+          <button class="btn-primary" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Unduh Laporan</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Summary Cards Row (4 Cards) -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-title">Total Permohonan Izin</span>
+            <div class="stat-icon-wrapper stat-icon-teal">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-val">1,284</div>
+          <div class="stat-trend">
+            <span class="trend-up">↑ 12.5%</span>
+            <span class="stat-period">vs bulan lalu</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-title">Verifikasi Selesai</span>
+            <div class="stat-icon-wrapper stat-icon-blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-val">948</div>
+          <div class="stat-trend">
+            <span class="trend-up">↑ 8.3%</span>
+            <span class="stat-period">keberhasilan 96%</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-title">Menunggu Tindakan</span>
+            <div class="stat-icon-wrapper stat-icon-yellow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-val">36</div>
+          <div class="stat-trend">
+            <span class="trend-down">↓ 4.2%</span>
+            <span class="stat-period">antrean tertangani</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-title">Area Terpetakan (Ha)</span>
+            <div class="stat-icon-wrapper stat-icon-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+                <line x1="8" y1="2" x2="8" y2="18"></line>
+                <line x1="16" y1="6" x2="16" y2="22"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="stat-val">42,850</div>
+          <div class="stat-trend">
+            <span class="trend-up">↑ 18.4%</span>
+            <span class="stat-period">pembaruan satelit</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CHART CARD -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title-area">
+            <h2>Grafik Frekuensi Aktivitas & Kunjungan</h2>
+            <p>Tren data harian per 14 hari terakhir dalam periode berjalan</p>
+          </div>
+
+          <div class="chart-controls">
+            <div class="period-pill-group">
+              <button class="period-btn" type="button">7 Hari</button>
+              <button class="period-btn active" type="button">14 Hari</button>
+              <button class="period-btn" type="button">1 Bulan</button>
+              <button class="period-btn" type="button">1 Tahun</button>
+            </div>
+
+            <div class="legend-group">
+              <div class="legend-item">
+                <i class="legend-dot" style="background:var(--yellow)"></i>
+                <span>Hari Ini</span>
+              </div>
+              <div class="legend-item">
+                <i class="legend-dot" style="background:var(--bar-hi)"></i>
+                <span>Puncak Tren</span>
+              </div>
+              <div class="legend-item">
+                <i class="legend-dot" style="background:var(--bar)"></i>
+                <span>Reguler</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Bar Chart -->
+        <div class="chart-container" role="img" aria-label="Grafik batang statistik aktivitas harian">
+          <div class="chart-col">
+            <span class="tooltip">Hari 1: 90 data</span>
+            <div class="chart-bar-fill" style="height:90px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 2: 140 data</span>
+            <div class="chart-bar-fill" style="height:140px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 3: 180 data (Puncak)</span>
+            <div class="chart-bar-fill hi" style="height:180px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 4: 80 data</span>
+            <div class="chart-bar-fill" style="height:80px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 5: 150 data</span>
+            <div class="chart-bar-fill" style="height:150px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 6: 80 data</span>
+            <div class="chart-bar-fill" style="height:80px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 7: 56 data</span>
+            <div class="chart-bar-fill" style="height:56px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 8: 92 data</span>
+            <div class="chart-bar-fill" style="height:92px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 9 (Hari Ini): 124 data</span>
+            <div class="chart-bar-fill today" style="height:124px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 10: 82 data</span>
+            <div class="chart-bar-fill" style="height:82px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 11: 56 data</span>
+            <div class="chart-bar-fill" style="height:56px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 12: 150 data</span>
+            <div class="chart-bar-fill" style="height:150px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 13: 80 data</span>
+            <div class="chart-bar-fill" style="height:80px"></div>
+          </div>
+          <div class="chart-col">
+            <span class="tooltip">Hari 14: 64 data</span>
+            <div class="chart-bar-fill" style="height:64px"></div>
+          </div>
+        </div>
+
+        <div class="chart-labels-row">
+          <span>Tgl 01</span>
+          <span>Tgl 03</span>
+          <span>Tgl 05</span>
+          <span>Tgl 07</span>
+          <span>Tgl 09 (Hari Ini)</span>
+          <span>Tgl 11</span>
+          <span>Tgl 14</span>
+        </div>
+      </div>
+
+      <!-- LOWER 2-COLUMN DASHBOARD GRID -->
+      <div class="dashboard-grid">
+
+        <!-- Left: Aktivitas Terbaru Table -->
+        <section class="data-card">
+          <div class="card-header">
+            <h2>Aktivitas & Verifikasi Terbaru</h2>
+            <a href="#">Lihat Semua Aktivitas →</a>
+          </div>
+
+          <div class="activity-table">
+            <div class="activity-row">
+              <div class="act-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                </svg>
+              </div>
+              <div class="act-details">
+                <span class="act-title">Permohonan Izin Pemanfaatan Hasil Hutan Kayu</span>
+                <span class="act-time">Oleh PT Rimba Sejahtera • 14 menit yang lalu</span>
+              </div>
+              <span class="pill ok">Disetujui</span>
+              <span class="act-val">120 Ha</span>
+            </div>
+
+            <div class="activity-row">
+              <div class="act-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </div>
+              <div class="act-details">
+                <span class="act-title">Verifikasi Batas Kawasan Hutan Lindung Blok B</span>
+                <span class="act-time">Tim Lapangan BPKH • 1 jam yang lalu</span>
+              </div>
+              <span class="pill wait">Menunggu</span>
+              <span class="act-val">45 Titik</span>
+            </div>
+
+            <div class="activity-row">
+              <div class="act-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+              <div class="act-details">
+                <span class="act-title">Laporan Reboisasi & Rehabilitasi Lahan Kritis</span>
+                <span class="act-time">Dinas Lingkungan Hidup • 3 jam yang lalu</span>
+              </div>
+              <span class="pill prog">Diproses</span>
+              <span class="act-val">2,500 Bibit</span>
+            </div>
+
+            <div class="activity-row">
+              <div class="act-avatar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+              <div class="act-details">
+                <span class="act-title">Pembaruan Hak Akses Sistem Geoportal Spasial</span>
+                <span class="act-time">Seksi Pemetaan • 5 jam yang lalu</span>
+              </div>
+              <span class="pill ok">Disetujui</span>
+              <span class="act-val">Selesai</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Ringkasan Progress & System Status Widget -->
+        <aside class="widget-card">
+          <div class="card-header" style="margin-bottom: 0;">
+            <h2>Status Kuota & Target</h2>
+            <span style="font-size:12px; font-weight:700; color:var(--muted)">Tahun 2026</span>
+          </div>
+
+          <div class="quick-stats-list">
+            <div class="quick-stat-item">
+              <div class="qs-header">
+                <span>Target Reboisasi Hutan Lindung</span>
+                <span style="color:var(--teal)">78%</span>
+              </div>
+              <div class="qs-bar-bg">
+                <div class="qs-bar-fill" style="width: 78%"></div>
+              </div>
+            </div>
+
+            <div class="quick-stat-item">
+              <div class="qs-header">
+                <span>Digitalisasi Dokumen SK Kehutanan</span>
+                <span style="color:var(--teal)">92%</span>
+              </div>
+              <div class="qs-bar-bg">
+                <div class="qs-bar-fill" style="width: 92%; background:#10B981"></div>
+              </div>
+            </div>
+
+            <div class="quick-stat-item">
+              <div class="qs-header">
+                <span>Penyelesaian Konflik Batas Wilayah</span>
+                <span style="color:var(--yellow-dark)">64%</span>
+              </div>
+              <div class="qs-bar-bg">
+                <div class="qs-bar-fill" style="width: 64%; background:var(--yellow-dark)"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Banner status server / sistem -->
+          <div class="system-banner">
+            <div class="sb-text">
+              <h4>Sinkronisasi Cloud Aktif</h4>
+              <p>Data tersinkron otomatis ke server pusat kementerian.</p>
+            </div>
+            <button class="sb-btn" type="button">Periksa</button>
+          </div>
+        </aside>
+
+      </div>
+
+    </main>
+
+  </div>
+
+</div>
+
+<!-- Interactive UI Scripts -->
+<script>
+  // 1. Fullscreen Toggle API
+  const btnFullscreen = document.getElementById('btnFullscreen');
+  const fsIconExpand = document.getElementById('fsIconExpand');
+  const fsIconCompress = document.getElementById('fsIconCompress');
+
+  function updateFullscreenIcons() {
+    if (document.fullscreenElement) {
+      fsIconExpand.style.display = 'none';
+      fsIconCompress.style.display = 'block';
+      btnFullscreen.setAttribute('title', 'Keluar Layar Penuh (Esc)');
+    } else {
+      fsIconExpand.style.display = 'block';
+      fsIconCompress.style.display = 'none';
+      btnFullscreen.setAttribute('title', 'Mode Layar Penuh');
+    }
+  }
+
+  btnFullscreen.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.warn('Gagal masuk mode layar penuh:', err.message);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  });
+
+  document.addEventListener('fullscreenchange', updateFullscreenIcons);
+
+  // 2. Sidebar Toggle (Collapse / Expand)
+  const appRoot = document.getElementById('appRoot');
+  const sidebarToggle = document.getElementById('sidebarToggle');
+
+  sidebarToggle.addEventListener('click', () => {
+    appRoot.classList.toggle('sidebar-collapsed');
+  });
+
+  // 3. Period button toggle
+  const periodBtns = document.querySelectorAll('.period-btn');
+  periodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      periodBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // 4. Keyboard Shortcut Ctrl+K / Cmd+K to focus search
+  const searchInput = document.getElementById('searchInput');
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+</script>
+
+</body>
+</html>

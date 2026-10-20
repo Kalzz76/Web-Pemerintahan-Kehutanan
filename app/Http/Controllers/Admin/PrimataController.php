@@ -40,7 +40,7 @@ class PrimataController extends Controller
         $request->validate([
             'nama_lokal' => 'required|string|max:255',
             'nama_ilmiah' => 'required|string|max:255',
-            'status_konservasi' => 'required|in:CR,EN,VU,NT,LC,DD',
+            'status_konservasi' => 'required|in:CR,EN,VU,NT,LC,DD,NE',
             'dilindungi' => 'nullable|boolean',
             'habitat' => 'required|string|max:500',
             'makanan' => 'required|string|max:500',
@@ -94,7 +94,7 @@ class PrimataController extends Controller
         $request->validate([
             'nama_lokal' => 'required|string|max:255',
             'nama_ilmiah' => 'required|string|max:255',
-            'status_konservasi' => 'required|in:CR,EN,VU,NT,LC,DD',
+            'status_konservasi' => 'required|in:CR,EN,VU,NT,LC,DD,NE',
             'dilindungi' => 'nullable|boolean',
             'habitat' => 'required|string|max:500',
             'makanan' => 'required|string|max:500',

@@ -31,15 +31,21 @@
                             </span>
 
                             @if ($tumbuhan->status_konservasi == 'CR')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-rose-600 text-white">CR (Kritis)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Kritis (CR)</span>
                             @elseif ($tumbuhan->status_konservasi == 'EN')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-orange-600 text-white">EN (Genting)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800">Terancam (EN)</span>
                             @elseif ($tumbuhan->status_konservasi == 'VU')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500 text-white">VU (Rentan)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">Rentan (VU)</span>
                             @elseif ($tumbuhan->status_konservasi == 'NT')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-yellow-500 text-stone-900">NT (Hampir Terancam)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-lime-100 text-lime-800">Hampir Terancam (NT)</span>
+                            @elseif ($tumbuhan->status_konservasi == 'LC')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Risiko Rendah (LC)</span>
+                            @elseif ($tumbuhan->status_konservasi == 'DD')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-100 text-stone-700">Data Kurang (DD)</span>
+                            @elseif ($tumbuhan->status_konservasi == 'NE')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-50 text-stone-500 border border-stone-200">Belum Dinilai (NE)</span>
                             @else
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white">{{ $tumbuhan->status_konservasi }}</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-100 text-stone-700">{{ $tumbuhan->status_konservasi }}</span>
                             @endif
 
                             @if ($tumbuhan->dilindungi)

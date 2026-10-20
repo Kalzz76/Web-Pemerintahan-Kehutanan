@@ -10,7 +10,7 @@
         </div>
         <h1 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">Formulir Lapor Darurat</h1>
         <p class="text-stone-500 text-xs sm:text-sm mt-1 max-w-lg mx-auto">
-            Layanan cepat tanggap warga tanpa perlu akun atau login. Laporkan kejadian kebakaran hutan atau satwa liar yang masuk perkebunan/pemukiman.
+            Layanan cepat tanggap warga wilayah Jawa Barat tanpa perlu akun atau login. Laporkan kejadian kebakaran hutan atau satwa liar yang masuk perkebunan/permukiman.
         </p>
     </div>
 
@@ -76,13 +76,13 @@
             </div>
 
             <div>
-                <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Lokasi Kejadian <span class="text-red-500">*</span></label>
+                <label class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Lokasi Kejadian di Jawa Barat <span class="text-red-500">*</span></label>
                 <div class="flex flex-col sm:flex-row gap-3 mb-3">
                     <button type="button" onclick="ambilLokasiSaya()" class="px-5 py-3 rounded-xl bg-green-700 hover:bg-green-600 text-white font-bold text-xs flex items-center justify-center space-x-2 transition shadow active:scale-95">
                         <i class="fa-solid fa-location-crosshairs text-sm"></i>
                         <span>Gunakan Lokasi Saya (GPS)</span>
                     </button>
-                    <span class="text-xs text-stone-400 self-center">atau klik langsung pada peta di bawah:</span>
+                    <span class="text-xs text-stone-400 self-center">atau klik langsung pada peta Jawa Barat di bawah:</span>
                 </div>
 
                 <div id="peta-lapor" class="w-full h-64 rounded-2xl border border-stone-200 overflow-hidden z-10 mb-2"></div>
@@ -93,6 +93,16 @@
 
                 <input type="hidden" id="latitude" name="latitude" value="{{ old('latitude') }}">
                 <input type="hidden" id="longitude" name="longitude" value="{{ old('longitude') }}">
+            </div>
+
+            <div>
+                <label for="id_kabupaten_kota" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Kabupaten / Kota di Jawa Barat (Opsional)</label>
+                <select id="id_kabupaten_kota" name="id_kabupaten_kota" class="w-full px-4 py-3 rounded-xl border border-stone-200 text-sm focus:border-green-600 outline-none transition bg-white">
+                    <option value="">-- Pilih Kabupaten / Kota (Opsional) --</option>
+                    @foreach($kabupatenKota as $kab)
+                        <option value="{{ $kab->id }}" {{ old('id_kabupaten_kota') == $kab->id ? 'selected' : '' }}>{{ $kab->nama }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div>
@@ -122,7 +132,7 @@
                 </div>
                 <p class="text-[11px] text-stone-400 mt-2 flex items-center">
                     <i class="fa-solid fa-lock text-green-700 mr-1.5"></i>
-                    Nomor HP Anda bersifat rahasia, hanya dapat dilihat oleh petugas desa untuk konfirmasi darurat, dan tidak akan ditampilkan ke publik.
+                    Nomor HP Anda bersifat rahasia, hanya dapat dilihat oleh petugas untuk konfirmasi darurat, dan tidak akan ditampilkan ke publik.
                 </p>
             </div>
 
@@ -210,7 +220,7 @@ function ambilLokasiSaya() {
     navigator.geolocation.getCurrentPosition(function (posisi) {
         var lat = posisi.coords.latitude;
         var lng = posisi.coords.longitude;
-        mapLapor.setView([lat, lng], 16);
+        mapLapor.setView([lat, lng], 14);
         perbaruiTitikLokasi(lat, lng);
     }, function (err) {
         alert('Tidak dapat mendeteksi lokasi GPS secara otomatis. Silakan klik langsung titik kejadian pada peta.');
@@ -306,11 +316,20 @@ document.addEventListener('DOMContentLoaded', function () {
     var jenisAwal = document.querySelector('input[name="jenis"]:checked');
     pilihJenis(jenisAwal ? jenisAwal.value : 'Kebakaran');
 
-    var latPusat = {{ $pengaturan->lat_pusat ?? -6.8921000 }};
-    var longPusat = {{ $pengaturan->long_pusat ?? 108.4112000 }};
-    var zoomAwal = {{ $pengaturan->zoom_awal ?? 13 }};
+    var latPusat = {{ $pengaturan->lat_pusat ?? -6.87 }};
+    var longPusat = {{ $pengaturan->long_pusat ?? 107.60 }};
+    var zoomAwal = {{ $pengaturan->zoom_awal ?? 8 }};
 
-    mapLapor = L.map('peta-lapor').setView([latPusat, longPusat], zoomAwal);
+    var bboxBarat = {{ $pengaturan->bbox_barat ?? 106.36 }};
+    var bboxSelatan = {{ $pengaturan->bbox_selatan ?? -7.83 }};
+    var bboxTimur = {{ $pengaturan->bbox_timur ?? 108.85 }};
+    var bboxUtara = {{ $pengaturan->bbox_utara ?? -5.90 }};
+    var boundsJabar = L.latLngBounds([bboxSelatan, bboxBarat], [bboxUtara, bboxTimur]);
+
+    mapLapor = L.map('peta-lapor', {
+        maxBounds: boundsJabar,
+        minZoom: 7
+    }).setView([latPusat, longPusat], zoomAwal);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -320,7 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var longLama = document.getElementById('longitude').value;
     if (latLama && longLama) {
         perbaruiTitikLokasi(parseFloat(latLama), parseFloat(longLama));
-        mapLapor.setView([parseFloat(latLama), parseFloat(longLama)], 15);
+        mapLapor.setView([parseFloat(latLama), parseFloat(longLama)], 14);
     }
 
     mapLapor.on('click', function (e) {
@@ -352,6 +371,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 jenis_hewan: document.getElementById('jenis_hewan').value,
                 latitude: lat,
                 longitude: lng,
+                id_kabupaten_kota: document.getElementById('id_kabupaten_kota').value,
                 deskripsi: document.getElementById('deskripsi').value,
                 nama_pelapor: document.getElementById('nama_pelapor').value,
                 no_hp: document.getElementById('no_hp').value,

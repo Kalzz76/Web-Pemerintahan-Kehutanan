@@ -6,45 +6,246 @@
     <title>@yield('title', 'Admin') - Jaga Hutan Desa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    colors: {
+                        tealForest: {
+                            DEFAULT: '#0F8179',
+                            dark: '#0A5F59',
+                            light: '#E6F5F4'
+                        }
+                    },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ["'Plus Jakarta Sans'", 'Inter', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
     <style>
-        /* Sembunyikan scrollbar di sidebar namun tetap bisa di-scroll */
+        :root {
+            --teal: #0F8179;
+            --teal-dark: #0A5F59;
+            --teal-light: #E6F5F4;
+            --sidebar-w: 260px;
+            --sidebar-w-collapsed: 80px;
+        }
+
         .no-scrollbar::-webkit-scrollbar {
             display: none !important;
             width: 0 !important;
             height: 0 !important;
         }
         .no-scrollbar {
-            -ms-overflow-style: none !important; /* IE dan Edge */
-            scrollbar-width: none !important; /* Firefox */
+            -ms-overflow-style: none !important;
+            scrollbar-width: none !important;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            height: 100vh;
+            flex-shrink: 0;
+            background: #0F8179;
+            color: #ffffff;
+            transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .sidebar::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+        }
+
+        .admin-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            height: 46px;
+            padding: 0 18px 0 16px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13.5px;
+            border-radius: 28px 0 0 28px;
+            position: relative;
+            transition: background 0.15s, color 0.15s;
+            white-space: nowrap;
+        }
+
+        .admin-nav-item:hover {
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        .badge-counter-pill {
+            margin-left: auto;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 10px;
+            font-weight: 800;
+            background: #FFD95A;
+            color: #1B2559;
+        }
+
+        .admin-nav-item.on .badge-counter-pill {
+            background: #0F8179;
+            color: #ffffff;
+        }
+
+        /* Mode Mobile (default / < 768px) */
+        @media (max-width: 767.98px) {
+            .sidebar {
+                width: 285px !important;
+                max-width: 85vw;
+                border-top-right-radius: 28px;
+                border-bottom-right-radius: 28px;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+                padding: 20px 14px 20px 14px !important;
+            }
+
+            .admin-nav-item {
+                border-radius: 14px !important;
+                padding: 0 14px !important;
+                width: 100% !important;
+                right: 0 !important;
+                margin: 0 !important;
+            }
+
+            .admin-nav-item.on {
+                border-radius: 14px !important;
+                width: 100% !important;
+                right: 0 !important;
+                background: #ffffff !important;
+                color: #0F8179 !important;
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+            }
+
+            .admin-nav-item.on::before,
+            .admin-nav-item.on::after {
+                display: none !important;
+            }
+
+            .sidebar .brand {
+                padding: 0 4px !important;
+            }
+
+            .sidebar .divider {
+                margin: 14px 4px !important;
+            }
+
+            .sidebar .nav-section-title {
+                padding: 0 6px !important;
+            }
+
+            .sidebar-user {
+                margin: 0 !important;
+            }
+
+            .sidebar-actions {
+                margin: 0 !important;
+            }
+        }
+
+        /* Mode Desktop (>= 768px) */
+        @media (min-width: 768px) {
+            .sidebar {
+                width: var(--sidebar-w);
+                padding: 20px 0 16px 14px;
+                border-radius: 0;
+            }
+
+            .admin-nav-item {
+                border-radius: 28px 0 0 28px;
+                padding: 0 18px 0 16px;
+                position: relative;
+            }
+
+            .admin-nav-item.on {
+                background: #ffffff;
+                color: #0F8179;
+                font-weight: 700;
+                position: relative;
+                right: -2px;
+                width: calc(100% + 2px);
+                z-index: 30;
+                border-radius: 28px 0 0 28px;
+            }
+
+            .admin-nav-item.on::before,
+            .admin-nav-item.on::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                width: 32px;
+                height: 32px;
+                pointer-events: none;
+                z-index: 30;
+            }
+
+            .admin-nav-item.on::before {
+                top: -32px;
+                background: radial-gradient(circle at 0 0, transparent 32px, #ffffff 32.5px);
+            }
+
+            .admin-nav-item.on::after {
+                bottom: -32px;
+                background: radial-gradient(circle at 0 100%, transparent 32px, #ffffff 32.5px);
+            }
+
+            .app.sidebar-collapsed .sidebar {
+                width: var(--sidebar-w-collapsed) !important;
+                padding-left: 10px;
+            }
+
+            .app.sidebar-collapsed .brand-text,
+            .app.sidebar-collapsed .admin-nav-item span,
+            .app.sidebar-collapsed .badge-counter-pill,
+            .app.sidebar-collapsed .sidebar-user .info,
+            .app.sidebar-collapsed .nav-section-title,
+            .app.sidebar-collapsed .sidebar-actions,
+            .app.sidebar-collapsed .sidebar-action-text {
+                display: none !important;
+            }
+
+            .app.sidebar-collapsed .brand {
+                padding: 0 4px;
+                justify-content: center;
+            }
+
+            .app.sidebar-collapsed .brand-left {
+                justify-content: center;
+            }
+
+            .app.sidebar-collapsed .admin-nav-item {
+                padding: 0 0 0 16px;
+                justify-content: flex-start;
+            }
+
+            .app.sidebar-collapsed .divider {
+                margin: 16px 8px;
+            }
+
+            .app.sidebar-collapsed .sidebar-user {
+                padding: 6px;
+                justify-content: center;
+                margin-right: 10px;
+            }
         }
     </style>
 </head>
-<body class="bg-stone-50 text-stone-800 font-sans antialiased h-screen overflow-hidden">
-    <!-- Container Utama: Layar Penuh Tanpa Scroll Body Global -->
-    <div class="flex h-screen w-full overflow-hidden bg-stone-50">
-        <!-- Sidebar Admin Modular (Scroll Terpisah Tanpa Scrollbar) -->
+<body class="bg-white text-stone-800 font-sans antialiased h-screen overflow-hidden">
+    <div class="app flex h-screen w-full overflow-hidden bg-white" id="appRoot">
         @include('layouts.admin-sidebar')
 
-        <!-- Wrapper Konten Utama (Scroll Mandiri Terpisah dari Sidebar) -->
-        <div id="admin-main-wrapper" class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden">
-            <!-- Header Admin Modular -->
+        <div id="admin-main-wrapper" class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden bg-white">
             @include('layouts.admin-header')
 
-            <!-- Main Page Content -->
             <main class="flex-1 p-5 md:p-8 max-w-7xl w-full mx-auto">
                 @if ($errors->any())
                     <div class="bg-rose-50 text-rose-700 rounded-2xl p-5 mb-8 border border-rose-200 shadow-sm">
@@ -66,23 +267,75 @@
     </div>
 
     @include('partials.modal-pesan')
+    @include('partials.modal-konfirmasi')
 
     <script>
         function toggleSidebar() {
+            const appRoot = document.getElementById('appRoot');
             const sidebar = document.getElementById('admin-sidebar');
             const backdrop = document.getElementById('sidebar-backdrop');
-            if (sidebar && backdrop) {
+            if (!appRoot || !sidebar) return;
+
+            if (window.innerWidth >= 768) {
+                appRoot.classList.toggle('sidebar-collapsed');
+            } else {
                 const isHidden = sidebar.classList.contains('-translate-x-full');
                 if (isHidden) {
                     sidebar.classList.remove('-translate-x-full');
                     sidebar.classList.add('translate-x-0');
-                    backdrop.classList.remove('hidden');
+                    if (backdrop) backdrop.classList.remove('hidden');
                 } else {
                     sidebar.classList.add('-translate-x-full');
                     sidebar.classList.remove('translate-x-0');
-                    backdrop.classList.add('hidden');
+                    if (backdrop) backdrop.classList.add('hidden');
                 }
             }
+        }
+
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+            sidebarToggle.onclick = toggleSidebar;
+        }
+
+        const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
+        if (sidebarCloseBtn) {
+            sidebarCloseBtn.onclick = toggleSidebar;
+        }
+
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        if (sidebarBackdrop) {
+            sidebarBackdrop.onclick = toggleSidebar;
+        }
+
+        const btnFullscreen = document.getElementById('btnFullscreen');
+        const fsIconExpand = document.getElementById('fsIconExpand');
+        const fsIconCompress = document.getElementById('fsIconCompress');
+
+        function updateFullscreenIcons() {
+            if (document.fullscreenElement) {
+                if (fsIconExpand) fsIconExpand.style.display = 'none';
+                if (fsIconCompress) fsIconCompress.style.display = 'block';
+                if (btnFullscreen) btnFullscreen.setAttribute('title', 'Keluar Layar Penuh (Esc)');
+            } else {
+                if (fsIconExpand) fsIconExpand.style.display = 'block';
+                if (fsIconCompress) fsIconCompress.style.display = 'none';
+                if (btnFullscreen) btnFullscreen.setAttribute('title', 'Mode Layar Penuh');
+            }
+        }
+
+        if (btnFullscreen) {
+            btnFullscreen.addEventListener('click', function () {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen().catch(function (err) {
+                        console.warn('Gagal masuk mode layar penuh:', err.message);
+                    });
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+            document.addEventListener('fullscreenchange', updateFullscreenIcons);
         }
     </script>
     @yield('scripts')

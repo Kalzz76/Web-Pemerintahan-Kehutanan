@@ -3,34 +3,28 @@
 @section('title', 'Detail Laporan ' . $laporan->kode)
 
 @section('content')
-<div class="mb-8">
-    <div class="flex items-center space-x-2 text-xs text-stone-500 mb-2">
-        <a href="{{ route('admin.laporan.index') }}" class="hover:text-green-700">Kelola Laporan</a>
-        <i class="fa-solid fa-chevron-right text-[10px]"></i>
+<div class="mb-5">
+    <div class="flex items-center space-x-2 text-xs text-stone-500 mb-1.5">
+        <a href="{{ route('admin.laporan.index') }}" class="hover:text-stone-900">Kelola Laporan</a>
+        <i class="fa-solid fa-chevron-right text-[9px] text-stone-400"></i>
         <span class="text-stone-800 font-semibold">{{ $laporan->kode }}</span>
     </div>
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-            <h1 class="text-2xl md:text-3xl font-extrabold text-stone-900 tracking-tight flex items-center space-x-3">
+            <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight flex items-center space-x-3">
                 <span class="font-mono">{{ $laporan->kode }}</span>
-                @if ($laporan->status === 'Baru')
-                    <span class="text-xs font-black px-3.5 py-1 rounded-full bg-rose-100 text-rose-800">Baru</span>
-                @elseif ($laporan->status === 'Diverifikasi')
-                    <span class="text-xs font-black px-3.5 py-1 rounded-full bg-amber-100 text-amber-800">Diverifikasi</span>
-                @elseif ($laporan->status === 'Ditangani')
-                    <span class="text-xs font-black px-3.5 py-1 rounded-full bg-sky-100 text-sky-800">Ditangani</span>
-                @else
-                    <span class="text-xs font-black px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800">Selesai</span>
-                @endif
+                <span class="text-xs font-semibold text-stone-900 border border-stone-300 px-2.5 py-0.5 rounded-full bg-transparent">
+                    {{ $laporan->status }}
+                </span>
             </h1>
-            <p class="text-stone-500 text-sm mt-1">
+            <p class="text-stone-500 text-xs mt-0.5">
                 Dilaporkan pada {{ \Carbon\Carbon::parse($laporan->created_at)->locale('id')->isoFormat('dddd, D MMMM Y - HH:mm') }} WIB
             </p>
         </div>
 
         @if ($laporan->jenis === 'Kebakaran')
-            <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index', ['id_laporan' => $laporan->id, 'lat' => $laporan->latitude, 'long' => $laporan->longitude]) : '#' }}" class="inline-flex items-center px-5 py-3 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl shadow transition text-xs shrink-0 active:scale-95">
-                <i class="fa-solid fa-fire-flame-curved mr-2"></i>
+            <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index', ['id_laporan' => $laporan->id, 'lat' => $laporan->latitude, 'long' => $laporan->longitude]) : '#' }}" class="inline-flex items-center px-4 py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl shadow-sm transition text-xs shrink-0 active:scale-95">
+                <i class="fa-solid fa-fire-flame-curved mr-2 text-stone-300"></i>
                 <span>Hitung Prediksi dari Titik Ini</span>
             </a>
         @endif
@@ -60,6 +54,13 @@
                     <span class="text-xs text-stone-400 block mb-1">Koordinat Lokasi</span>
                     <span class="font-mono text-stone-800 text-xs font-semibold">
                         {{ number_format($laporan->latitude, 7) }}, {{ number_format($laporan->longitude, 7) }}
+                    </span>
+                </div>
+
+                <div>
+                    <span class="text-xs text-stone-400 block mb-1">Kabupaten/Kota (Jawa Barat)</span>
+                    <span class="font-bold text-stone-900 text-sm">
+                        {{ $laporan->kabupatenKota ? $laporan->kabupatenKota->nama : 'Belum ditentukan' }}
                     </span>
                 </div>
 
@@ -141,6 +142,18 @@
                 </div>
 
                 <div>
+                    <label for="id_kabupaten_kota" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Kabupaten/Kota (Jawa Barat)</label>
+                    <select id="id_kabupaten_kota" name="id_kabupaten_kota" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-green-600 outline-none transition bg-white">
+                        <option value="">-- Belum Ditentukan --</option>
+                        @foreach ($daftarKabupaten as $kab)
+                            <option value="{{ $kab->id }}" {{ old('id_kabupaten_kota', $laporan->id_kabupaten_kota) == $kab->id ? 'selected' : '' }}>
+                                {{ $kab->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div>
                     <label for="id_kawasan" class="block text-xs font-bold text-stone-700 uppercase tracking-wider mb-2">Tentukan Kawasan Hutan</label>
                     <select id="id_kawasan" name="id_kawasan" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-green-600 outline-none transition bg-white">
                         <option value="">-- Belum Ditentukan / Luar Kawasan --</option>
@@ -164,19 +177,19 @@
                 @endif
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full py-3 bg-green-700 hover:bg-green-600 text-white font-bold rounded-xl shadow transition text-xs flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-floppy-disk"></i>
+                    <button type="submit" class="w-full py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-xl transition text-xs flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-floppy-disk text-xs"></i>
                         <span>Simpan Perubahan</span>
                     </button>
                 </div>
             </form>
 
             <div class="pt-4 border-t border-stone-100">
-                <form method="POST" action="{{ route('admin.laporan.destroy', $laporan->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin menghapus laporan ini secara permanen?')">
+                <form method="POST" action="{{ route('admin.laporan.destroy', $laporan->id) }}" data-confirm="Apakah Anda yakin ingin menghapus laporan ini secara permanen?" data-confirm-title="Hapus Laporan" data-confirm-ok="Ya, Hapus">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 font-semibold rounded-xl text-xs transition flex items-center justify-center space-x-2">
-                        <i class="fa-solid fa-trash"></i>
+                    <button type="submit" class="w-full py-2.5 bg-white hover:bg-stone-100 text-stone-700 hover:text-stone-900 border border-stone-300 font-semibold rounded-xl text-xs transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-trash text-xs text-stone-500"></i>
                         <span>Hapus Laporan Palsu / Salah</span>
                     </button>
                 </form>
@@ -194,7 +207,11 @@ document.addEventListener('DOMContentLoaded', function () {
     var lng = {{ $laporan->longitude }};
     var warna = '{{ $laporan->jenis === "Kebakaran" ? "#dc2626" : "#ea580c" }}';
 
-    var map = L.map('peta-laporan-detail').setView([lat, lng], 15);
+    var batasJabar = L.latLngBounds(L.latLng(-7.9, 106.3), L.latLng(-5.9, 108.9));
+    var map = L.map('peta-laporan-detail', {
+        maxBounds: batasJabar,
+        minZoom: 7
+    }).setView([lat, lng], 14);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

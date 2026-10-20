@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\KabupatenKota;
 use App\Models\KawasanHutan;
 use App\Models\Laporan;
 use App\Models\Primata;
@@ -59,6 +60,10 @@ class DashboardController extends Controller
             $q->where('jenis', 'Kebakaran');
         }])->orderBy('laporan_count', 'desc')->take(5)->get();
 
+        $kabupatenRawan = KabupatenKota::withCount(['laporan' => function ($q) {
+            $q->where('jenis', 'Kebakaran');
+        }])->orderBy('laporan_count', 'desc')->take(5)->get();
+
         $laporanTerbaru = Laporan::latest()->take(5)->get();
 
         return view('admin.dashboard', compact(
@@ -70,6 +75,7 @@ class DashboardController extends Controller
             'totalTumbuhan',
             'grafikBulanan',
             'kawasanRawan',
+            'kabupatenRawan',
             'laporanTerbaru'
         ));
     }

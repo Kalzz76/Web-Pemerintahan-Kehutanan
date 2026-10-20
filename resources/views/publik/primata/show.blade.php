@@ -27,15 +27,21 @@
                     <div class="space-y-2">
                         <div class="flex flex-wrap items-center gap-2">
                             @if ($primata->status_konservasi == 'CR')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-rose-600 text-white">CR (Critically Endangered / Kritis)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-800">Kritis (CR)</span>
                             @elseif ($primata->status_konservasi == 'EN')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-orange-600 text-white">EN (Endangered / Genting)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800">Terancam (EN)</span>
                             @elseif ($primata->status_konservasi == 'VU')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-500 text-white">VU (Vulnerable / Rentan)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800">Rentan (VU)</span>
                             @elseif ($primata->status_konservasi == 'NT')
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-yellow-500 text-stone-900">NT (Near Threatened / Hampir Terancam)</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-lime-100 text-lime-800">Hampir Terancam (NT)</span>
+                            @elseif ($primata->status_konservasi == 'LC')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800">Risiko Rendah (LC)</span>
+                            @elseif ($primata->status_konservasi == 'DD')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-100 text-stone-700">Data Kurang (DD)</span>
+                            @elseif ($primata->status_konservasi == 'NE')
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-50 text-stone-500 border border-stone-200">Belum Dinilai (NE)</span>
                             @else
-                                <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white">{{ $primata->status_konservasi }}</span>
+                                <span class="px-3 py-1 rounded-full text-xs font-bold bg-stone-100 text-stone-700">{{ $primata->status_konservasi }}</span>
                             @endif
 
                             @if ($primata->dilindungi)

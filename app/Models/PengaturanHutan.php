@@ -23,7 +23,10 @@ class PengaturanHutan extends Model
         'lat_pusat',
         'long_pusat',
         'zoom_awal',
-        'radius_titik_api_km',
+        'bbox_barat',
+        'bbox_selatan',
+        'bbox_timur',
+        'bbox_utara',
         'terakhir_ambil_firms',
     ];
 
@@ -33,7 +36,10 @@ class PengaturanHutan extends Model
             'lat_pusat' => 'float',
             'long_pusat' => 'float',
             'zoom_awal' => 'integer',
-            'radius_titik_api_km' => 'integer',
+            'bbox_barat' => 'float',
+            'bbox_selatan' => 'float',
+            'bbox_timur' => 'float',
+            'bbox_utara' => 'float',
             'terakhir_ambil_firms' => 'datetime',
         ];
     }

@@ -128,21 +128,14 @@ class PrediksiController extends Controller
         if ($pengaturan->terakhir_ambil_firms) {
             $selisihMenit = Carbon::parse($pengaturan->terakhir_ambil_firms)->diffInMinutes(now());
             if ($selisihMenit < 30) {
-                return redirect()->route('admin.prediksi.index')->with('info', 'Data titik api baru saja diambil ' . $selisihMenit . ' menit yang lalu. Mohon tunggu jeda 30 menit sebelum mengambil kembali.');
+                return redirect()->route('admin.prediksi.index')->with('info', 'Data baru saja diambil. Mohon tunggu jeda 30 menit sebelum mengambil kembali.');
             }
         }
 
-        $lat0 = $pengaturan->lat_pusat;
-        $long0 = $pengaturan->long_pusat;
-        $radius = $pengaturan->radius_titik_api_km;
-
-        $dLat = $radius / 111.0;
-        $dLong = $radius / (111.0 * cos(deg2rad($lat0)));
-
-        $west = round($long0 - $dLong, 3);
-        $south = round($lat0 - $dLat, 3);
-        $east = round($long0 + $dLong, 3);
-        $north = round($lat0 + $dLat, 3);
+        $west = round($pengaturan->bbox_barat ?? 106.36, 3);
+        $south = round($pengaturan->bbox_selatan ?? -7.83, 3);
+        $east = round($pengaturan->bbox_timur ?? 108.85, 3);
+        $north = round($pengaturan->bbox_utara ?? -5.90, 3);
 
         $url = "https://firms.modaps.eosdis.nasa.gov/api/area/csv/{$firmsKey}/VIIRS_SNPP_NRT/{$west},{$south},{$east},{$north}/1";
 
@@ -155,7 +148,7 @@ class PrediksiController extends Controller
                 if (count($lines) < 2) {
                     $pengaturan->terakhir_ambil_firms = now();
                     $pengaturan->save();
-                    return redirect()->route('admin.prediksi.index')->with('info', 'Pemeriksaan satelit selesai: Tidak ada titik api satelit aktif terdeteksi di sekitar radius kawasan.');
+                    return redirect()->route('admin.prediksi.index')->with('info', 'Pemeriksaan satelit selesai: Tidak ada titik api satelit aktif terdeteksi di wilayah Jawa Barat.');
                 }
 
                 $header = str_getcsv(array_shift($lines));

@@ -41,11 +41,13 @@
                 <div class="sm:col-span-2">
                     <select name="status" class="w-full px-3 py-2.5 text-sm rounded-xl border border-stone-200 focus:outline-none focus:border-green-600 bg-white">
                         <option value="">Status Konservasi</option>
-                        <option value="CR" {{ ($statusKonservasi ?? '') == 'CR' ? 'selected' : '' }}>CR (Kritis)</option>
-                        <option value="EN" {{ ($statusKonservasi ?? '') == 'EN' ? 'selected' : '' }}>EN (Genting)</option>
-                        <option value="VU" {{ ($statusKonservasi ?? '') == 'VU' ? 'selected' : '' }}>VU (Rentan)</option>
-                        <option value="NT" {{ ($statusKonservasi ?? '') == 'NT' ? 'selected' : '' }}>NT (Hampir Terancam)</option>
-                        <option value="LC" {{ ($statusKonservasi ?? '') == 'LC' ? 'selected' : '' }}>LC (Risiko Rendah)</option>
+                        <option value="CR" {{ ($statusKonservasi ?? '') == 'CR' ? 'selected' : '' }}>Kritis (CR)</option>
+                        <option value="EN" {{ ($statusKonservasi ?? '') == 'EN' ? 'selected' : '' }}>Terancam (EN)</option>
+                        <option value="VU" {{ ($statusKonservasi ?? '') == 'VU' ? 'selected' : '' }}>Rentan (VU)</option>
+                        <option value="NT" {{ ($statusKonservasi ?? '') == 'NT' ? 'selected' : '' }}>Hampir Terancam (NT)</option>
+                        <option value="LC" {{ ($statusKonservasi ?? '') == 'LC' ? 'selected' : '' }}>Risiko Rendah (LC)</option>
+                        <option value="DD" {{ ($statusKonservasi ?? '') == 'DD' ? 'selected' : '' }}>Data Kurang (DD)</option>
+                        <option value="NE" {{ ($statusKonservasi ?? '') == 'NE' ? 'selected' : '' }}>Belum Dinilai (NE)</option>
                     </select>
                 </div>
 
@@ -90,15 +92,21 @@
 
                             <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
                                 @if ($primata->status_konservasi == 'CR')
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-rose-600 text-white shadow-sm">CR (Kritis)</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-100 text-red-800 shadow-sm">Kritis (CR)</span>
                                 @elseif ($primata->status_konservasi == 'EN')
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-orange-600 text-white shadow-sm">EN (Genting)</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-orange-100 text-orange-800 shadow-sm">Terancam (EN)</span>
                                 @elseif ($primata->status_konservasi == 'VU')
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-500 text-white shadow-sm">VU (Rentan)</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-yellow-100 text-yellow-800 shadow-sm">Rentan (VU)</span>
                                 @elseif ($primata->status_konservasi == 'NT')
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-yellow-500 text-stone-900 shadow-sm">NT (Hampir Terancam)</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-lime-100 text-lime-800 shadow-sm">Hampir Terancam (NT)</span>
+                                @elseif ($primata->status_konservasi == 'LC')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-green-100 text-green-800 shadow-sm">Risiko Rendah (LC)</span>
+                                @elseif ($primata->status_konservasi == 'DD')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-stone-100 text-stone-700 shadow-sm">Data Kurang (DD)</span>
+                                @elseif ($primata->status_konservasi == 'NE')
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-stone-50 text-stone-500 border border-stone-200 shadow-sm">Belum Dinilai (NE)</span>
                                 @else
-                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-600 text-white shadow-sm">{{ $primata->status_konservasi }}</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-stone-100 text-stone-700 shadow-sm">{{ $primata->status_konservasi }}</span>
                                 @endif
 
                                 @if ($primata->dilindungi)

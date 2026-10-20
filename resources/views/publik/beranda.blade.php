@@ -7,13 +7,13 @@
     <div class="max-w-7xl mx-auto">
         <div class="max-w-3xl">
             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-800 text-green-200 border border-green-700 mb-6">
-                <i class="fa-solid fa-shield-halved mr-2"></i> Sistem Siaga dan Konservasi Desa
+                <i class="fa-solid fa-shield-halved mr-2"></i> Sistem Siaga dan Konservasi Hutan Jawa Barat
             </span>
             <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight mb-6">
-                {{ $pengaturan->slogan ?? 'Bersama Menjaga Rimba, Demi Kelestarian Desa' }}
+                {{ $pengaturan->slogan ?? 'Bersama Menjaga Rimba dan Satwa Liar Jawa Barat' }}
             </h1>
             <p class="text-stone-300 text-base md:text-lg leading-relaxed mb-8">
-                {{ $pengaturan->deskripsi_singkat ?? 'Sistem tanggap cepat laporan warga, pantauan perambatan kebakaran hutan, perlindungan satwa primata terancam, dan edukasi keanekaragaman hayati desa.' }}
+                {{ $pengaturan->deskripsi_singkat ?? 'Sistem informasi pengelolaan kawasan hutan Provinsi Jawa Barat, pemantauan titik api, dan respon darurat konflik satwa liar.' }}
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 pt-2">
@@ -40,7 +40,7 @@
                 </div>
                 <div>
                     <div class="inline-block px-2.5 py-0.5 rounded-full text-xs font-black bg-white text-rose-700 uppercase tracking-wider mb-1">
-                        Peringatan Aktif
+                        Peringatan Aktif Jawa Barat
                     </div>
                     <h2 class="text-xl sm:text-2xl font-black">Peringatan Area Terancam Perambatan Api</h2>
                     <p class="text-rose-100 text-sm mt-1">
@@ -67,7 +67,7 @@
                     <i class="fa-solid fa-mountain-sun"></i>
                 </div>
                 <div class="text-3xl font-black text-stone-900 mb-1">{{ $totalKawasan }}</div>
-                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Kawasan Hutan</div>
+                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Kawasan Hutan Jabar</div>
             </div>
             <a href="{{ Route::has('peta') ? route('peta') : url('/peta') }}" class="text-xs font-semibold text-green-700 hover:text-green-800 mt-4 inline-flex items-center">
                 <span>Buka Peta</span>
@@ -81,7 +81,7 @@
                     <i class="fa-solid fa-paw"></i>
                 </div>
                 <div class="text-3xl font-black text-stone-900 mb-1">{{ $totalPrimata }}</div>
-                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Satwa Primata</div>
+                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Satwa Primata Jabar</div>
             </div>
             <a href="{{ Route::has('primata') ? route('primata') : url('/primata') }}" class="text-xs font-semibold text-amber-700 hover:text-amber-800 mt-4 inline-flex items-center">
                 <span>Lihat Katalog</span>
@@ -95,7 +95,7 @@
                     <i class="fa-solid fa-seedling"></i>
                 </div>
                 <div class="text-3xl font-black text-stone-900 mb-1">{{ $totalTumbuhan }}</div>
-                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Tumbuhan Rimba</div>
+                <div class="text-xs font-bold text-stone-500 uppercase tracking-wider">Tumbuhan Rimba Jabar</div>
             </div>
             <a href="{{ Route::has('tumbuhan') ? route('tumbuhan') : url('/tumbuhan') }}" class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 mt-4 inline-flex items-center">
                 <span>Lihat Tumbuhan</span>
@@ -122,8 +122,8 @@
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
     <div class="flex items-center justify-between mb-8">
         <div>
-            <h2 class="text-2xl font-black text-stone-900 tracking-tight">Kabar dan Pengumuman Desa</h2>
-            <p class="text-stone-500 text-sm mt-1">Informasi terkini mengenai kondisi kawasan hutan dan kegiatan warga.</p>
+            <h2 class="text-2xl font-black text-stone-900 tracking-tight">Kabar dan Pengumuman Jawa Barat</h2>
+            <p class="text-stone-500 text-sm mt-1">Informasi terkini mengenai kondisi kawasan hutan dan kegiatan kehutanan Jawa Barat.</p>
         </div>
         <a href="{{ Route::has('info') ? route('info') : url('/info') }}" class="hidden sm:inline-flex items-center text-sm font-bold text-green-700 hover:text-green-800">
             <span>Lihat Semua Kabar</span>
@@ -151,7 +151,7 @@
                     </p>
                 </div>
                 <div class="pt-4 border-t border-stone-100 flex items-center justify-between">
-                    <span class="text-[11px] text-stone-400">Oleh Admin Satgas</span>
+                    <span class="text-[11px] text-stone-400">Oleh Admin Kehutanan</span>
                     <a href="{{ Route::has('info.detail') ? route('info.detail', $pengumuman->id) : url('/info/' . $pengumuman->id) }}" class="text-xs font-semibold text-green-700 hover:text-green-800 inline-flex items-center">
                         <span>Baca Selengkapnya</span>
                         <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
@@ -171,10 +171,10 @@
     <div class="bg-stone-900 text-white rounded-3xl p-8 sm:p-10 shadow-xl">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div class="max-w-xl">
-                <span class="text-xs font-bold uppercase tracking-wider text-green-400 mb-2 block">Layanan Cepat Tanggap</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-green-400 mb-2 block">Layanan Cepat Tanggap Jawa Barat</span>
                 <h2 class="text-2xl font-black text-white mb-2">Kontak Darurat Siaga 24 Jam</h2>
                 <p class="text-stone-400 text-xs sm:text-sm leading-relaxed">
-                    Jika Anda menemukan situasi gawat darurat kebakaran hutan atau ancaman satwa berbahaya yang mendesak, segera hubungi petugas melalui nomor di bawah ini.
+                    Jika Anda menemukan situasi gawat darurat kebakaran hutan atau ancaman satwa berbahaya yang mendesak di wilayah Jawa Barat, segera hubungi petugas melalui nomor di bawah ini.
                 </p>
             </div>
 

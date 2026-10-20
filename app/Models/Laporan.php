@@ -24,6 +24,7 @@ class Laporan extends Model
         'status',
         'catatan_admin',
         'id_kawasan',
+        'id_kabupaten_kota',
         'id_admin',
         'ip_pelapor',
     ];
@@ -39,6 +40,11 @@ class Laporan extends Model
     public function kawasanHutan()
     {
         return $this->belongsTo(KawasanHutan::class, 'id_kawasan');
+    }
+
+    public function kabupatenKota()
+    {
+        return $this->belongsTo(KabupatenKota::class, 'id_kabupaten_kota');
     }
 
     public function admin()
