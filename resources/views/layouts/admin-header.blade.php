@@ -33,6 +33,10 @@
 
         <livewire:admin.tombol-layar-penuh />
 
+        <button type="button" onclick="alihModeGelapAdmin()" id="btn-mode-gelap-admin" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 hover:text-stone-900 transition cursor-pointer" title="Mode Gelap / Terang" aria-label="Mode Gelap / Terang">
+            <i id="ikon-mode-gelap-admin" class="fa-solid fa-moon text-sm"></i>
+        </button>
+
         <livewire:admin.notifikasi-modal />
     </div>
 </header>

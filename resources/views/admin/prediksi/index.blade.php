@@ -474,12 +474,33 @@ function inisialisasiPetaPrediksi() {
         map.setView([{{ $prediksiAktif->latitude }}, {{ $prediksiAktif->longitude }}], 14);
     @endif
 
-    window.addEventListener('peta-toggle-layar-penuh', function () {
+    window.addEventListener('peta-toggle-layar-penuh', function (e) {
+        var detail = e.detail;
+        if (Array.isArray(detail)) {
+            detail = detail[0] || {};
+        }
+        var el = document.getElementById('peta-prediksi');
+        if (el) {
+            if (detail && detail.layarPenuh) {
+                el.style.setProperty('height', '100vh', 'important');
+                el.style.setProperty('width', '100vw', 'important');
+                document.body.classList.add('overflow-hidden');
+            } else {
+                el.style.setProperty('height', '100%', 'important');
+                el.style.setProperty('width', '100%', 'important');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
         setTimeout(function () {
             if (typeof map !== 'undefined' && map) {
                 map.invalidateSize();
             }
-        }, 200);
+        }, 100);
+        setTimeout(function () {
+            if (typeof map !== 'undefined' && map) {
+                map.invalidateSize();
+            }
+        }, 300);
     });
 }
 

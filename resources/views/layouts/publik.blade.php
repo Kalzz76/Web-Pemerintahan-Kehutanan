@@ -22,30 +22,260 @@
     </script>
     <style>
         body.mode-gelap {
-            background-color: #171717 !important;
-            color: #f5f5f4 !important;
+            background-color: #121214 !important;
+            color: #f3f4f6 !important;
         }
         body.mode-gelap .bg-white {
-            background-color: #262626 !important;
-            color: #f5f5f4 !important;
-            border-color: #404040 !important;
+            background-color: #1c1c21 !important;
+            color: #f3f4f6 !important;
+            border-color: #2e2e36 !important;
         }
         body.mode-gelap .bg-stone-50,
-        body.mode-gelap .bg-stone-100 {
-            background-color: #1c1917 !important;
-            color: #f5f5f4 !important;
+        body.mode-gelap .bg-stone-100,
+        body.mode-gelap .bg-stone-200,
+        body.mode-gelap [class*="bg-stone-50"],
+        body.mode-gelap [class*="bg-stone-100"],
+        body.mode-gelap [class*="bg-stone-200"] {
+            background-color: #151518 !important;
+            color: #f3f4f6 !important;
+        }
+        body.mode-gelap [class*="bg-white/"] {
+            background-color: #1c1c21 !important;
+            color: #f3f4f6 !important;
+            border-color: #2e2e36 !important;
+        }
+        body.mode-gelap .hover\:bg-stone-50:hover,
+        body.mode-gelap .hover\:bg-stone-100:hover,
+        body.mode-gelap .hover\:bg-stone-200:hover,
+        body.mode-gelap .hover\:bg-white:hover {
+            background-color: #26262e !important;
+            color: #ffffff !important;
         }
         body.mode-gelap .text-stone-900,
-        body.mode-gelap .text-stone-800 {
-            color: #f5f5f4 !important;
+        body.mode-gelap .text-stone-800,
+        body.mode-gelap .text-gray-900,
+        body.mode-gelap .text-gray-800,
+        body.mode-gelap h1,
+        body.mode-gelap h2,
+        body.mode-gelap h3,
+        body.mode-gelap h4 {
+            color: #f9fafb !important;
         }
         body.mode-gelap .text-stone-700,
-        body.mode-gelap .text-stone-600 {
-            color: #d6d3d1 !important;
+        body.mode-gelap .text-stone-600,
+        body.mode-gelap .text-gray-700,
+        body.mode-gelap .text-gray-600 {
+            color: #d1d5db !important;
         }
+        body.mode-gelap .text-stone-500,
+        body.mode-gelap .text-stone-400,
+        body.mode-gelap .text-gray-500,
+        body.mode-gelap .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        body.mode-gelap .border-stone-100,
         body.mode-gelap .border-stone-200,
-        body.mode-gelap .border-stone-100 {
-            border-color: #404040 !important;
+        body.mode-gelap .border-stone-300,
+        body.mode-gelap [class*="border-stone-"] {
+            border-color: #2e2e36 !important;
+        }
+        body.mode-gelap .divide-stone-100 > :not([hidden]) ~ :not([hidden]),
+        body.mode-gelap .divide-stone-200 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #2e2e36 !important;
+        }
+        body.mode-gelap input[type="text"],
+        body.mode-gelap input[type="tel"],
+        body.mode-gelap input[type="password"],
+        body.mode-gelap select,
+        body.mode-gelap textarea {
+            background-color: #17171b !important;
+            color: #f9fafb !important;
+            border-color: #383842 !important;
+        }
+        body.mode-gelap input::placeholder,
+        body.mode-gelap textarea::placeholder {
+            color: #6b7280 !important;
+        }
+        body.mode-gelap select option {
+            background-color: #17171b !important;
+            color: #f9fafb !important;
+        }
+        body.mode-gelap .text-green-900,
+        body.mode-gelap .text-green-800,
+        body.mode-gelap .text-green-700 {
+            color: #4ade80 !important;
+        }
+        body.mode-gelap .text-emerald-900,
+        body.mode-gelap .text-emerald-800,
+        body.mode-gelap .text-emerald-700 {
+            color: #34d399 !important;
+        }
+        body.mode-gelap .text-amber-900,
+        body.mode-gelap .text-amber-800,
+        body.mode-gelap .text-amber-700 {
+            color: #fbbf24 !important;
+        }
+        body.mode-gelap .text-rose-900,
+        body.mode-gelap .text-rose-800,
+        body.mode-gelap .text-rose-700,
+        body.mode-gelap .text-red-700 {
+            color: #f87171 !important;
+        }
+        body.mode-gelap .text-blue-900,
+        body.mode-gelap .text-blue-800,
+        body.mode-gelap .text-blue-700 {
+            color: #60a5fa !important;
+        }
+        body.mode-gelap .text-sky-900,
+        body.mode-gelap .text-sky-800,
+        body.mode-gelap .text-sky-700 {
+            color: #38bdf8 !important;
+        }
+        body.mode-gelap .bg-green-100 {
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            color: #86efac !important;
+        }
+        body.mode-gelap .bg-emerald-100 {
+            background-color: rgba(16, 185, 129, 0.2) !important;
+            color: #6ee7b7 !important;
+        }
+        body.mode-gelap .bg-amber-100 {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+            color: #fde68a !important;
+        }
+        body.mode-gelap .bg-rose-100,
+        body.mode-gelap .bg-red-100 {
+            background-color: rgba(244, 63, 94, 0.2) !important;
+            color: #fca5a5 !important;
+        }
+        body.mode-gelap .bg-blue-100 {
+            background-color: rgba(59, 130, 246, 0.2) !important;
+            color: #93c5fd !important;
+        }
+        body.mode-gelap .bg-sky-100 {
+            background-color: rgba(14, 165, 233, 0.2) !important;
+            color: #7dd3fc !important;
+        }
+        body.mode-gelap .bg-lime-100 {
+            background-color: rgba(132, 204, 22, 0.2) !important;
+            color: #bef264 !important;
+        }
+        body.mode-gelap .bg-yellow-100 {
+            background-color: rgba(234, 179, 8, 0.2) !important;
+            color: #fef08a !important;
+        }
+        body.mode-gelap .bg-orange-100 {
+            background-color: rgba(249, 115, 22, 0.2) !important;
+            color: #fdba74 !important;
+        }
+        body.mode-gelap .bg-purple-100 {
+            background-color: rgba(168, 85, 247, 0.2) !important;
+            color: #d8b4fe !important;
+        }
+        body.mode-gelap .bg-green-50,
+        body.mode-gelap .bg-emerald-50 {
+            background-color: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }
+        body.mode-gelap .bg-amber-50 {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+            color: #fde68a !important;
+        }
+        body.mode-gelap .bg-rose-50 {
+            background-color: rgba(244, 63, 94, 0.12) !important;
+            border-color: rgba(244, 63, 94, 0.3) !important;
+            color: #fca5a5 !important;
+        }
+        body.mode-gelap .bg-sky-50 {
+            background-color: rgba(14, 165, 233, 0.12) !important;
+            border-color: rgba(14, 165, 233, 0.3) !important;
+            color: #7dd3fc !important;
+        }
+        body.mode-gelap button.bg-stone-100,
+        body.mode-gelap a.bg-stone-100 {
+            background-color: #24242b !important;
+            color: #e5e7eb !important;
+            border-color: #383842 !important;
+        }
+        body.mode-gelap button.bg-stone-100:hover,
+        body.mode-gelap a.bg-stone-100:hover {
+            background-color: #31313a !important;
+        }
+        body.mode-gelap button.bg-stone-900,
+        body.mode-gelap a.bg-stone-900 {
+            background-color: #24242b !important;
+            color: #ffffff !important;
+            border: 1px solid #383842 !important;
+        }
+        body.mode-gelap button.bg-stone-900:hover,
+        body.mode-gelap a.bg-stone-900:hover {
+            background-color: #31313a !important;
+        }
+        body.mode-gelap .leaflet-popup-content-wrapper,
+        body.mode-gelap .leaflet-popup-tip {
+            background-color: #1c1c21 !important;
+            color: #f3f4f6 !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+        }
+        body.mode-gelap .leaflet-popup-content h4 {
+            color: #ffffff !important;
+        }
+        body.mode-gelap .leaflet-popup-content p,
+        body.mode-gelap .leaflet-popup-content .text-stone-600 {
+            color: #d1d5db !important;
+        }
+        body.mode-gelap .leaflet-popup-content .border-stone-100 {
+            border-color: #2e2e36 !important;
+        }
+        body.mode-gelap .leaflet-bar a {
+            background-color: #1c1c21 !important;
+            color: #f3f4f6 !important;
+            border-bottom-color: #2e2e36 !important;
+        }
+        body.mode-gelap .leaflet-bar a:hover {
+            background-color: #2a2a32 !important;
+            color: #ffffff !important;
+        }
+        body.mode-gelap .tombol-layar-penuh-peta,
+        body.mode-gelap [wire\:click="toggleLayarPenuh"] {
+            background-color: #1c1c21 !important;
+            color: #f9fafb !important;
+            border-color: #383842 !important;
+        }
+        body.mode-gelap [wire\:click="toggleLayarPenuh"] i {
+            color: #9ca3af !important;
+        }
+        body.mode-gelap [wire\:click="toggleLayarPenuh"] span {
+            color: #f9fafb !important;
+        }
+        body.mode-gelap nav[role="navigation"] span,
+        body.mode-gelap nav[role="navigation"] a {
+            background-color: #1c1c21 !important;
+            color: #d1d5db !important;
+            border-color: #2e2e36 !important;
+        }
+        body.mode-gelap nav[role="navigation"] span[aria-current="page"] span {
+            background-color: #059669 !important;
+            color: #ffffff !important;
+        }
+        .wadah-peta-fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .wadah-peta-fullscreen [wire\:ignore],
+        .wadah-peta-fullscreen .leaflet-container {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100vh !important;
         }
         body.huruf-kecil {
             font-size: 14px !important;

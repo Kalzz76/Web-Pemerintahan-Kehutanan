@@ -24,6 +24,7 @@
                 <input type="checkbox" id="centang-laporan" checked onchange="alihLapisan('laporan')" class="rounded border-stone-300 text-red-600 focus:ring-red-500">
                 <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-600 mr-1.5 inline-block"></span> Laporan Terverifikasi</span>
             </label>
+        </div>
     </div>
 
     <div class="mb-4">
@@ -36,38 +37,38 @@
 
     <div class="bg-white rounded-2xl shadow-sm border border-stone-100 p-6">
         <h2 class="text-xs font-bold uppercase text-stone-400 tracking-wider mb-4">Keterangan Simbol & Warna Peta</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-4 text-xs font-medium text-stone-700">
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 text-xs font-medium text-stone-700">
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#dc2626] shrink-0 shadow-sm"></span>
-                <span>Kebakaran</span>
+                <span class="whitespace-nowrap">Kebakaran</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#ea580c] shrink-0 shadow-sm"></span>
-                <span>Hewan Masuk</span>
+                <span class="whitespace-nowrap">Hewan Masuk</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#2563eb] shrink-0 shadow-sm"></span>
-                <span>Pos Jaga</span>
+                <span class="whitespace-nowrap">Pos Jaga</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#991b1b] shrink-0 shadow-sm"></span>
-                <span>Pos Pemadam</span>
+                <span class="whitespace-nowrap">Pos Pemadam</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#0891b2] shrink-0 shadow-sm"></span>
-                <span>Sumber Air</span>
+                <span class="whitespace-nowrap">Sumber Air</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#16a34a] shrink-0 shadow-sm"></span>
-                <span>Titik Evakuasi</span>
+                <span class="whitespace-nowrap">Titik Evakuasi</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 rounded-full bg-[#ca8a04] shrink-0 shadow-sm"></span>
-                <span>Permukiman</span>
+                <span class="whitespace-nowrap">Permukiman</span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="w-3.5 h-3.5 border-2 border-[#15803d] bg-green-200/50 rounded-sm shrink-0"></span>
-                <span>Kawasan Hutan</span>
+                <span class="whitespace-nowrap">Kawasan Hutan</span>
             </div>
         </div>
     </div>
@@ -233,12 +234,33 @@ document.addEventListener('DOMContentLoaded', function () {
         layerLaporan.addLayer(marker);
     });
 
-    window.addEventListener('peta-toggle-layar-penuh', function () {
+    window.addEventListener('peta-toggle-layar-penuh', function (e) {
+        var detail = e.detail;
+        if (Array.isArray(detail)) {
+            detail = detail[0] || {};
+        }
+        var el = document.getElementById('peta-publik');
+        if (el) {
+            if (detail && detail.layarPenuh) {
+                el.style.setProperty('height', '100vh', 'important');
+                el.style.setProperty('width', '100vw', 'important');
+                document.body.classList.add('overflow-hidden');
+            } else {
+                el.style.setProperty('height', '100%', 'important');
+                el.style.setProperty('width', '100%', 'important');
+                document.body.classList.remove('overflow-hidden');
+            }
+        }
         setTimeout(function () {
             if (typeof map !== 'undefined' && map) {
                 map.invalidateSize();
             }
-        }, 200);
+        }, 100);
+        setTimeout(function () {
+            if (typeof map !== 'undefined' && map) {
+                map.invalidateSize();
+            }
+        }, 300);
     });
 
     window.addEventListener('peta-terbang', function (e) {

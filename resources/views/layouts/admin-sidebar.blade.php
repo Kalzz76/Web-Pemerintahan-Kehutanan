@@ -3,7 +3,7 @@
     $pengaturanGlobal = \App\Models\PengaturanHutan::first();
 @endphp
 
-<aside id="admin-sidebar" class="sidebar fixed inset-y-0 left-0 z-50 h-screen flex flex-col justify-between shrink-0 shadow-2xl transition-all duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:h-screen md:shadow-none">
+<aside id="admin-sidebar" wire:persist="admin-sidebar" class="sidebar fixed inset-y-0 left-0 z-50 h-screen flex flex-col justify-between shrink-0 shadow-2xl transition-all duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:h-screen md:shadow-none">
     <div class="flex flex-col h-full overflow-hidden">
         <div class="brand flex items-center justify-between h-11 pr-4 pl-1 shrink-0">
             <div class="brand-left flex items-center space-x-3 overflow-hidden">
@@ -26,7 +26,7 @@
 
         <div class="divider h-px bg-white/20 my-3.5 mr-4 ml-1 shrink-0"></div>
 
-        <nav class="flex-1 space-y-5 overflow-y-auto no-scrollbar overscroll-contain pr-0">
+        <nav id="admin-sidebar-nav" class="flex-1 space-y-5 overflow-y-auto no-scrollbar overscroll-contain pr-0">
             <div>
                 <div class="nav-section-title px-3 mb-1.5 text-[10px] font-bold uppercase tracking-wider text-white/70">
                     Menu Utama
