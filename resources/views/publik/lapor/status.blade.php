@@ -97,9 +97,23 @@
 
                 <div class="sm:col-span-2">
                     <span class="text-stone-400 text-xs block mb-1">Deskripsi Warga</span>
-                    <p class="text-stone-700 leading-relaxed bg-stone-50 p-4 rounded-2xl border border-stone-100">
-                        {{ $laporan->deskripsi }}
-                    </p>
+
+                    @if ($laporan->deskripsi_terstruktur['is_structured'])
+                        <div class="overflow-hidden rounded-xl border border-stone-200/80 bg-white">
+                            <table class="w-full text-left text-xs">
+                                <tbody class="divide-y divide-stone-100">
+                                    @foreach ($laporan->deskripsi_terstruktur['items'] as $item)
+                                        <tr class="transition-colors hover:bg-stone-50/40">
+                                            <td class="w-36 sm:w-44 px-3 py-1.5 bg-stone-50/70 text-stone-500 font-medium text-xs align-top border-r border-stone-100 whitespace-nowrap">{{ $item['label'] }}</td>
+                                            <td class="px-3 py-1.5 text-stone-800 font-semibold text-xs align-top leading-normal"><span class="whitespace-pre-line">{{ trim($item['value']) }}</span></td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <div class="px-3.5 py-2 rounded-xl bg-stone-50 border border-stone-200/70 text-stone-800 font-medium text-xs sm:text-sm leading-normal whitespace-pre-line">{{ trim($laporan->deskripsi) }}</div>
+                    @endif
                 </div>
 
                 @if ($laporan->detail_kejadian && is_array($laporan->detail_kejadian) && count($laporan->detail_kejadian) > 0)

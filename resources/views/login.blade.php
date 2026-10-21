@@ -21,7 +21,7 @@
         }
     </script>
 </head>
-<body class="bg-[#154735] text-white font-sans antialiased min-h-screen relative selection:bg-emerald-300 selection:text-emerald-950 overflow-x-hidden" style="background-color: #154735; background-image: url('{{ asset('images/background-login-v2.png') }}'); background-repeat: no-repeat; background-position: left center; background-size: contain;">
+<body class="bg-[#154735] text-white font-sans antialiased min-h-screen relative selection:bg-emerald-300 selection:text-emerald-950 overflow-x-hidden" style="background-color: #154735; background-image: url('{{ asset('images/background-login-v1.png') }}'); background-repeat: no-repeat; background-position: left center; background-size: contain;">
     @php
         $pengaturanGlobal = \App\Models\PengaturanHutan::first();
     @endphp
