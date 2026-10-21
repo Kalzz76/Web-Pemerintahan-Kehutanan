@@ -235,7 +235,252 @@
                 margin-right: 10px;
             }
         }
+
+        body.mode-gelap {
+            background-color: #121214 !important;
+            color: #f3f4f6 !important;
+        }
+        html.mode-gelap body {
+            background-color: #121214 !important;
+            color: #f3f4f6 !important;
+        }
+        body.mode-gelap #appRoot,
+        body.mode-gelap #admin-main-wrapper {
+            background-color: #121214 !important;
+            color: #f3f4f6 !important;
+        }
+        body.mode-gelap header {
+            background-color: rgba(18, 18, 20, 0.95) !important;
+            border-color: #27272e !important;
+        }
+        body.mode-gelap .admin-nav-item.on {
+            background: #121214 !important;
+            color: #34d399 !important;
+        }
+        body.mode-gelap .admin-nav-item.on::before {
+            background: radial-gradient(circle at 0 0, transparent 32px, #121214 32.5px) !important;
+        }
+        body.mode-gelap .admin-nav-item.on::after {
+            background: radial-gradient(circle at 0 100%, transparent 32px, #121214 32.5px) !important;
+        }
+        body.mode-gelap .admin-nav-item.on .badge-counter-pill {
+            background: #34d399 !important;
+            color: #064B38 !important;
+        }
+        body.mode-gelap .bg-white {
+            background-color: #1a1a1f !important;
+            color: #f3f4f6 !important;
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap .bg-stone-50,
+        body.mode-gelap .bg-stone-100,
+        body.mode-gelap .bg-stone-200,
+        body.mode-gelap [class*="bg-stone-50"],
+        body.mode-gelap [class*="bg-stone-100"],
+        body.mode-gelap [class*="bg-stone-200"] {
+            background-color: #141417 !important;
+            color: #f3f4f6 !important;
+        }
+        body.mode-gelap thead,
+        body.mode-gelap thead tr {
+            background-color: #141417 !important;
+            color: #9ca3af !important;
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap thead th {
+            color: #9ca3af !important;
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap tbody {
+            background-color: #1a1a1f !important;
+        }
+        body.mode-gelap tbody tr {
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap tbody tr:hover {
+            background-color: #22222a !important;
+        }
+        body.mode-gelap .hover\:bg-stone-50:hover,
+        body.mode-gelap .hover\:bg-stone-100:hover,
+        body.mode-gelap .hover\:bg-stone-200:hover,
+        body.mode-gelap .hover\:bg-white:hover {
+            background-color: #262630 !important;
+            color: #ffffff !important;
+        }
+        body.mode-gelap .text-stone-900,
+        body.mode-gelap .text-stone-800,
+        body.mode-gelap .text-gray-900,
+        body.mode-gelap .text-gray-800,
+        body.mode-gelap h1,
+        body.mode-gelap h2,
+        body.mode-gelap h3,
+        body.mode-gelap h4 {
+            color: #f9fafb !important;
+        }
+        body.mode-gelap .text-stone-700,
+        body.mode-gelap .text-stone-600,
+        body.mode-gelap .text-gray-700,
+        body.mode-gelap .text-gray-600 {
+            color: #d1d5db !important;
+        }
+        body.mode-gelap .text-stone-500,
+        body.mode-gelap .text-stone-400,
+        body.mode-gelap .text-gray-500,
+        body.mode-gelap .text-gray-400 {
+            color: #9ca3af !important;
+        }
+        body.mode-gelap .border-stone-100,
+        body.mode-gelap .border-stone-200,
+        body.mode-gelap .border-stone-300,
+        body.mode-gelap [class*="border-stone-"] {
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap .divide-stone-100 > :not([hidden]) ~ :not([hidden]),
+        body.mode-gelap .divide-stone-200 > :not([hidden]) ~ :not([hidden]),
+        body.mode-gelap [class*="divide-stone-"] > :not([hidden]) ~ :not([hidden]) {
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap input[type="text"],
+        body.mode-gelap input[type="password"],
+        body.mode-gelap input[type="number"],
+        body.mode-gelap input[type="email"],
+        body.mode-gelap input[type="date"],
+        body.mode-gelap input[type="time"],
+        body.mode-gelap select,
+        body.mode-gelap textarea {
+            background-color: #141417 !important;
+            color: #f9fafb !important;
+            border-color: #363640 !important;
+        }
+        body.mode-gelap input::placeholder,
+        body.mode-gelap textarea::placeholder {
+            color: #6b7280 !important;
+        }
+        body.mode-gelap select option {
+            background-color: #141417 !important;
+            color: #f9fafb !important;
+        }
+        body.mode-gelap button.bg-stone-100,
+        body.mode-gelap a.bg-stone-100,
+        body.mode-gelap #sidebarToggle,
+        body.mode-gelap #btn-mode-gelap-admin,
+        body.mode-gelap [wire\:click="toggleLayarPenuh"] {
+            background-color: #23232b !important;
+            color: #d1d5db !important;
+            border-color: #363640 !important;
+        }
+        body.mode-gelap button.bg-stone-100:hover,
+        body.mode-gelap a.bg-stone-100:hover,
+        body.mode-gelap #sidebarToggle:hover,
+        body.mode-gelap #btn-mode-gelap-admin:hover,
+        body.mode-gelap [wire\:click="toggleLayarPenuh"]:hover {
+            background-color: #2e2e38 !important;
+            color: #ffffff !important;
+        }
+        body.mode-gelap #wadah-dropdown-notifikasi {
+            background-color: #1a1a1f !important;
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap #modal-pesan .bg-white,
+        body.mode-gelap #modal-konfirmasi-box {
+            background-color: #1a1a1f !important;
+            border-color: #2c2c34 !important;
+            color: #f9fafb !important;
+        }
+        body.mode-gelap .text-green-900,
+        body.mode-gelap .text-green-800,
+        body.mode-gelap .text-green-700 {
+            color: #4ade80 !important;
+        }
+        body.mode-gelap .text-emerald-900,
+        body.mode-gelap .text-emerald-800,
+        body.mode-gelap .text-emerald-700 {
+            color: #34d399 !important;
+        }
+        body.mode-gelap .text-amber-900,
+        body.mode-gelap .text-amber-800,
+        body.mode-gelap .text-amber-700 {
+            color: #fbbf24 !important;
+        }
+        body.mode-gelap .text-rose-900,
+        body.mode-gelap .text-rose-800,
+        body.mode-gelap .text-rose-700 {
+            color: #f87171 !important;
+        }
+        body.mode-gelap .text-blue-900,
+        body.mode-gelap .text-blue-800,
+        body.mode-gelap .text-blue-700 {
+            color: #60a5fa !important;
+        }
+        body.mode-gelap .bg-green-100 {
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            color: #86efac !important;
+        }
+        body.mode-gelap .bg-emerald-100 {
+            background-color: rgba(16, 185, 129, 0.2) !important;
+            color: #6ee7b7 !important;
+        }
+        body.mode-gelap .bg-amber-100 {
+            background-color: rgba(245, 158, 11, 0.2) !important;
+            color: #fde68a !important;
+        }
+        body.mode-gelap .bg-rose-100 {
+            background-color: rgba(244, 63, 94, 0.2) !important;
+            color: #fca5a5 !important;
+        }
+        body.mode-gelap .bg-purple-100 {
+            background-color: rgba(168, 85, 247, 0.2) !important;
+            color: #d8b4fe !important;
+        }
+        body.mode-gelap .bg-green-50,
+        body.mode-gelap .bg-emerald-50 {
+            background-color: rgba(16, 185, 129, 0.12) !important;
+            border-color: rgba(16, 185, 129, 0.3) !important;
+        }
+        body.mode-gelap .bg-amber-50 {
+            background-color: rgba(245, 158, 11, 0.12) !important;
+            border-color: rgba(245, 158, 11, 0.3) !important;
+        }
+        body.mode-gelap .bg-rose-50 {
+            background-color: rgba(244, 63, 94, 0.12) !important;
+            border-color: rgba(244, 63, 94, 0.3) !important;
+        }
+        body.mode-gelap nav[role="navigation"] span,
+        body.mode-gelap nav[role="navigation"] a {
+            background-color: #1a1a1f !important;
+            color: #d1d5db !important;
+            border-color: #2c2c34 !important;
+        }
+        body.mode-gelap nav[role="navigation"] span[aria-current="page"] span {
+            background-color: #064B38 !important;
+            color: #ffffff !important;
+        }
+        .wadah-peta-fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 9999 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        .wadah-peta-fullscreen [wire\:ignore],
+        .wadah-peta-fullscreen .leaflet-container {
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100vh !important;
+        }
     </style>
+    <script>
+        try {
+            if (localStorage.getItem('mode_gelap') === '1') {
+                document.documentElement.classList.add('mode-gelap');
+            }
+        } catch (e) {}
+    </script>
     @livewireStyles
 </head>
 <body class="bg-white text-stone-800 font-sans antialiased h-screen overflow-hidden">
@@ -301,6 +546,68 @@
             }
         }
 
+        function sinkronNavigasiSidebar() {
+            const nav = document.getElementById('admin-sidebar-nav') || document.querySelector('#admin-sidebar nav');
+            if (!nav) return;
+
+            const path = window.location.pathname.replace(/\/+$/, '');
+            const items = nav.querySelectorAll('.admin-nav-item');
+            let itemAktif = null;
+
+            items.forEach(function (el) {
+                el.classList.remove('on');
+                try {
+                    const elUrl = new URL(el.getAttribute('href'), window.location.origin);
+                    const elPath = elUrl.pathname.replace(/\/+$/, '');
+                    if (elPath === path) {
+                        itemAktif = el;
+                    } else if (!itemAktif && elPath !== '/admin' && elPath.length > 6 && path.startsWith(elPath)) {
+                        itemAktif = el;
+                    }
+                } catch (e) {}
+            });
+
+            if (itemAktif) {
+                itemAktif.classList.add('on');
+            } else if (path === '/admin' || path === '') {
+                const itemDashboard = nav.querySelector('a[href$="/admin"]');
+                if (itemDashboard) itemDashboard.classList.add('on');
+            }
+
+            const tersimpan = sessionStorage.getItem('admin_sidebar_scroll');
+            if (tersimpan !== null) {
+                nav.scrollTop = parseInt(tersimpan, 10);
+            } else if (itemAktif) {
+                itemAktif.scrollIntoView({ block: 'nearest' });
+            }
+        }
+
+        function pasangScrollDanKlikSidebar() {
+            const nav = document.getElementById('admin-sidebar-nav') || document.querySelector('#admin-sidebar nav');
+            if (!nav || nav.dataset.scrollTerpasang === '1') return;
+            nav.dataset.scrollTerpasang = '1';
+
+            nav.addEventListener('scroll', function () {
+                sessionStorage.setItem('admin_sidebar_scroll', String(nav.scrollTop));
+            }, { passive: true });
+
+            nav.addEventListener('click', function (e) {
+                const link = e.target.closest('.admin-nav-item');
+                if (link) {
+                    sessionStorage.setItem('admin_sidebar_scroll', String(nav.scrollTop));
+                    if (window.innerWidth < 768) {
+                        const sidebar = document.getElementById('admin-sidebar');
+                        const backdrop = document.getElementById('sidebar-backdrop');
+                        if (sidebar) {
+                            sidebar.classList.add('-translate-x-full');
+                            sidebar.classList.remove('translate-x-0');
+                        }
+                        if (backdrop) backdrop.classList.add('hidden');
+                    }
+                }
+            });
+        }
+
         function pasangEventSidebar() {
             const sidebarToggle = document.getElementById('sidebarToggle');
             if (sidebarToggle) {
@@ -319,7 +626,23 @@
         }
 
         pasangEventSidebar();
-        document.addEventListener('livewire:navigated', pasangEventSidebar);
+        pasangScrollDanKlikSidebar();
+        sinkronNavigasiSidebar();
+
+        document.addEventListener('livewire:navigating', function () {
+            const nav = document.getElementById('admin-sidebar-nav') || document.querySelector('#admin-sidebar nav');
+            if (nav) {
+                sessionStorage.setItem('admin_sidebar_scroll', String(nav.scrollTop));
+            }
+        });
+
+        document.addEventListener('livewire:navigated', function () {
+            pasangEventSidebar();
+            pasangScrollDanKlikSidebar();
+            sinkronNavigasiSidebar();
+        });
+
+        window.addEventListener('popstate', sinkronNavigasiSidebar);
 
         function toggleBrowserFullscreen() {
             if (!document.fullscreenElement) {
@@ -390,6 +713,32 @@
         window.addEventListener('wheel', handleDeteksiScrollLuar, { passive: true, capture: true });
         window.addEventListener('touchmove', handleDeteksiScrollLuar, { passive: true, capture: true });
         window.addEventListener('scroll', handleDeteksiScrollLuar, { passive: true, capture: true });
+
+        function alihModeGelapAdmin() {
+            var aktif = document.body.classList.toggle('mode-gelap');
+            localStorage.setItem('mode_gelap', aktif ? '1' : '0');
+            perbaruiIkonGelapAdmin(aktif);
+        }
+
+        function perbaruiIkonGelapAdmin(aktif) {
+            var ikon = document.getElementById('ikon-mode-gelap-admin');
+            if (ikon) {
+                ikon.className = aktif ? 'fa-solid fa-sun text-yellow-300 text-sm' : 'fa-solid fa-moon text-sm';
+            }
+        }
+
+        function muatModeGelapAdmin() {
+            var gelap = localStorage.getItem('mode_gelap') === '1';
+            if (gelap) {
+                document.body.classList.add('mode-gelap');
+            } else {
+                document.body.classList.remove('mode-gelap');
+            }
+            perbaruiIkonGelapAdmin(gelap);
+        }
+
+        muatModeGelapAdmin();
+        document.addEventListener('livewire:navigated', muatModeGelapAdmin);
     </script>
     @yield('scripts')
     @livewireScripts

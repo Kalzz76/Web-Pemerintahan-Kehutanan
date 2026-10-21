@@ -301,12 +301,33 @@
             peta.fitBounds(bounds, { padding: [40, 40] });
         }
 
-        window.addEventListener('peta-toggle-layar-penuh', function () {
+        window.addEventListener('peta-toggle-layar-penuh', function (e) {
+            var detail = e.detail;
+            if (Array.isArray(detail)) {
+                detail = detail[0] || {};
+            }
+            var el = document.getElementById('peta-peringatan');
+            if (el) {
+                if (detail && detail.layarPenuh) {
+                    el.style.setProperty('height', '100vh', 'important');
+                    el.style.setProperty('width', '100vw', 'important');
+                    document.body.classList.add('overflow-hidden');
+                } else {
+                    el.style.setProperty('height', '100%', 'important');
+                    el.style.setProperty('width', '100%', 'important');
+                    document.body.classList.remove('overflow-hidden');
+                }
+            }
             setTimeout(function () {
                 if (typeof peta !== 'undefined' && peta) {
                     peta.invalidateSize();
                 }
-            }, 200);
+            }, 100);
+            setTimeout(function () {
+                if (typeof peta !== 'undefined' && peta) {
+                    peta.invalidateSize();
+                }
+            }, 300);
         });
     });
 
