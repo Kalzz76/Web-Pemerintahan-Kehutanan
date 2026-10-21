@@ -186,12 +186,12 @@
                 </div>
                 <div class="card p-8 text-center border-t-4 border-emerald-500 cursor-pointer" onclick="bukaView('fauna')">
                     <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600"><i class="fa-solid fa-monkey text-2xl"></i></div>
-                    <h3 class="text-4xl font-black text-gray-900 mb-2">10+</h3>
-                    <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Fauna Endemik</p>
+                    <h3 class="text-4xl font-black text-gray-900 mb-2">12</h3>
+                    <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Fauna Utama</p>
                 </div>
                 <div class="card p-8 text-center border-t-4 border-emerald-500 cursor-pointer" onclick="bukaView('flora')">
                     <div class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600"><i class="fa-solid fa-seedling text-2xl"></i></div>
-                    <h3 class="text-4xl font-black text-gray-900 mb-2">8+</h3>
+                    <h3 class="text-4xl font-black text-gray-900 mb-2">8</h3>
                     <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Flora Terdata</p>
                 </div>
             </div>
@@ -284,7 +284,8 @@
     <!-- Konten Utama Slider -->
     <div class="relative z-10 w-full max-w-7xl mx-auto px-6 flex-1 flex flex-col md:flex-row items-center justify-between gap-10">
         <div class="w-full md:w-1/2 h-[320px] md:h-[450px] relative flex justify-center items-center">
-            <div id="flora-img-box" class="w-full h-full rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden slide-anim">
+            <div id="flora-img-box" class="w-full h-full rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden slide-anim relative">
+                <img id="flora-image" class="w-full h-full object-cover absolute inset-0 hidden" src="" alt="">
                 <span id="flora-no-img" class="text-gray-400 italic text-sm">Gambar Tidak Tersedia</span>
             </div>
         </div>
@@ -292,7 +293,11 @@
             <span id="flora-kategori" class="text-xs font-bold text-emerald-400 bg-emerald-900/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Kategori</span>
             <h1 id="flora-title" class="text-4xl md:text-5xl font-serif-elegant font-bold mt-3 mb-2">Nama Flora</h1>
             <h2 id="flora-scientific" class="text-lg text-[#d4af37] italic mb-6">Nama Ilmiah</h2>
-            <p id="flora-desc" class="text-gray-300 leading-relaxed mb-6 text-base">Deskripsi...</p>
+            <p id="flora-desc" class="text-gray-300 leading-relaxed mb-4 text-base">Deskripsi...</p>
+            <div class="bg-emerald-900/40 border border-emerald-500/30 p-4 rounded-xl mt-4">
+                <h3 class="text-emerald-400 font-bold text-sm mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Fun Fact</h3>
+                <p id="flora-funfact" class="text-gray-300 text-sm italic leading-relaxed">Fun fact...</p>
+            </div>
         </div>
     </div>
 
@@ -324,7 +329,8 @@
     <!-- Konten Utama Slider -->
     <div class="relative z-10 w-full max-w-7xl mx-auto px-6 flex-1 flex flex-col md:flex-row items-center justify-between gap-10">
         <div class="w-full md:w-1/2 h-[320px] md:h-[450px] relative flex justify-center items-center">
-            <div id="fauna-img-box" class="w-full h-full rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden slide-anim">
+            <div id="fauna-img-box" class="w-full h-full rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden slide-anim relative">
+                <img id="fauna-image" class="w-full h-full object-cover absolute inset-0 hidden" src="" alt="">
                 <span id="fauna-no-img" class="text-gray-400 italic text-sm">Gambar Tidak Tersedia</span>
             </div>
         </div>
@@ -332,7 +338,11 @@
             <span id="fauna-kategori" class="text-xs font-bold text-emerald-400 bg-emerald-900/60 border border-emerald-500/30 px-3 py-1 rounded-full uppercase tracking-wider">Kategori</span>
             <h1 id="fauna-title" class="text-4xl md:text-5xl font-serif-elegant font-bold mt-3 mb-2">Nama Fauna</h1>
             <h2 id="fauna-scientific" class="text-lg text-[#d4af37] italic mb-6">Nama Ilmiah</h2>
-            <p id="fauna-desc" class="text-gray-300 leading-relaxed mb-6 text-base">Deskripsi...</p>
+            <p id="fauna-desc" class="text-gray-300 leading-relaxed mb-4 text-base">Deskripsi...</p>
+            <div class="bg-emerald-900/40 border border-emerald-500/30 p-4 rounded-xl mt-4">
+                <h3 class="text-emerald-400 font-bold text-sm mb-1"><i class="fa-solid fa-lightbulb mr-2"></i>Fun Fact</h3>
+                <p id="fauna-funfact" class="text-gray-300 text-sm italic leading-relaxed">Fun fact...</p>
+            </div>
         </div>
     </div>
 
@@ -517,30 +527,170 @@ const titik = [
 
 // DATA FLORA LENGKAP
 const floraData = [
-    { nama: "Gandaria", ilmiah: "Bouea macrophylla", kategori: "Flora Khas dan Maskot", desc: "Ditetapkan sebagai maskot atau flora identitas resmi Provinsi Jawa Barat." },
-    { nama: "Rafflesia patma", ilmiah: "Rafflesia patma", kategori: "Flora Khas dan Maskot", desc: "Bunga langka jenis padma yang tumbuh di beberapa kawasan hutan konservasi di Jawa Barat." },
-    { nama: "Saninten", ilmiah: "Castanopsis argentea", kategori: "Flora Khas dan Maskot", desc: "Pohon asli hutan tropis pegunungan Jawa Barat yang memiliki buah berduri mirip rambutan kecil[cite: 1, 2]." },
-    { nama: "Rasamala", ilmiah: "Altingia excelsa", kategori: "Flora Khas dan Maskot", desc: "Pohon tinggi lurus yang menjadi penopang utama ekosistem hutan pegunungan basah[cite: 1, 2]." },
-    { nama: "Edelweiss Jawa", ilmiah: "Anaphalis javanica", kategori: "Flora Pegunungan dan Dataran Tinggi", desc: "Sering ditemui di zona alpen atau puncak-puncak gunung (seperti Tangkuban Parahu, Gede, dan Pangrango)[cite: 1, 2, 3]." },
-    { nama: "Puspa", ilmiah: "Schima wallichii", kategori: "Flora Pegunungan dan Dataran Tinggi", desc: "Jenis pohon kayu yang sangat umum tumbuh di lereng-lereng gunung[cite: 1, 2, 3]." },
-    { nama: "Cantigi / Manarasa", ilmiah: "Vaccinium varingifolium", kategori: "Flora Pegunungan dan Dataran Tinggi", desc: "Semak atau pohon kecil khas daerah pegunungan tinggi[cite: 1, 2, 3]." },
-    { nama: "Pakis Emas", ilmiah: "Cibotium barometz", kategori: "Flora Pegunungan dan Dataran Tinggi", desc: "Tumbuhan paku-pakuan besar yang dilindungi di kawasan hutan lindung[cite: 1, 2, 3]." }
+    { 
+        nama: "Gandaria", 
+        ilmiah: "Bouea macrophylla", 
+        kategori: "Flora Khas dan Maskot", 
+        desc: "Pohon buah tahunan yang berkerabat dekat dengan mangga. Daun mudanya berwarna ungu kemerahan dan sering dijadikan lalapan segar (kedondong sabrang/gandaria). Buahnya berbentuk bulat kecil, berwarna hijau saat mentah dan kuning hingga jingga saat masak, dengan rasa yang asam manis menyegarkan.", 
+        funfact: "Gandaria bukan sekadar buah meja biasa; pohon ini resmi ditetapkan sebagai flora identitas (maskot) Provinsi Jawa Barat karena nilai kulturalnya yang erat dengan masyarakat Sunda.", 
+        image: "assets/gandaria.jpg" 
+    },
+    { 
+        nama: "Rafflesia patma", 
+        ilmiah: "Rafflesia patma", 
+        kategori: "Flora Khas dan Maskot", 
+        desc: "Tumbuhan parasit langka tanpa daun, akar, atau batang sejati yang hidup menumpang pada tumbuhan merambat (Tetrastigma). Saat mekar, bunga ini menampilkan mahkota besar berwarna merah merona dengan bintik-bintik putih.", 
+        funfact: "Bunga ini sangat istimewa karena waktu mekarnya sangat singkat (hanya 5 hingga 7 hari) sebelum akhirnya layu dan membusuk, serta mengeluarkan aroma khas untuk menarik serangga penyerbuk.", 
+        image: "assets/rafflesia.jpg" 
+    },
+    { 
+        nama: "Saninten", 
+        ilmiah: "Castanopsis argentea", 
+        kategori: "Flora Khas dan Maskot", 
+        desc: "Pohon besar asli hutan tropis pegunungan yang dapat tumbuh tinggi menjulang. Buahnya dilindungi oleh cangkang berduri rapat yang sekilas mirip buah rambutan berukuran kecil atau buah berangan.", 
+        funfact: "Biji di dalam buah saninten sangat kaya akan karbohidrat dan protein, sehingga menjadi sumber makanan favorit bagi berbagai satwa liar hutan seperti babi hutan, bajing, dan primata.", 
+        image: "assets/saninten.jpg" 
+    },
+    { 
+        nama: "Rasamala", 
+        ilmiah: "Altingia excelsa", 
+        kategori: "Flora Khas dan Maskot", 
+        desc: "Pohon raksasa berbatang lurus mulus yang menjadi pencakar langit di ekosistem hutan pegunungan basah. Kayunya sangat kuat dan keras, serta kulit batangnya menghasilkan getah beraroma harum khas.", 
+        funfact: "Getah rasamala sejak zaman kolonial hingga kini sering dimanfaatkan sebagai bahan baku pembuatan parfum, dupa, dan bahan pengawet alami karena aromanya yang sangat wangi dan menenangkan.", 
+        image: "assets/rasamala.jpg" 
+    },
+    { 
+        nama: "Edelweiss Jawa", 
+        ilmiah: "Anaphalis javanica", 
+        kategori: "Flora Pegunungan dan Dataran Tinggi", 
+        desc: "Tumbuhan terna berkayu abadi (perennial) yang tumbuh di zona alpen dan puncak-puncak gunung vulkanik. Daun dan batangnya tertutup oleh bulu-bulu halus putih menyerupai wol yang berfungsi mengurangi penguapan di suhu ekstrem.", 
+        funfact: "Edelweiss dijuluki sebagai \"Bunga Abadi\" karena memiliki hormon khusus yang membuat kelopak bunganya tidak mudah rontok atau layu meskipun telah dipetik dan disimpan bertahun-tahun. (Catatan: Memetik edelweiss di kawasan konservasi kini dilarang keras!)", 
+        image: "assets/edelweis.jpg" 
+    },
+    { 
+        nama: "Puspa", 
+        ilmiah: "Schima wallichii", 
+        kategori: "Flora Pegunungan dan Dataran Tinggi", 
+        desc: "Pohon kayu berukuran sedang hingga besar yang mendominasi lereng-lereng gunung berapi di Jawa. Memiliki bunga putih bersih berukuran sedang dengan benang sari kuning yang harum dan sering berguguran di jalan setapak pendakian.", 
+        funfact: "Puspa adalah salah satu jenis pohon pionir yang sangat tangguh; ia merupakan salah satu tumbuhan pertama yang mampu tumbuh kembali di atas tanah vulkanik pasca-letusan gunung berapi.", 
+        image: "assets/puspa.jpg" 
+    },
+    { 
+        nama: "Cantigi / Manarasa", 
+        ilmiah: "Vaccinium varingifolium", 
+        kategori: "Flora Pegunungan dan Dataran Tinggi", 
+        desc: "Semak atau pohon kerdil khas pegunungan tinggi yang sering dijumpai di jalur pendakian terbuka. Memiliki daun berwarna kemerahan saat muda dan menghasilkan buah kecil bulat berwarna ungu kehitaman yang bisa dimakan.", 
+        funfact: "Buah cantigi memiliki rasa yang asam manis menyegarkan dan kaya akan antioksidan, sering dijadikan penyelamat dahaga darurat bagi para pendaki gunung yang kehabisan air minum.", 
+        image: "assets/cantigi.jpg" 
+    },
+    { 
+        nama: "Pakis Emas", 
+        ilmiah: "Cibotium barometz", 
+        kategori: "Flora Pegunungan dan Dataran Tinggi", 
+        desc: "Tumbuhan paku purba berukuran besar dengan rimpang tebal yang dipenuhi oleh bulu-bulu keemasan yang lebat. Pakis ini tumbuh subur di lantai hutan lindung yang lembap dan teduh.", 
+        funfact: "Bulu keemasan pada batang paku ini secara tradisional telah lama dimanfaatkan oleh masyarakat pedalaman sebagai obat alami untuk menghentikan pendarahan pada luka terbuka (hemostatik).", 
+        image: "assets/pakis.jpg" 
+    }
 ];
 
 // DATA FAUNA LENGKAP
 const faunaData = [
-    { nama: "Macan Tutul Jawa", ilmiah: "Panthera pardus melas", kategori: "Jenis Mamalia dan Primata", desc: "Kucing besar endemik yang juga menjadi fauna identitas Jawa Barat; memiliki variasi warna terang atau hitam (macan kumbang)[cite: 1, 2, 3, 4]." },
-    { nama: "Owa Jawa", ilmiah: "Hylobates moloch", kategori: "Jenis Mamalia dan Primata", desc: "Primata arboreal pemakan buah yang terkenal dengan suara kerasnya yang bisa menjangkau hingga 1 kilometer[cite: 1, 2, 3, 4]." },
-    { nama: "Surili", ilmiah: "Presbytis comata", kategori: "Jenis Mamalia dan Primata", desc: "Kera asli Pasundan dengan ciri khas tubuh keabu-abuan dan rambut kepala yang unik[cite: 1, 2, 3, 4]." },
-    { nama: "Lutung Jawa", ilmiah: "Trachypithecus auratus", kategori: "Jenis Mamalia dan Primata", desc: "Primata berbulu hitam legam saat dewasa (atau jingga saat bayi) yang hidup berkelompok di tajuk pohon[cite: 1, 2, 3, 4]." },
-    { nama: "Kukang Jawa", ilmiah: "Nycticebus javanicus", kategori: "Jenis Mamalia dan Primata", desc: "Primata malam yang bergerak lambat dan memiliki mata besar melotot[cite: 1, 2, 3, 4]." },
-    { nama: "Babi Kutil", ilmiah: "Sus verrucosus", kategori: "Jenis Mamalia dan Primata", desc: "Satwa omnivora yang berperan penting di lantai hutan namun kian terancam[cite: 1, 2, 3, 4]." },
-    { nama: "Elang Jawa", ilmiah: "Nisaetus bartelsi", kategori: "Jenis Burung (Avifauna)", desc: "Burung pemangsa langka dengan jambul khas di kepala, sering diasosiasikan dengan lambang Garuda[cite: 1, 2, 3]." },
-    { nama: "Ayam Hutan", ilmiah: "Gallus gallus", kategori: "Jenis Burung (Avifauna)", desc: "Unggas darat yang sering ditemukan di tepian hutan dataran rendah hingga pegunungan[cite: 1, 2, 3]." },
-    { nama: "Burung Berkisar & Madu", ilmiah: "Nectariniidae", kategori: "Jenis Burung (Avifauna)", desc: "Berbagai jenis burung penyerbuk yang menjaga keseimbangan penyerbukan dan penyebaran biji[cite: 1, 2, 3]." },
-    { nama: "Ular Sanca / Piton", ilmiah: "Python reticulatus", kategori: "Reptil dan Serangga", desc: "Predator pengendali populasi hewan pengerat di ekosistem hutan[cite: 1, 2, 3]." },
-    { nama: "Katak & Amfibi", ilmiah: "Amphibia", kategori: "Reptil dan Serangga", desc: "Menjadi indikator kebersihan sumber air dan pengontrol populasi serangga[cite: 1, 2, 3]." },
-    { nama: "Aneka Kupu-kupu", ilmiah: "Papilio & Eurema", kategori: "Reptil dan Serangga", desc: "Umum diamati di kawasan konservasi seperti Tahura Ir. H. Djuanda[cite: 1, 2, 3]." }
+    { 
+        nama: "Macan Tutul Jawa", 
+        ilmiah: "Panthera pardus melas", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Kucing besar endemik pulau Jawa yang menjadi predator puncak di ekosistem hutan. Hewan ini memiliki dua varian warna bulu yang ikonik: tutul terang keemasan dan varian hitam legam yang sering disebut macan kumbang.", 
+        funfact: "Macan Tutul Jawa adalah satwa yang sangat terampil memanjat pohon. Mereka sering menyeret buruannya (seperti rusa atau monyet) ke atas pohon yang tinggi agar makanannya tidak direbut oleh pemangsa lain di lantai hutan.", 
+        image: "assets/macan.jpeg" 
+    },
+    { 
+        nama: "Owa Jawa", 
+        ilmiah: "Hylobates moloch", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Primata arboreal pemakan buah yang bercirikan bulu abu-abu keperakan dan lingkaran hitam di sekitar wajahnya yang mirip topeng.", 
+        funfact: "Owa Jawa terkenal sebagai penyanyi ulung hutan; suara teriakannya yang keras, merdu, dan bernada tinggi dapat menjangkau jarak hingga 1 kilometer untuk menandai wilayah teritorial kelompoknya.", 
+        image: "assets/owa jawa.jpeg" 
+    },
+    { 
+        nama: "Surili", 
+        ilmiah: "Presbytis comata", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Kera asli tanah Pasundan yang memiliki surai atau rambut kepala yang berdiri unik ke atas dengan warna tubuh bagian atas abu-abu keperakan dan perut putih.", 
+        funfact: "Surili adalah hewan pemilih makanan (folivor spesialis) yang sangat bergantung pada pucuk daun muda, bunga, dan buah tertentu, sehingga keberadaannya sangat sensitif terhadap kerusakan hutan.", 
+        image: "assets/surili.jpeg" 
+    },
+    { 
+        nama: "Lutung Jawa", 
+        ilmiah: "Trachypithecus auratus", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Primata berkelompok yang mengalami metamorfosis warna bulu yang drastis: saat lahir bayi lutung berwarna jingga terang menyala, namun saat dewasa bulunya berubah menjadi hitam legam mengkilap.", 
+        funfact: "Warna bayi yang mencolok (jingga terang) memudahkan induk dan kelompoknya untuk langsung mengenali dan mengawasi keberadaan bayi di antara rimbunnya dedaunan hijau.", 
+        image: "assets/lutung.jpeg" 
+    },
+    { 
+        nama: "Kukang Jawa", 
+        ilmiah: "Nycticebus javanicus", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Primata nokturnal (aktif malam hari) yang bergerak sangat lambat di atas dahan pohon. Mereka memiliki mata besar bulat melotot dan corak garis gelap yang khas di wajahnya.", 
+        funfact: "Kukang Jawa adalah satu-satunya primata beracun di dunia! Mereka memiliki kelenjar racun di siku lengan yang jika dijilat dan dicampur air liur, bisa menghasilkan gigitan beracun yang mematikan bagi musuhnya.", 
+        image: "assets/kukang.jpeg" 
+    },
+    { 
+        nama: "Babi Kutil", 
+        ilmiah: "Sus verrucosus", 
+        kategori: "Jenis Mamalia dan Primata", 
+        desc: "Satwa omnivora asli yang memiliki ciri khas berupa tonjolan daging atau kutil di sisi wajahnya. Hewan ini berperan sebagai petani alami yang membantu menggemburkan tanah lantai hutan saat mencari umbi-umbian.", 
+        funfact: "Babi kutil kini berstatus sangat terancam punah akibat hilangnya habitat hutan dataran rendah dan perburuan liar, sehingga populasinya jauh lebih langka dibandingkan kerabatnya, babi hutan biasa.", 
+        image: "assets/babi.jpeg" 
+    },
+    { 
+        nama: "Elang Jawa", 
+        ilmiah: "Nisaetus bartelsi", 
+        kategori: "Jenis Burung (Avifauna)", 
+        desc: "Burung pemangsa berukuran sedang yang memiliki jambul panjang tegak di kepalanya. Tampilannya yang gagah dan eksotis membuat burung ini diyakini sebagai inspirasi utama di balik lambang negara Indonesia, Garuda.", 
+        funfact: "Elang Jawa adalah hewan yang menganut sistem monogami sejati (setia pada satu pasangan seumur hidup) dan hanya bertelur satu butir dalam setiap siklus reproduksinya.", 
+        image: "assets/elangjawa.jpeg" 
+    },
+    { 
+        nama: "Ayam Hutan", 
+        ilmiah: "Gallus gallus", 
+        kategori: "Jenis Burung (Avifauna)", 
+        desc: "Unggas darat yang merupakan nenek moyang langsung dari ayam peliharaan rumahan. Pejantannya memiliki bulu leher berkilau dengan jengger merah menyala yang sangat kontras dengan warna betinanya yang cenderung cokelat samar untuk kamuflase.", 
+        funfact: "Meskipun sudah berkerabat dekat dengan ayam domestik, ayam hutan memiliki kemampuan terbang pendek yang sangat kuat untuk menghindari kejaran predator tanah di hutan.", 
+        image: "assets/ayam.jpeg" 
+    },
+    { 
+        nama: "Burung Kacamata / Madu", 
+        ilmiah: "Nectariniidae", 
+        kategori: "Jenis Burung (Avifauna)", 
+        desc: "Kelompok burung berukuran kecil dengan paruh melengkung atau ramping yang aktif berpindah dari satu bunga ke bunga lain di kanopi hutan.", 
+        funfact: "Burung-burung kecil ini memegang peran ekologis yang sangat vital sebagai agen penyerbuk alami (polinator) serta pengendali populasi serangga kecil di ekosistem hutan hujan.", 
+        image: "assets/burungmadu.jpeg" 
+    },
+    { 
+        nama: "Ular Sanca / Piton", 
+        ilmiah: "Python reticulatus", 
+        kategori: "Reptil dan Serangga", 
+        desc: "Ular pembelit berukuran besar yang tidak berbisa. Memiliki pola sisik geometris yang indah di tubuhnya yang berfungsi sebagai kamuflase sempurna di antara tumpukan serasah daun dan akar pohon.", 
+        funfact: "Sebagai predator puncak di lantai hutan, ular sanca memegang kendali ekologis yang krusial dalam menjaga kestabilan populasi hewan pengerat (seperti tikus hutan) agar tidak meledak.", 
+        image: "assets/sanca.jpeg" 
+    },
+    { 
+        nama: "Katak & Amfibi", 
+        ilmiah: "Amphibia", 
+        kategori: "Reptil dan Serangga", 
+        desc: "Hewan berdarah dingin yang hidup di sekitar aliran sungai jernih, air terjun, dan genangan air hutan di Jawa Barat, mulai dari katak pohon hijau hingga kodok batu.", 
+        funfact: "Kulit amfibi yang sangat sensitif membuat mereka dinobatkan sebagai bio-indikator lingkungan. Jika populasi katak di suatu wilayah hutan mulai menurun atau cacat, itu tanda bahwa air dan lingkungan hutan tersebut mulai tercemar.", 
+        image: "assets/katak.jpeg" 
+    },
+    { 
+        nama: "Aneka Kupu-Kupu", 
+        ilmiah: "Papilio & Eurema", 
+        kategori: "Reptil dan Serangga", 
+        desc: "Serangga bersayap indah dengan warna-warni cerah yang sering dijumpai terbang bebas di kawasan konservasi seperti Taman Hutan Raya (Tahura) Ir. H. Djuanda di Bandung.", 
+        funfact: "Kupu-kupu Papilio jantan sering melakukan perilaku unik bernama mud-puddling, yaitu berkumpul di atas tanah basah atau pasir sungai untuk menyerap mineral penting seperti garam dari tanah.", 
+        image: "assets/kupukupu.jpeg" 
+    }
 ];
 
 let petaHutan, petaLapor, lapisan = {}, penandaLapor, kodeAktif = 'JHD-7K3M9P';
@@ -592,7 +742,10 @@ function renderSliderItem(tipe, index) {
         document.getElementById(tipe + '-title').textContent = "Tidak ditemukan";
         document.getElementById(tipe + '-scientific').textContent = "-";
         document.getElementById(tipe + '-desc').textContent = "Pencarian atau filter tidak menghasilkan data.";
+        document.getElementById(tipe + '-funfact').textContent = "-";
         document.getElementById(tipe + '-kategori').textContent = "-";
+        document.getElementById(tipe + '-image').classList.add('hidden');
+        document.getElementById(tipe + '-no-img').classList.remove('hidden');
         document.getElementById(tipe + '-thumbnails').innerHTML = "";
         return;
     }
@@ -606,7 +759,20 @@ function renderSliderItem(tipe, index) {
     document.getElementById(tipe + '-title').textContent = current.nama;
     document.getElementById(tipe + '-scientific').textContent = current.ilmiah;
     document.getElementById(tipe + '-desc').textContent = current.desc;
+    document.getElementById(tipe + '-funfact').textContent = current.funfact;
     document.getElementById(tipe + '-kategori').textContent = current.kategori;
+
+    // Update Gambar
+    const imgEl = document.getElementById(tipe + '-image');
+    const noImgEl = document.getElementById(tipe + '-no-img');
+    if (current.image) {
+        imgEl.src = current.image;
+        imgEl.classList.remove('hidden');
+        noImgEl.classList.add('hidden');
+    } else {
+        imgEl.classList.add('hidden');
+        noImgEl.classList.remove('hidden');
+    }
 
     // Trigger animasi ulang pada box info
     const imgBox = document.getElementById(tipe + '-img-box');
@@ -621,11 +787,20 @@ function renderSliderItem(tipe, index) {
     list.forEach((item, i) => {
         const isActive = (i === index);
         const num = (i + 1).toString().padStart(2, '0');
-        const borderStyle = isActive ? 'border-[#d4af37] opacity-100 scale-105' : 'border-transparent opacity-50 hover:opacity-100';
+        const borderStyle = isActive ? 'border-[#d4af37] opacity-100 scale-105 shadow-xl' : 'border-transparent opacity-50 hover:opacity-100';
         
         const thumb = document.createElement('div');
-        thumb.className = `relative w-[75px] h-[75px] shrink-0 cursor-pointer rounded-lg border-2 ${borderStyle} transition-all duration-300 overflow-hidden bg-black/50 flex items-center justify-center`;
-        thumb.innerHTML = `<span class="text-white font-black text-xl drop-shadow-md">${num}</span>`;
+        thumb.className = `relative w-[75px] h-[75px] shrink-0 cursor-pointer rounded-lg border-2 ${borderStyle} transition-all duration-300 overflow-hidden bg-black/50 flex items-center justify-center group`;
+        
+        // Coba gunakan gambar untuk thumbnail jika ada
+        if (item.image) {
+            thumb.innerHTML = `
+                <img src="${item.image}" class="w-full h-full object-cover absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity" alt="${item.nama}">
+                <span class="relative z-10 text-white font-black text-xl drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">${num}</span>`;
+        } else {
+            thumb.innerHTML = `<span class="text-white font-black text-xl drop-shadow-md">${num}</span>`;
+        }
+        
         thumb.onclick = () => renderSliderItem(tipe, i);
         thumbContainer.appendChild(thumb);
     });
