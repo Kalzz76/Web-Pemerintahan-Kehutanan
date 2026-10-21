@@ -97,9 +97,42 @@ class PrimataSeeder extends Seeder
                     'Taman Nasional Gunung Gede Pangrango',
                 ],
             ],
+            [
+                'id' => 6,
+                'nama_lokal' => 'Macan Tutul Jawa',
+                'nama_ilmiah' => 'Panthera pardus melas',
+                'status_konservasi' => 'CR',
+                'dilindungi' => true,
+                'habitat' => 'Hutan dataran tinggi dan hujan tropis Jawa Barat.',
+                'makanan' => 'Babi hutan, kijang, kera ekor panjang, dan mamalia kecil.',
+                'ciri_khas' => 'Tubuh berotot lentur, bulu kuning emas bertotol roset hitam, serta variasi macan kumbang hitam legam.',
+                'deskripsi' => 'Predator puncak endemik Pulau Jawa yang berstatus kritis akibat fragmentasi habitat dan perburuan liar.',
+                'kawasan' => [
+                    'Taman Nasional Gunung Gede Pangrango',
+                    'Taman Nasional Gunung Halimun-Salak',
+                    'Taman Nasional Gunung Ciremai',
+                    'Cagar Alam Gunung Simpang',
+                ],
+            ],
+            [
+                'id' => 7,
+                'nama_lokal' => 'Elang Jawa',
+                'nama_ilmiah' => 'Nisaetus bartelsi',
+                'status_konservasi' => 'EN',
+                'dilindungi' => true,
+                'habitat' => 'Kanopi hutan hujan tropis primer dan lereng perbukitan berhutan lebat.',
+                'makanan' => 'Tupai, kelelawar, musang, burung, dan mamalia kecil.',
+                'ciri_khas' => 'Jambul hitam menonjol di atas kepala, bulu punggung cokelat gelap, dada bergaris melintang kemerahan.',
+                'deskripsi' => 'Burung pemangsa endemik Jawa yang identik dengan lambang negara Garuda dan membutuhkan pohon tinggi untuk bersarang.',
+                'kawasan' => [
+                    'Taman Nasional Gunung Halimun-Salak',
+                    'Taman Nasional Gunung Gede Pangrango',
+                    'Cagar Alam Gunung Burangrang',
+                ],
+            ],
         ];
 
-        Primata::whereNotIn('id', [1, 2, 3, 4, 5])->delete();
+        Primata::whereNotIn('id', [1, 2, 3, 4, 5, 6, 7])->delete();
 
         foreach ($data as $item) {
             $primata = Primata::updateOrCreate(

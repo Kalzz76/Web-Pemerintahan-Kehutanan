@@ -84,15 +84,16 @@ class TumbuhanSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'nama_lokal' => 'Jamuju',
+                'nama_lokal' => 'Pohon Jamuju / Ki Putri',
                 'nama_ilmiah' => 'Dacrycarpus imbricatus',
                 'jenis' => 'Pohon',
-                'status_konservasi' => 'NE',
+                'status_konservasi' => 'LC',
                 'dilindungi' => false,
-                'manfaat' => 'Kayu lunak berkualitas, pohon peneduh hutan dataran tinggi, dan pelindung resapan air.',
-                'deskripsi' => 'Spesies conifer pegunungan khas Malesia dengan susunan daun jarum halus yang rapat.',
+                'manfaat' => 'Sistem perakaran sangat kuat dalam mencengkeram tanah sehingga efektif sebagai tumbuhan penahan longsor dan penjaga mata air.',
+                'deskripsi' => 'Pohon konifer asli pegunungan yang dapat tumbuh tinggi hingga 50 meter dengan daun sisik runcing di area berkabut.',
                 'kawasan' => [
                     'Taman Nasional Gunung Gede Pangrango',
+                    'Taman Wisata Alam Gunung Papandayan',
                 ],
             ],
             [
@@ -150,9 +151,24 @@ class TumbuhanSeeder extends Seeder
                     'Cagar Alam Leuweung Sancang',
                 ],
             ],
+            [
+                'id' => 11,
+                'nama_lokal' => 'Bambu Hitam (Awi Hideung)',
+                'nama_ilmiah' => 'Gigantochloa atroviolacea',
+                'jenis' => 'Liana',
+                'status_konservasi' => 'NE',
+                'dilindungi' => false,
+                'manfaat' => 'Mengkonservasi tanah dan mata air, bahan baku tradisional alat musik angklung/calung, serta furnitur tahan hama.',
+                'deskripsi' => 'Tumbuhan berumpun dengan ruas batang berwarna hijau keunguan hingga hitam gelap saat dewasa yang toleran terhadap kekeringan.',
+                'kawasan' => [
+                    'Taman Nasional Gunung Halimun-Salak',
+                    'Taman Wisata Alam Gunung Pancar',
+                    'Pananjung Pangandaran (CA dan TWA)',
+                ],
+            ],
         ];
 
-        Tumbuhan::whereNotIn('id', range(1, 10))->delete();
+        Tumbuhan::whereNotIn('id', range(1, 11))->delete();
 
         foreach ($data as $item) {
             $tumbuhan = Tumbuhan::updateOrCreate(

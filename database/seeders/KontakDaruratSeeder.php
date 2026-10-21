@@ -42,9 +42,33 @@ class KontakDaruratSeeder extends Seeder
                 'nomor_telepon' => '(022) 7313231',
                 'keterangan' => 'Penanggulangan bencana tingkat provinsi',
             ],
+            [
+                'id' => 5,
+                'urutan' => 5,
+                'nama' => 'Call Center BBKSDA Jawa Barat',
+                'instansi' => 'Balai Besar KSDA Jabar',
+                'nomor_telepon' => '08112019971',
+                'keterangan' => 'Hotline & WhatsApp penanganan konflik satwa liar dan karhutla kawasan konservasi Jabar',
+            ],
+            [
+                'id' => 6,
+                'urutan' => 6,
+                'nama' => 'Pusdalops PB BPBD Jawa Barat',
+                'instansi' => 'BPBD Provinsi Jawa Barat',
+                'nomor_telepon' => '082240900112',
+                'keterangan' => 'Pusat komando dan pengendalian operasi penanggulangan bencana Jawa Barat',
+            ],
+            [
+                'id' => 7,
+                'urutan' => 7,
+                'nama' => 'Diskar PB Kota Bandung (Damkar)',
+                'instansi' => 'Dinas Kebakaran dan Penanggulangan Bencana Kota Bandung',
+                'nomor_telepon' => '(022) 7207113',
+                'keterangan' => 'Layanan darurat kebakaran wilayah perkotaan dan kawasan hijau Bandung Raya',
+            ],
         ];
 
-        KontakDarurat::whereNotIn('id', range(1, 4))->delete();
+        KontakDarurat::whereNotIn('id', range(1, 7))->delete();
 
         foreach ($data as $item) {
             KontakDarurat::updateOrCreate(

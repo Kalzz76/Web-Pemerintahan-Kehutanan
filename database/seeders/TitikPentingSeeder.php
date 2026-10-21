@@ -89,9 +89,42 @@ class TitikPentingSeeder extends Seeder
                 'deskripsi' => 'Desa permukiman padat masyarakat petani lereng Gunung Papandayan.',
                 'kontak' => null,
             ],
+            [
+                'id' => 8,
+                'nama' => 'Pos Jaga Jalur Pendakian Apuy (TNGC)',
+                'jenis' => 'Pos Jaga',
+                'latitude' => -6.9113,
+                'longitude' => 108.3615,
+                'kabupaten' => 'Kabupaten Majalengka',
+                'kawasan' => 'Taman Nasional Gunung Ciremai',
+                'deskripsi' => 'Pos pintu masuk resmi pendakian Gunung Ciremai dari sisi Majalengka untuk pos pantau dan penanganan karhutla.',
+                'kontak' => '(0232) 879423',
+            ],
+            [
+                'id' => 9,
+                'nama' => 'Danau Situ Gunung (Sumber Air Pemadaman)',
+                'jenis' => 'Sumber Air',
+                'latitude' => -6.8327,
+                'longitude' => 106.9272,
+                'kabupaten' => 'Kabupaten Sukabumi',
+                'kawasan' => 'Taman Nasional Gunung Gede Pangrango',
+                'deskripsi' => 'Sumber pasokan air tawar skala besar di kawasan resor Situ Gunung yang krusial untuk pemadaman darurat dan water-bombing karhutla.',
+                'kontak' => null,
+            ],
+            [
+                'id' => 10,
+                'nama' => 'Permukiman Desa Suntenjaya',
+                'jenis' => 'Permukiman',
+                'latitude' => -6.8153,
+                'longitude' => 107.6892,
+                'kabupaten' => 'Kabupaten Bandung Barat',
+                'kawasan' => 'Taman Hutan Raya Ir. H. Djuanda',
+                'deskripsi' => 'Desa yang berbatasan langsung dengan area hutan pinus dan pertanian, rawan rembetan api lahan dan perjumpaan satwa liar.',
+                'kontak' => '112',
+            ],
         ];
 
-        TitikPenting::whereNotIn('id', range(1, 7))->delete();
+        TitikPenting::whereNotIn('id', range(1, 10))->delete();
 
         foreach ($data as $item) {
             $idKawasan = $item['kawasan'] ? KawasanHutan::where('nama', $item['kawasan'])->value('id') : null;
