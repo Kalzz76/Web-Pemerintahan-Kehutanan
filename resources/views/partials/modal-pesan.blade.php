@@ -1,5 +1,5 @@
 @if (session('sukses') || session('info') || session('error'))
-<div id="modal-pesan" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm transition-opacity duration-200">
+<div id="modal-pesan" class="fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm transition-opacity duration-200">
     <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-sm w-full shadow-2xl border border-stone-200/90 text-center transform transition-all duration-200">
         <div id="modal-pesan-icon-wrapper" class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 text-xl shadow-xs border transition-colors
             @if (session('sukses')) bg-emerald-50 text-emerald-600 border-emerald-200/60

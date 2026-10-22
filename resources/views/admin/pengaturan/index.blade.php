@@ -56,11 +56,11 @@
             <div class="md:col-span-2">
                 <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1.5">Logo Aplikasi</label>
                 <div class="flex items-center space-x-4">
-                    <div class="w-14 h-14 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
+                    <div class="w-14 h-14 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0 overflow-hidden shadow-inner p-1">
                         @if ($pengaturan && $pengaturan->logo)
                             <img src="{{ asset('storage/' . $pengaturan->logo) }}" alt="Logo saat ini" class="w-full h-full object-contain">
                         @else
-                            <i class="fa-solid fa-tree text-stone-700 text-xl"></i>
+                            <img src="{{ asset('images/Logo_Kementerian_Kehutanan.png') }}" alt="Logo default" class="w-full h-full object-contain">
                         @endif
                     </div>
                     <div class="flex-1">

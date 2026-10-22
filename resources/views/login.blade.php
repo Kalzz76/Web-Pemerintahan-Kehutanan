@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - {{ $pengaturanGlobal->nama_aplikasi ?? 'Jaga Hutan Jawa Barat' }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo_Kementerian_Kehutanan.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -29,11 +30,9 @@
     <div class="fixed top-5 left-5 sm:top-8 sm:left-8 z-30">
         <a href="{{ route('beranda') }}" class="inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-white/85 hover:bg-white/95 backdrop-blur-md border border-white/80 shadow-md transition hover:scale-[1.02] group">
             @if ($pengaturanGlobal && $pengaturanGlobal->logo)
-                <img src="{{ asset('storage/' . $pengaturanGlobal->logo) }}" alt="Logo" class="w-8 h-8 object-contain rounded-full shadow-2xs">
+                <img src="{{ asset('storage/' . $pengaturanGlobal->logo) }}" alt="Logo" class="w-8 h-8 object-contain">
             @else
-                <div class="w-8 h-8 rounded-full bg-[#154735] text-white flex items-center justify-center text-xs shadow-2xs">
-                    <i class="fa-solid fa-tree"></i>
-                </div>
+                <img src="{{ asset('images/Logo_Kementerian_Kehutanan.png') }}" alt="Logo" class="w-8 h-8 object-contain">
             @endif
             <div class="flex flex-col text-left">
                 <span class="text-xs sm:text-sm font-extrabold text-stone-900 tracking-tight leading-tight group-hover:text-emerald-900 transition">

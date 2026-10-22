@@ -229,7 +229,7 @@
 
             <div class="pt-4 border-t border-stone-100">
                 <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400 mb-3">Peta Lokasi Kejadian</h3>
-                <div id="peta-laporan-detail" class="w-full h-72 rounded-2xl border border-stone-200 overflow-hidden z-10"></div>
+                <div id="peta-laporan-detail" class="w-full h-72 rounded-2xl border border-stone-200 overflow-hidden relative z-0"></div>
             </div>
         </div>
 

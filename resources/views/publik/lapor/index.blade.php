@@ -377,7 +377,7 @@
                 </div>
 
                 <div class="rounded-2xl border border-stone-200/90 overflow-hidden relative shadow-xs mb-2">
-                    <div id="peta-lapor" class="w-full h-80 z-10"></div>
+                    <div id="peta-lapor" class="w-full h-80 relative z-0"></div>
                     <div class="absolute top-2.5 right-2.5 z-20 bg-white/90 backdrop-blur px-2.5 py-1 rounded-lg border border-stone-200 text-[10px] text-stone-600 font-medium shadow-2xs">
                         Klik peta untuk menandai titik
                     </div>

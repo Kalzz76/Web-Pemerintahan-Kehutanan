@@ -147,7 +147,7 @@
                     <span>Anda dapat mengedit titik poligon atau menghapusnya dan menggambar ulang poligon baru.</span>
                 </div>
 
-                <div id="peta-kawasan" class="w-full h-[580px] rounded-xl border border-stone-200 overflow-hidden z-10"></div>
+                <div id="peta-kawasan" class="w-full h-[580px] rounded-xl border border-stone-200 overflow-hidden relative z-0"></div>
             </div>
         </div>
     </div>

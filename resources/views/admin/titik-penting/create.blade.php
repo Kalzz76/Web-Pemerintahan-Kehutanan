@@ -119,7 +119,7 @@
                     <span>Klik pada lokasi peta mana saja untuk mengisi koordinat Latitude dan Longitude secara otomatis. Marker lingkaran berwarna akan menandai lokasi yang dipilih.</span>
                 </div>
 
-                <div id="peta-titik" class="w-full h-[540px] rounded-xl border border-stone-200 overflow-hidden z-10"></div>
+                <div id="peta-titik" class="w-full h-[540px] rounded-xl border border-stone-200 overflow-hidden relative z-0"></div>
             </div>
         </div>
     </div>

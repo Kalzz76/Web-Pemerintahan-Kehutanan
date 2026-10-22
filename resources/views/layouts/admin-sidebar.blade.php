@@ -14,11 +14,11 @@
     <div class="relative z-10 flex flex-col h-full overflow-hidden">
         <div class="brand flex items-center justify-between h-11 pr-4 pl-1 shrink-0">
             <div class="brand-left flex items-center space-x-3 overflow-hidden">
-                <div class="brand-logo w-9 h-9 rounded-xl bg-white text-[#064B38] flex items-center justify-center font-black text-lg shrink-0 shadow-sm">
+                <div class="brand-logo w-9 h-9 flex items-center justify-center shrink-0">
                     @if ($pengaturanGlobal && $pengaturanGlobal->logo)
-                        <img src="{{ asset('storage/' . $pengaturanGlobal->logo) }}" alt="Logo" class="w-6 h-6 object-contain rounded-lg">
+                        <img src="{{ asset('storage/' . $pengaturanGlobal->logo) }}" alt="Logo" class="w-full h-full object-contain filter drop-shadow">
                     @else
-                        <i class="fa-solid fa-tree text-[#064B38]"></i>
+                        <img src="{{ asset('images/Logo_Kementerian_Kehutanan.png') }}" alt="Logo" class="w-full h-full object-contain filter drop-shadow">
                     @endif
                 </div>
                 <div class="brand-text truncate">

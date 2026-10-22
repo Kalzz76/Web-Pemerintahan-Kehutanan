@@ -34,7 +34,7 @@
     <livewire:admin.pengumuman-table />
 </div>
 
-<div id="modal-pengumuman" class="fixed inset-0 z-50 hidden overflow-y-auto bg-stone-950/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center">
+<div id="modal-pengumuman" class="fixed inset-0 z-[50000] hidden overflow-y-auto bg-stone-950/60 backdrop-blur-sm p-4 sm:p-6 flex items-center justify-center">
     <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-5 max-h-[90vh] overflow-y-auto border border-stone-200">
         <div class="flex items-center justify-between border-b border-stone-200/80 pb-3">
             <h3 id="modal-judul" class="text-base font-bold text-stone-900">Tambah Pengumuman</h3>

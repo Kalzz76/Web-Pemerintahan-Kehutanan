@@ -30,6 +30,19 @@ class Primata extends Model
         ];
     }
 
+    protected $appends = ['foto_url'];
+
+    public function getFotoUrlAttribute(): ?string
+    {
+        if (!$this->foto) {
+            return null;
+        }
+        if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://') || str_starts_with($this->foto, 'assets/') || str_starts_with($this->foto, 'images/')) {
+            return asset($this->foto);
+        }
+        return asset('storage/' . $this->foto);
+    }
+
     public function kawasanHutan()
     {
         return $this->belongsToMany(KawasanHutan::class, 'kawasan_primata', 'id_primata', 'id_kawasan');

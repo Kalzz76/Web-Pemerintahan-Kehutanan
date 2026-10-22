@@ -16,100 +16,77 @@ use Illuminate\Http\Request;
 
 class PublikController extends Controller
 {
-    public function beranda()
+    public function muatDataPublik(string $activeView = 'beranda')
     {
         $pengaturan = PengaturanHutan::first();
         $kontakDarurat = KontakDarurat::orderBy('urutan')->get();
         $pengumumanTerbaru = Pengumuman::where('status', 'Publish')->latest('tanggal')->take(3)->get();
+        $daftarPengumuman = Pengumuman::where('status', 'Publish')->latest('tanggal')->get();
         $totalKawasan = KawasanHutan::count();
         $totalPrimata = Primata::count();
         $totalTumbuhan = Tumbuhan::count();
         $totalLaporanSelesai = Laporan::where('status', 'Selesai')->count();
         $peringatanPublik = PrediksiApi::where('tampil_publik', 1)->latest()->first();
 
-        return view('publik.beranda', compact(
+        $daftarTumbuhan = Tumbuhan::with('kawasanHutan')->orderBy('nama_lokal')->get();
+        $daftarFauna = Primata::with('kawasanHutan')->orderBy('nama_lokal')->get();
+        $daftarKawasan = KawasanHutan::with('jenisLahan')->orderBy('nama')->get();
+        $daftarTitik = TitikPenting::with('kawasanHutan')->get();
+        $daftarLaporan = Laporan::whereIn('status', ['Baru', 'Diverifikasi', 'Ditangani', 'Selesai'])
+            ->select('id', 'kode', 'jenis', 'jenis_hewan', 'latitude', 'longitude', 'deskripsi', 'foto', 'status', 'created_at')
+            ->latest()
+            ->take(50)
+            ->get();
+
+        $daftarPrediksiPublik = PrediksiApi::where('tampil_publik', 1)
+            ->with(['laporan', 'jenisLahan'])
+            ->latest()
+            ->get();
+        $daftarJadwalPatroli = JadwalPatroli::latest('tanggal')->take(5)->get();
+
+        $kabupatenKota = \App\Models\KabupatenKota::orderBy('nama')->get();
+
+        return compact(
             'pengaturan',
             'kontakDarurat',
             'pengumumanTerbaru',
+            'daftarPengumuman',
             'totalKawasan',
             'totalPrimata',
             'totalTumbuhan',
             'totalLaporanSelesai',
-            'peringatanPublik'
-        ));
-    }
-
-    public function peta()
-    {
-        $pengaturan = PengaturanHutan::first();
-        $daftarKawasan = KawasanHutan::with('jenisLahan')->get();
-        $daftarTitik = TitikPenting::with('kawasanHutan')->get();
-        $daftarLaporan = Laporan::whereIn('status', ['Diverifikasi', 'Ditangani'])
-            ->select('id', 'kode', 'jenis', 'jenis_hewan', 'latitude', 'longitude', 'deskripsi', 'foto', 'status', 'created_at')
-            ->get();
-
-        return view('publik.peta', compact(
-            'pengaturan',
+            'peringatanPublik',
+            'daftarTumbuhan',
+            'daftarFauna',
             'daftarKawasan',
             'daftarTitik',
-            'daftarLaporan'
-        ));
+            'daftarLaporan',
+            'daftarPrediksiPublik',
+            'daftarJadwalPatroli',
+            'kabupatenKota',
+            'activeView'
+        );
+    }
+
+    public function beranda(Request $request)
+    {
+        $activeView = $request->query('view', 'beranda');
+        return view('publik.beranda', $this->muatDataPublik($activeView));
+    }
+
+    public function peta(Request $request)
+    {
+        return view('publik.beranda', $this->muatDataPublik('peta'));
     }
 
     public function peringatan()
     {
-        $pengaturan = PengaturanHutan::first();
-        $daftarPeringatan = PrediksiApi::where('tampil_publik', 1)
-            ->with(['laporan', 'jenisLahan'])
-            ->latest()
-            ->get();
-        $daftarPermukiman = TitikPenting::where('jenis', 'Permukiman')->get();
-
-        return view('publik.peringatan', compact(
-            'pengaturan',
-            'daftarPeringatan',
-            'daftarPermukiman'
-        ));
+        return redirect()->route('peta');
     }
 
     public function primata(Request $request)
     {
-        $pengaturan = PengaturanHutan::first();
-        $cari = $request->query('cari');
-        $idKawasan = $request->query('id_kawasan');
-        $statusKonservasi = $request->query('status');
-
-        $query = Primata::with('kawasanHutan')->orderBy('nama_lokal');
-
-        if (!empty($cari)) {
-            $query->where(function ($q) use ($cari) {
-                $q->where('nama_lokal', 'like', '%' . $cari . '%')
-                    ->orWhere('nama_ilmiah', 'like', '%' . $cari . '%')
-                    ->orWhere('habitat', 'like', '%' . $cari . '%');
-            });
-        }
-
-        if (!empty($statusKonservasi)) {
-            $query->where('status_konservasi', $statusKonservasi);
-        }
-
-        if (!empty($idKawasan)) {
-            $query->whereHas('kawasanHutan', function ($q) use ($idKawasan) {
-                $q->where('kawasan_hutan.id', $idKawasan);
-            });
-        }
-
-        $daftarPrimata = $query->paginate(9)->withQueryString();
-        $daftarKawasan = KawasanHutan::orderBy('nama')->get();
-
-        return view('publik.primata.index', compact(
-            'pengaturan',
-            'daftarPrimata',
-            'daftarKawasan',
-            'cari',
-            'idKawasan',
-            'statusKonservasi'
-        ));
+        return view('publik.beranda', $this->muatDataPublik('fauna'));
     }
 
     public function detailPrimata($id)
@@ -123,42 +100,7 @@ class PublikController extends Controller
 
     public function tumbuhan(Request $request)
     {
-        $pengaturan = PengaturanHutan::first();
-        $cari = $request->query('cari');
-        $idKawasan = $request->query('id_kawasan');
-        $jenis = $request->query('jenis');
-
-        $query = Tumbuhan::with('kawasanHutan')->orderBy('nama_lokal');
-
-        if (!empty($cari)) {
-            $query->where(function ($q) use ($cari) {
-                $q->where('nama_lokal', 'like', '%' . $cari . '%')
-                    ->orWhere('nama_ilmiah', 'like', '%' . $cari . '%')
-                    ->orWhere('manfaat', 'like', '%' . $cari . '%');
-            });
-        }
-
-        if (!empty($jenis)) {
-            $query->where('jenis', $jenis);
-        }
-
-        if (!empty($idKawasan)) {
-            $query->whereHas('kawasanHutan', function ($q) use ($idKawasan) {
-                $q->where('kawasan_hutan.id', $idKawasan);
-            });
-        }
-
-        $daftarTumbuhan = $query->paginate(9)->withQueryString();
-        $daftarKawasan = KawasanHutan::orderBy('nama')->get();
-
-        return view('publik.tumbuhan.index', compact(
-            'pengaturan',
-            'daftarTumbuhan',
-            'daftarKawasan',
-            'cari',
-            'idKawasan',
-            'jenis'
-        ));
+        return view('publik.beranda', $this->muatDataPublik('flora'));
     }
 
     public function detailTumbuhan($id)
@@ -172,40 +114,7 @@ class PublikController extends Controller
 
     public function info(Request $request)
     {
-        $pengaturan = PengaturanHutan::first();
-        $kategori = $request->query('kategori');
-        $cari = $request->query('cari');
-
-        $queryPengumuman = Pengumuman::where('status', 'Publish')->latest('tanggal');
-
-        if (!empty($kategori)) {
-            $queryPengumuman->where('kategori', $kategori);
-        }
-
-        if (!empty($cari)) {
-            $queryPengumuman->where(function ($q) use ($cari) {
-                $q->where('judul', 'like', '%' . $cari . '%')
-                    ->orWhere('isi', 'like', '%' . $cari . '%');
-            });
-        }
-
-        $daftarPengumuman = $queryPengumuman->paginate(6)->withQueryString();
-
-        $jadwalPatroli = JadwalPatroli::where('tanggal', '>=', now()->toDateString())
-            ->orderBy('tanggal')
-            ->orderBy('jam')
-            ->get();
-
-        $kontakDarurat = KontakDarurat::orderBy('urutan')->get();
-
-        return view('publik.info.index', compact(
-            'pengaturan',
-            'daftarPengumuman',
-            'jadwalPatroli',
-            'kontakDarurat',
-            'kategori',
-            'cari'
-        ));
+        return view('publik.beranda', $this->muatDataPublik('info'));
     }
 }
 

@@ -69,20 +69,7 @@ class LaporController extends Controller
 
     public function index(Request $request)
     {
-        $jenisTerpilih = $request->query('jenis');
-        $daftarJenis = ['Kebakaran', 'Hewan Masuk Kampung', 'Orang Hilang', 'Lainnya'];
-        if (!in_array($jenisTerpilih, $daftarJenis)) {
-            $jenisTerpilih = null;
-        }
-
-        $pengaturan = PengaturanHutan::first();
-        $kabupatenKota = KabupatenKota::orderBy('nama')->get();
-        $daftarKawasan = KawasanHutan::with('kabupatenKota:id,nama')
-            ->select('id', 'nama', 'kategori', 'lat_pusat', 'long_pusat', 'geojson')
-            ->orderBy('nama')
-            ->get();
-
-        return view('publik.lapor.index', compact('jenisTerpilih', 'pengaturan', 'kabupatenKota', 'daftarKawasan'));
+        return (new PublikController())->beranda($request->merge(['view' => 'lapor']));
     }
 
     public function simpan(Request $request)
@@ -110,7 +97,7 @@ class LaporController extends Controller
             'tingkat_urgensi' => 'required_if:jenis,Lainnya|nullable|max:100',
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
-            'id_kabupaten_kota' => 'required|exists:kabupaten_kota,id',
+            'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
             'deskripsi' => 'required|max:1000',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'nama_pelapor' => 'nullable|max:100',
@@ -171,6 +158,14 @@ class LaporController extends Controller
             'id_admin' => null,
             'ip_pelapor' => $request->ip(),
         ]);
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'sukses' => true,
+                'kode' => $laporan->kode,
+                'pesan' => 'Laporan berhasil diterima dan masuk ke sistem petugas.',
+            ]);
+        }
 
         return view('publik.lapor.sukses', compact('laporan'));
     }
@@ -245,6 +240,30 @@ class LaporController extends Controller
             }
         }
 
-        return view('publik.lapor.status', compact('laporan', 'kodeCari', 'pesanError'));
+        if ($request->ajax() || $request->wantsJson()) {
+            if ($laporan) {
+                return response()->json([
+                    'sukses' => true,
+                    'laporan' => [
+                        'kode' => $laporan->kode,
+                        'jenis' => $laporan->jenis,
+                        'status' => $laporan->status,
+                        'latitude' => $laporan->latitude,
+                        'longitude' => $laporan->longitude,
+                        'deskripsi' => $laporan->deskripsi,
+                        'catatan_admin' => $laporan->catatan_admin,
+                        'kawasan' => $laporan->kawasanHutan->nama ?? 'Wilayah Hutan Jawa Barat',
+                        'kabupaten' => $laporan->kabupatenKota->nama ?? 'Jawa Barat',
+                        'tanggal' => $laporan->created_at->format('d M Y, H:i') . ' WIB',
+                    ],
+                ]);
+            }
+            return response()->json([
+                'sukses' => false,
+                'pesan' => 'Kode laporan tidak valid atau tidak terdaftar di sistem.',
+            ], 404);
+        }
+
+        return (new PublikController())->beranda($request->merge(['view' => 'cek-status', 'kode' => $kodeCari]));
     }
 }

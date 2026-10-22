@@ -327,7 +327,7 @@ class PrediksiController extends Controller
         $prediksi->tampil_publik = !$prediksi->tampil_publik;
         $prediksi->save();
 
-        $status = $prediksi->tampil_publik ? 'ditampilkan ke publik di halaman Peringatan dan Beranda' : 'disembunyikan dari publik';
+        $status = $prediksi->tampil_publik ? 'ditampilkan ke publik di halaman Peta Kawasan' : 'disembunyikan dari publik';
 
         return redirect()->back()->with('sukses', 'Prediksi berhasil ' . $status . '.');
     }

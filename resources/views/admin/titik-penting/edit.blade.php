@@ -125,7 +125,7 @@
                     <span>Klik pada peta untuk mengubah posisi koordinat Latitude dan Longitude.</span>
                 </div>
 
-                <div id="peta-titik" class="w-full h-[540px] rounded-xl border border-stone-200 overflow-hidden z-10"></div>
+                <div id="peta-titik" class="w-full h-[540px] rounded-xl border border-stone-200 overflow-hidden relative z-0"></div>
             </div>
         </div>
     </div>

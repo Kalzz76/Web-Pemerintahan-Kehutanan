@@ -1,4 +1,4 @@
-<div id="modal-konfirmasi" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm transition-opacity duration-200">
+<div id="modal-konfirmasi" class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 bg-stone-950/70 backdrop-blur-sm transition-opacity duration-200">
     <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-sm w-full shadow-2xl border border-stone-200/90 text-center transform transition-all scale-95 opacity-0 duration-200" id="modal-konfirmasi-box">
         <div id="modal-konfirmasi-icon-wrapper" class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-4 text-xl shadow-xs border border-amber-200/60 transition-colors">
             <i id="modal-konfirmasi-icon" class="fa-solid fa-triangle-exclamation"></i>
