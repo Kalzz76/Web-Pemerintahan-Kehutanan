@@ -70,6 +70,7 @@ class PengaturanController extends Controller
             'alamat' => $request->alamat,
             'email' => $request->email,
             'telepon' => $request->telepon,
+            'tampilkan_hiasan_sidebar' => $request->boolean('tampilkan_hiasan_sidebar'),
             'lat_pusat' => $request->lat_pusat,
             'long_pusat' => $request->long_pusat,
             'zoom_awal' => $request->zoom_awal,

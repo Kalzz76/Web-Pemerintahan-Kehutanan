@@ -72,6 +72,44 @@
         </div>
     </div>
 
+    @php
+        $isHiasanAktif = session()->hasOldInput()
+            ? (bool) old('tampilkan_hiasan_sidebar')
+            : (bool) ($pengaturan->tampilkan_hiasan_sidebar ?? true);
+    @endphp
+
+    <div class="bg-white rounded-2xl shadow-sm border border-stone-200/80 p-4 sm:p-5">
+        <h2 class="text-sm font-bold text-stone-900 mb-4 flex items-center border-b border-stone-200/80 pb-3">
+            <i class="fa-solid fa-wand-magic-sparkles text-stone-700 mr-2"></i>
+            <span>Tampilan & Ornamen Sidebar</span>
+        </h2>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl border border-stone-200/70 bg-stone-50/70 hover:bg-stone-50 transition">
+            <div class="flex items-start sm:items-center space-x-3.5">
+                <div class="w-12 h-12 rounded-xl bg-[#064B38] flex items-center justify-center shrink-0 shadow-xs relative overflow-hidden">
+                    <img src="{{ asset('images/sidebar-forest-vines.svg') }}" alt="Preview Ornamen Hutan" class="absolute inset-0 w-full h-full object-cover object-bottom opacity-60 pointer-events-none">
+                    <i class="fa-solid fa-leaf text-emerald-300 text-lg relative z-10 drop-shadow"></i>
+                </div>
+                <div>
+                    <div class="text-xs sm:text-sm font-bold text-stone-900 flex items-center gap-2">
+                        <span>Hiasan Siluet & Tanaman Hutan di Sidebar</span>
+                        <span id="sidebar-ornamen-badge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full {{ $isHiasanAktif ? 'bg-emerald-100 text-emerald-800' : 'bg-stone-200 text-stone-600' }}">
+                            {{ $isHiasanAktif ? 'Aktif' : 'Nonaktif' }}
+                        </span>
+                    </div>
+                    <p class="text-[11px] text-stone-500 mt-0.5 leading-relaxed">
+                        Menampilkan ilustrasi tanaman rambat dan siluet alam (<code class="text-[10px] font-mono text-stone-600 bg-stone-200/60 px-1 py-0.5 rounded">sidebar-forest-vines.svg</code>) di latar belakang sidebar menu admin.
+                    </p>
+                </div>
+            </div>
+
+            <label class="relative inline-flex items-center cursor-pointer shrink-0 select-none">
+                <input type="checkbox" name="tampilkan_hiasan_sidebar" value="1" class="sr-only peer" {{ $isHiasanAktif ? 'checked' : '' }} onchange="updateSidebarBadge(this)">
+                <div class="w-11 h-6 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#064B38]"></div>
+            </label>
+        </div>
+    </div>
+
     <div class="bg-white rounded-2xl shadow-sm border border-stone-200/80 p-4 sm:p-5">
         <h2 class="text-sm font-bold text-stone-900 mb-4 flex items-center border-b border-stone-200/80 pb-3">
             <i class="fa-solid fa-map-location-dot text-stone-700 mr-2"></i>
@@ -128,4 +166,20 @@
         </button>
     </div>
 </form>
+@endsection
+
+@section('scripts')
+<script>
+    function updateSidebarBadge(checkbox) {
+        const badge = document.getElementById('sidebar-ornamen-badge');
+        if (!badge) return;
+        if (checkbox.checked) {
+            badge.textContent = 'Aktif';
+            badge.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800';
+        } else {
+            badge.textContent = 'Nonaktif';
+            badge.className = 'text-[10px] font-semibold px-2 py-0.5 rounded-full bg-stone-200 text-stone-600';
+        }
+    }
+</script>
 @endsection

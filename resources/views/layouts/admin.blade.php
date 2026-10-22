@@ -383,9 +383,59 @@
         }
         body.mode-gelap #modal-pesan .bg-white,
         body.mode-gelap #modal-konfirmasi-box {
-            background-color: #1a1a1f !important;
-            border-color: #2c2c34 !important;
+            background-color: #1e1e27 !important;
+            border: 1px solid #38384a !important;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
             color: #f9fafb !important;
+        }
+        body.mode-gelap #modal-konfirmasi-title,
+        body.mode-gelap #modal-pesan h3 {
+            color: #ffffff !important;
+        }
+        body.mode-gelap #modal-konfirmasi-message,
+        body.mode-gelap #modal-pesan p {
+            color: #a1a1aa !important;
+        }
+        body.mode-gelap #modal-konfirmasi-batal {
+            background-color: #2b2b3a !important;
+            border: 1px solid #4a4a62 !important;
+            color: #f3f4f6 !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+        }
+        body.mode-gelap #modal-konfirmasi-batal:hover {
+            background-color: #37374b !important;
+            color: #ffffff !important;
+            border-color: #636382 !important;
+        }
+        body.mode-gelap #modal-konfirmasi-ok {
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        }
+        body.mode-gelap #modal-konfirmasi-ok.bg-rose-600,
+        body.mode-gelap #modal-konfirmasi-ok:not(.btn-konfirmasi-primer) {
+            background-color: #e11d48 !important;
+            box-shadow: 0 4px 16px rgba(225, 29, 72, 0.45) !important;
+        }
+        body.mode-gelap #modal-konfirmasi-ok.bg-rose-600:hover,
+        body.mode-gelap #modal-konfirmasi-ok:not(.btn-konfirmasi-primer):hover {
+            background-color: #f43f5e !important;
+        }
+        body.mode-gelap #modal-konfirmasi-ok.btn-konfirmasi-primer {
+            background-color: #059669 !important;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.45) !important;
+        }
+        body.mode-gelap #modal-konfirmasi-ok.btn-konfirmasi-primer:hover {
+            background-color: #10b981 !important;
+        }
+        body.mode-gelap #modal-konfirmasi-icon-wrapper {
+            background-color: rgba(245, 158, 11, 0.16) !important;
+            border: 1px solid rgba(245, 158, 11, 0.35) !important;
+            color: #fbbf24 !important;
+        }
+        body.mode-gelap #modal-konfirmasi-icon-wrapper.bg-rose-50 {
+            background-color: rgba(244, 63, 94, 0.18) !important;
+            border: 1px solid rgba(244, 63, 94, 0.4) !important;
+            color: #fb7185 !important;
         }
         body.mode-gelap .text-green-900,
         body.mode-gelap .text-green-800,

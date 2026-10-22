@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 900" fill="none" preserveAspectRatio="none">
+    <defs>
+        <!-- Gradient for trailing vines -->
+        <linearGradient id="vineGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+            <stop offset="60%" stop-color="#a7f3d0" stop-opacity="0.12" />
+            <stop offset="100%" stop-color="#34d399" stop-opacity="0.05" />
+        </linearGradient>
+
+        <!-- Gradient for bottom forest -->
+        <linearGradient id="forestGradBack" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.14" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.01" />
+        </linearGradient>
+        <linearGradient id="forestGradFront" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.22" />
+            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03" />
+        </linearGradient>
+    </defs>
+
+    <!-- ============================================== -->
+    <!-- TOP & RIGHT: VINES / TANAMAN RAMBAT DEDAUANAN  -->
+    <!-- ============================================== -->
+
+    <!-- Main Vine Stem 1 (From top right curving downward) -->
+    <path d="M 280,0 Q 250,50 265,110 T 245,210 Q 260,280 240,360 T 260,470 Q 248,540 262,620" 
+          stroke="url(#vineGrad)" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85" />
+
+    <!-- Secondary Vine Stem 2 (Branching out) -->
+    <path d="M 265,110 Q 230,130 220,175 Q 215,210 230,240" 
+          stroke="url(#vineGrad)" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.75" />
+
+    <path d="M 245,210 Q 215,240 225,290 Q 235,320 220,350" 
+          stroke="url(#vineGrad)" stroke-width="1.6" stroke-linecap="round" fill="none" opacity="0.7" />
+
+    <path d="M 240,360 Q 210,390 220,440" 
+          stroke="url(#vineGrad)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.65" />
+
+    <!-- Leaves on Vine 1 -->
+    <!-- Leaf 1 (Top) -->
+    <path d="M 265,40 C 240,35 235,55 255,60 C 265,62 268,48 265,40 Z" fill="url(#vineGrad)" />
+    <path d="M 275,70 C 255,80 252,100 270,98 C 278,96 280,82 275,70 Z" fill="url(#vineGrad)" />
+
+    <!-- Leaf 2 (Upper curve) -->
+    <path d="M 258,115 C 235,105 228,125 248,135 C 258,138 262,125 258,115 Z" fill="url(#vineGrad)" />
+    <path d="M 230,150 C 205,145 200,165 222,172 C 230,174 235,160 230,150 Z" fill="url(#vineGrad)" />
+    <path d="M 225,185 C 205,190 208,212 226,205 C 232,200 232,190 225,185 Z" fill="url(#vineGrad)" />
+    <path d="M 245,195 C 265,185 275,202 258,212 C 250,215 242,205 245,195 Z" fill="url(#vineGrad)" />
+
+    <!-- Leaf 3 (Middle curve) -->
+    <path d="M 248,250 C 225,242 220,265 240,272 C 250,274 252,260 248,250 Z" fill="url(#vineGrad)" />
+    <path d="M 228,275 C 208,270 205,290 222,298 C 230,300 234,285 228,275 Z" fill="url(#vineGrad)" />
+    <path d="M 235,310 C 215,315 218,335 234,330 C 240,326 242,316 235,310 Z" fill="url(#vineGrad)" />
+    <path d="M 252,320 C 270,312 278,330 262,338 C 254,340 248,330 252,320 Z" fill="url(#vineGrad)" />
+
+    <!-- Leaf 4 (Lower curve) -->
+    <path d="M 242,390 C 220,385 216,408 235,415 C 244,417 248,402 242,390 Z" fill="url(#vineGrad)" />
+    <path d="M 222,425 C 205,420 202,440 218,446 C 226,448 228,435 222,425 Z" fill="url(#vineGrad)" />
+    <path d="M 252,460 C 230,452 225,475 246,482 C 255,484 258,470 252,460 Z" fill="url(#vineGrad)" />
+    <path d="M 260,520 C 240,515 238,538 255,542 C 262,544 265,530 260,520 Z" fill="url(#vineGrad)" />
+    <path d="M 252,580 C 235,575 232,595 248,600 C 255,602 258,590 252,580 Z" fill="url(#vineGrad)" />
+
+    <!-- Trailing leaves droplets -->
+    <circle cx="238" cy="85" r="3" fill="url(#vineGrad)" />
+    <circle cx="218" cy="140" r="2.5" fill="url(#vineGrad)" />
+    <circle cx="212" cy="225" r="2.5" fill="url(#vineGrad)" />
+    <circle cx="208" cy="335" r="2.5" fill="url(#vineGrad)" />
+    <circle cx="210" cy="455" r="2.5" fill="url(#vineGrad)" />
+
+
+    <!-- ============================================== -->
+    <!-- BOTTOM: POHON & PEMANDANGAN HUTAN (FOREST RIDGE) -->
+    <!-- ============================================== -->
+
+    <!-- Distant Mountain/Hill Silhouette -->
+    <path d="M 0,720 Q 70,680 150,710 T 280,690 L 280,900 L 0,900 Z" fill="url(#forestGradBack)" opacity="0.5" />
+
+    <!-- Background Pine Trees (Layer 1) -->
+    <!-- Tree 1 -->
+    <polygon points="40,640 25,690 32,690 18,735 26,735 10,780 70,780 54,735 62,735 48,690 55,690" fill="url(#forestGradBack)" />
+    <!-- Tree 2 (Tall) -->
+    <polygon points="100,590 82,650 90,650 72,710 82,710 60,770 140,770 118,710 128,710 110,650 118,650" fill="url(#forestGradBack)" />
+    <!-- Tree 3 -->
+    <polygon points="170,630 155,680 162,680 148,725 156,725 140,775 200,775 184,725 192,725 178,680 185,680" fill="url(#forestGradBack)" />
+    <!-- Tree 4 -->
+    <polygon points="230,660 218,705 224,705 212,745 220,745 205,790 255,790 240,745 248,745 236,705 242,705" fill="url(#forestGradBack)" />
+
+    <!-- Midground Hill Contour -->
+    <path d="M 0,760 Q 90,730 180,755 T 280,740 L 280,900 L 0,900 Z" fill="url(#forestGradFront)" opacity="0.4" />
+
+    <!-- Foreground Pine Trees & Foliage (Layer 2) -->
+    <!-- Tree A -->
+    <polygon points="65,660 50,715 56,715 42,760 50,760 32,810 98,810 80,760 88,760 74,715 80,715" fill="url(#forestGradFront)" />
+    <!-- Tree B (Big Center Tree) -->
+    <polygon points="135,620 118,680 126,680 108,735 118,735 96,795 174,795 152,735 162,735 144,680 152,680" fill="url(#forestGradFront)" />
+    <!-- Tree C -->
+    <polygon points="205,650 190,705 198,705 184,750 192,750 175,800 235,800 218,750 226,750 212,705 220,705" fill="url(#forestGradFront)" />
+
+    <!-- Bottom Lush Bush Foliage -->
+    <circle cx="20" cy="850" r="45" fill="url(#forestGradFront)" />
+    <circle cx="75" cy="840" r="40" fill="url(#forestGradFront)" />
+    <circle cx="130" cy="845" r="48" fill="url(#forestGradFront)" />
+    <circle cx="190" cy="835" r="42" fill="url(#forestGradFront)" />
+    <circle cx="250" cy="845" r="46" fill="url(#forestGradFront)" />
+    <circle cx="100" cy="870" r="50" fill="url(#forestGradFront)" />
+    <circle cx="210" cy="875" r="50" fill="url(#forestGradFront)" />
+
+    <!-- Ground fill -->
+    <rect x="0" y="870" width="280" height="30" fill="url(#forestGradFront)" />
+</svg>

@@ -3,8 +3,15 @@
     $pengaturanGlobal = \App\Models\PengaturanHutan::first();
 @endphp
 
-<aside id="admin-sidebar" wire:persist="admin-sidebar" class="sidebar fixed inset-y-0 left-0 z-50 h-screen flex flex-col justify-between shrink-0 shadow-2xl transition-all duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:h-screen md:shadow-none">
-    <div class="flex flex-col h-full overflow-hidden">
+<aside id="admin-sidebar" wire:persist="admin-sidebar" class="sidebar fixed inset-y-0 left-0 z-50 h-screen flex flex-col justify-between shrink-0 shadow-2xl transition-all duration-300 ease-in-out -translate-x-full md:translate-x-0 md:static md:h-screen md:shadow-none overflow-hidden">
+    @if ($pengaturanGlobal->tampilkan_hiasan_sidebar ?? true)
+    <!-- Hiasan Tanaman Rambat & Pemandangan Hutan Transparan (Menu Tetap Jelas & Interaktif) -->
+    <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-45">
+        <img src="{{ asset('images/sidebar-forest-vines.svg') }}" alt="" class="w-full h-full object-cover object-bottom pointer-events-none select-none">
+    </div>
+    @endif
+
+    <div class="relative z-10 flex flex-col h-full overflow-hidden">
         <div class="brand flex items-center justify-between h-11 pr-4 pl-1 shrink-0">
             <div class="brand-left flex items-center space-x-3 overflow-hidden">
                 <div class="brand-logo w-9 h-9 rounded-xl bg-white text-[#064B38] flex items-center justify-center font-black text-lg shrink-0 shadow-sm">

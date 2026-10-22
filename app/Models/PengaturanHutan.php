@@ -20,6 +20,7 @@ class PengaturanHutan extends Model
         'email',
         'telepon',
         'logo',
+        'tampilkan_hiasan_sidebar',
         'lat_pusat',
         'long_pusat',
         'zoom_awal',
@@ -33,6 +34,7 @@ class PengaturanHutan extends Model
     protected function casts(): array
     {
         return [
+            'tampilkan_hiasan_sidebar' => 'boolean',
             'lat_pusat' => 'float',
             'long_pusat' => 'float',
             'zoom_awal' => 'integer',

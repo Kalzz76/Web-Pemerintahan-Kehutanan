@@ -2,10 +2,51 @@
 
 @section('title', 'Dashboard')
 
+@php
+    $jamSekarang = (int) now()->format('H');
+    if ($jamSekarang >= 4 && $jamSekarang < 11) {
+        $salamWaktu = 'Selamat Pagi';
+        $subPesanWaktu = 'Awali hari dengan memeriksa pemantauan hutan, deteksi titik panas, dan laporan lapangan terkini.';
+    } elseif ($jamSekarang >= 11 && $jamSekarang < 15) {
+        $salamWaktu = 'Selamat Siang';
+        $subPesanWaktu = 'Tetap waspada terhadap titik rawan karhutla dan pantau aktivitas keanekaragaman hayati.';
+    } elseif ($jamSekarang >= 15 && $jamSekarang < 18) {
+        $salamWaktu = 'Selamat Sore';
+        $subPesanWaktu = 'Tinjau rangkuman patroli hari ini dan pastikan seluruh laporan masyarakat telah ditindaklanjuti.';
+    } else {
+        $salamWaktu = 'Selamat Malam';
+        $subPesanWaktu = 'Sistem pengawasan dan deteksi karhutla Jawa Barat tetap aktif siaga 24 jam.';
+    }
+    $namaAdmin = Auth::user()->name ?? 'Administrator';
+@endphp
+
 @section('content')
 <div class="space-y-6">
+    {{-- Banner Selamat Datang Admin (Kapsul Asli dengan Skala Teks Proporsional di Semua Ukuran Layar) --}}
+    <div class="relative w-full">
+        <div class="relative w-full">
+            <!-- Gambar Asli Utuh: Bentuk Kapsul, Bulan, Sungai, dan Pohon Menyembul -->
+            <img src="{{ asset('images/Card-AdminDashboard-removebg.png') }}"
+                 alt="Banner Dashboard Admin"
+                 class="w-full h-auto block select-none pointer-events-none drop-shadow-sm">
+
+            <!-- Konten Teks di Dalam Kapsul (Proporsional: pas di mobile, gagah di desktop) -->
+            <div class="absolute inset-y-0 left-0 top-[10%] bottom-[4%] flex flex-col justify-center pl-4 sm:pl-8 md:pl-12 lg:pl-16 pr-2 sm:pr-4 max-w-[58%] sm:max-w-[55%] md:max-w-[50%] text-white pointer-events-none">
+                <!-- Teks Ucapan Selamat -->
+                <h1 class="text-[11px] min-[400px]:text-xs sm:text-lg md:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight drop-shadow-sm">
+                    {{ $salamWaktu }}, {{ $namaAdmin }}!
+                </h1>
+
+                <!-- Sub-deskripsi Dinamis Ringkas -->
+                <p class="text-[8px] min-[400px]:text-[9.5px] sm:text-xs md:text-sm text-emerald-100/90 mt-0.5 sm:mt-1.5 md:mt-2 leading-tight sm:leading-relaxed drop-shadow-xs line-clamp-2 sm:line-clamp-none">
+                    {{ $subPesanWaktu }}
+                </p>
+            </div>
+        </div>
+    </div>
+
     <div>
-        <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight">Ringkasan Sistem</h1>
+        <h2 class="text-base md:text-lg font-bold text-stone-900 tracking-tight">Ringkasan Sistem</h2>
         <p class="text-stone-500 text-xs mt-0.5">Pemantauan data lapangan, mitigasi karhutla, dan perlindungan keanekaragaman hayati Jawa Barat.</p>
     </div>
 
