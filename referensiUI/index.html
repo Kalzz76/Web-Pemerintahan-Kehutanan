@@ -41,7 +41,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
             border: 1px solid #f3f4f6;
             overflow: hidden;
-            transition: transform .3s
+            transition: transform .3s, box-shadow .3s;
         }
 
         .card:hover {
@@ -214,14 +214,11 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
             color: #111827 !important
         }
-
-        .header-scrolled button {
-            color: #111827 !important
-        }
-
-        .header-scrolled button:hover {
-            color: #059669 !important
-        }
+        
+        /* Navigasi Aktif CSS */
+        .nav-btn.active { color: #34d399 !important; }
+        .header-scrolled .nav-btn.active { color: #059669 !important; }
+        #menu-mobile .nav-btn.active { background-color: #ecfdf5; color: #059669 !important; }
 
         .header-scrolled .logo-icon {
             color: #059669 !important
@@ -290,7 +287,7 @@
 
 <body class="w-full relative antialiased">
 
-    <!-- HEADER (menu "Cek Status" sudah dihapus; pelacakan tetap ada di halaman Lapor) -->
+    <!-- HEADER -->
     <header id="public-header" class="fixed top-0 w-full z-[1000] px-6 py-4 text-white">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <button type="button" onclick="bukaView('beranda')" class="flex items-center gap-3 shrink-0"
@@ -299,12 +296,12 @@
                 <span class="font-bold text-xl tracking-tight">Jaga Hutan Desa</span>
             </button>
             <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold">
-                <button onclick="bukaView('beranda')" class="hover:text-emerald-400 transition-colors">Beranda</button>
-                <button onclick="bukaView('peta')" class="hover:text-emerald-400 transition-colors">Peta
-                    Kawasan</button>
-                <button onclick="bukaView('flora')" class="hover:text-emerald-400 transition-colors">Flora</button>
-                <button onclick="bukaView('fauna')" class="hover:text-emerald-400 transition-colors">Fauna</button>
-                <button onclick="bukaView('info')" class="hover:text-emerald-400 transition-colors">Pusat Info</button>
+                <button onclick="bukaView('beranda')" class="nav-btn hover:text-emerald-400 transition-colors active" data-view="beranda">Beranda</button>
+                <button onclick="bukaView('peta')" class="nav-btn hover:text-emerald-400 transition-colors" data-view="peta">Peta Kawasan</button>
+                <button onclick="bukaView('flora')" class="nav-btn hover:text-emerald-400 transition-colors" data-view="flora">Flora</button>
+                <button onclick="bukaView('fauna')" class="nav-btn hover:text-emerald-400 transition-colors" data-view="fauna">Fauna</button>
+                <button onclick="bukaView('info')" class="nav-btn hover:text-emerald-400 transition-colors" data-view="info">Pusat Info</button>
+                <button onclick="bukaView('cek-status')" class="nav-btn hover:text-emerald-400 transition-colors" data-view="cek-status">Cek Status</button>
             </nav>
             <div class="hidden lg:flex items-center">
                 <button onclick="bukaView('lapor')"
@@ -318,16 +315,12 @@
         </div>
         <nav id="menu-mobile" hidden
             class="lg:hidden bg-white mt-4 rounded-xl p-4 flex flex-col gap-2 absolute left-4 right-4 shadow-2xl text-gray-900 border border-gray-200">
-            <button onclick="bukaView('beranda')"
-                class="text-left p-3 hover:bg-gray-50 rounded-lg font-bold">Beranda</button>
-            <button onclick="bukaView('peta')" class="text-left p-3 hover:bg-gray-50 rounded-lg font-bold">Peta
-                Kawasan</button>
-            <button onclick="bukaView('flora')"
-                class="text-left p-3 hover:bg-gray-50 rounded-lg font-bold">Flora</button>
-            <button onclick="bukaView('fauna')"
-                class="text-left p-3 hover:bg-gray-50 rounded-lg font-bold">Fauna</button>
-            <button onclick="bukaView('info')" class="text-left p-3 hover:bg-gray-50 rounded-lg font-bold">Pusat
-                Info</button>
+            <button onclick="bukaView('beranda')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold active" data-view="beranda">Beranda</button>
+            <button onclick="bukaView('peta')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold" data-view="peta">Peta Kawasan</button>
+            <button onclick="bukaView('flora')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold" data-view="flora">Flora</button>
+            <button onclick="bukaView('fauna')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold" data-view="fauna">Fauna</button>
+            <button onclick="bukaView('info')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold" data-view="info">Pusat Info</button>
+            <button onclick="bukaView('cek-status')" class="nav-btn text-left p-3 hover:bg-gray-50 rounded-lg font-bold" data-view="cek-status">Cek Status</button>
             <button onclick="bukaView('lapor')"
                 class="mt-2 text-center p-3 bg-emerald-600 text-white font-bold rounded-lg">Lapor Darurat</button>
         </nav>
@@ -360,7 +353,24 @@
                     </div>
                 </div>
             </div>
+            
             <div class="bg-white pt-24 pb-12">
+                <!-- ABOUT US SECTION -->
+                <div class="max-w-7xl mx-auto px-6 mb-24">
+                    <div class="flex flex-col md:flex-row gap-0 items-stretch bg-emerald-900 rounded-3xl overflow-hidden shadow-2xl">
+                        <div class="md:w-1/2 p-10 md:p-14 text-white flex flex-col justify-center">
+                            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest mb-2 block">Tentang Kami</span>
+                            <h2 class="font-serif-elegant text-3xl md:text-4xl font-bold mb-6">Bersama Melindungi Paru-Paru Jawa Barat</h2>
+                            <p class="text-emerald-100 mb-4 leading-relaxed">Jaga Hutan Desa adalah inisiatif pelestarian lingkungan yang berfokus pada pengawasan kawasan hutan, perlindungan satwa endemik, dan pencegahan insiden darurat melalui partisipasi aktif masyarakat dan teknologi.</p>
+                            <p class="text-emerald-100 leading-relaxed mb-8">Kami percaya bahwa hutan yang lestari adalah warisan paling berharga untuk kelangsungan ekosistem dan masa depan generasi mendatang.</p>
+                            <div>
+                                <button onclick="bukaView('info')" class="bg-[#f3c677] text-gray-900 px-6 py-3 rounded-full font-bold hover:bg-[#ffd98f] transition shadow-lg">Pelajari Info & Panduan</button>
+                            </div>
+                        </div>
+                        <div class="md:w-1/2 min-h-[350px] bg-cover bg-center" style="background-image: url('https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=800');"></div>
+                    </div>
+                </div>
+
                 <div class="max-w-7xl mx-auto px-6">
                     <div class="text-center mb-16">
                         <h2 class="font-serif-elegant text-4xl text-gray-900 font-bold mb-4">Kekayaan Hayati &amp;
@@ -368,35 +378,32 @@
                         <p class="text-gray-500 max-w-2xl mx-auto">Kompilasi data pemantauan ekosistem flora, fauna, dan
                             kawasan konservasi di wilayah Jawa Barat.</p>
                     </div>
+                    
+                    <!-- ENHANCED CARDBOARD -->
                     <div class="grid md:grid-cols-3 gap-8 mb-24">
-                        <div class="card p-8 text-center border-t-4 border-emerald-500 cursor-pointer"
-                            onclick="bukaView('peta')">
-                            <div
-                                class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-                                <i class="fa-solid fa-tree text-2xl"></i>
+                        <div class="card group p-8 text-center border-t-4 border-emerald-500 cursor-pointer hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50" onclick="bukaView('peta')">
+                            <div class="w-20 h-20 bg-emerald-50 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-sm">
+                                <i class="fa-solid fa-tree text-3xl"></i>
                             </div>
-                            <h3 class="text-4xl font-black text-gray-900 mb-2">23</h3>
-                            <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Kawasan Hutan</p>
+                            <h3 class="text-5xl font-black text-gray-900 mb-3">23</h3>
+                            <p class="font-bold text-gray-500 group-hover:text-emerald-700 transition-colors uppercase tracking-widest text-sm">Kawasan Hutan</p>
                         </div>
-                        <div class="card p-8 text-center border-t-4 border-emerald-500 cursor-pointer"
-                            onclick="bukaView('fauna')">
-                            <div
-                                class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-                                <i class="fa-solid fa-paw text-2xl"></i>
+                        <div class="card group p-8 text-center border-t-4 border-emerald-500 cursor-pointer hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50" onclick="bukaView('fauna')">
+                            <div class="w-20 h-20 bg-emerald-50 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-sm">
+                                <i class="fa-solid fa-paw text-3xl"></i>
                             </div>
-                            <h3 id="hitung-fauna" class="text-4xl font-black text-gray-900 mb-2">12</h3>
-                            <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Fauna Utama</p>
+                            <h3 id="hitung-fauna" class="text-5xl font-black text-gray-900 mb-3">12</h3>
+                            <p class="font-bold text-gray-500 group-hover:text-emerald-700 transition-colors uppercase tracking-widest text-sm">Fauna Utama</p>
                         </div>
-                        <div class="card p-8 text-center border-t-4 border-emerald-500 cursor-pointer"
-                            onclick="bukaView('flora')">
-                            <div
-                                class="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-600">
-                                <i class="fa-solid fa-seedling text-2xl"></i>
+                        <div class="card group p-8 text-center border-t-4 border-emerald-500 cursor-pointer hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 bg-gradient-to-br from-white to-gray-50" onclick="bukaView('flora')">
+                            <div class="w-20 h-20 bg-emerald-50 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 shadow-sm">
+                                <i class="fa-solid fa-seedling text-3xl"></i>
                             </div>
-                            <h3 id="hitung-flora" class="text-4xl font-black text-gray-900 mb-2">8</h3>
-                            <p class="font-bold text-gray-600 uppercase tracking-widest text-sm">Flora Terdata</p>
+                            <h3 id="hitung-flora" class="text-5xl font-black text-gray-900 mb-3">8</h3>
+                            <p class="font-bold text-gray-500 group-hover:text-emerald-700 transition-colors uppercase tracking-widest text-sm">Flora Terdata</p>
                         </div>
                     </div>
+                    
                     <div class="flex items-end justify-between mb-8 border-b border-gray-200 pb-4">
                         <div>
                             <h2 class="font-serif-elegant text-3xl text-gray-900 font-bold">Kabar Area Terbaru</h2>
@@ -446,6 +453,7 @@
                                 <option value="">Semua Insiden</option>
                                 <option value="Kebakaran">Hanya Laporan Kebakaran</option>
                                 <option value="Hewan Masuk Kampung">Hanya Konflik Satwa</option>
+                                <option value="Orang Hilang">Hanya Orang Hilang</option>
                             </select>
                         </div>
                         <div>
@@ -475,6 +483,9 @@
                                 <li class="flex items-center gap-3"><span class="marker-insiden shrink-0"
                                         style="background:#f97316;width:24px;height:24px;font-size:11px"><i
                                             class="fa-solid fa-paw"></i></span> Konflik satwa</li>
+                                <li class="flex items-center gap-3"><span class="marker-insiden shrink-0"
+                                        style="background:#3b82f6;width:24px;height:24px;font-size:11px"><i
+                                            class="fa-solid fa-person-circle-question"></i></span> Orang hilang</li>
                                 <li class="flex items-center gap-3"><span
                                         class="shrink-0 rounded-full border-2 border-white shadow"
                                         style="background:#10b981;width:20px;height:20px;margin:0 2px"></span> Pos jaga
@@ -541,17 +552,17 @@
                 </div>
             </div>
         </section>
-
-        <!-- LAPOR (termasuk pelacakan status, tidak diubah) -->
-        <section id="view-lapor" class="view fade w-full py-24 bg-white" hidden>
+        
+        <!-- CEK STATUS (Dipisah) -->
+        <section id="view-cek-status" class="view fade w-full py-24 bg-white" hidden>
             <div class="max-w-5xl mx-auto px-6 pt-8">
                 <div class="mb-10 text-center">
-                    <h1 class="font-serif-elegant text-4xl text-gray-900 font-bold">Pusat Pengaduan Darurat</h1>
-                    <p class="text-gray-500 mt-2">Laporkan insiden dengan cepat atau lacak status penanganan.</p>
+                    <h1 class="font-serif-elegant text-4xl text-gray-900 font-bold">Lacak Status Laporan</h1>
+                    <p class="text-gray-500 mt-2">Pantau perkembangan penanganan laporan darurat Anda menggunakan kode laporan.</p>
                 </div>
-                <div class="card p-8 mb-10 shadow-md border-emerald-100 bg-emerald-50/30">
+                <div class="card p-8 mb-10 shadow-md border-emerald-100 bg-emerald-50/30 max-w-3xl mx-auto">
                     <h2 class="font-bold text-xl mb-4 text-gray-900"><i
-                            class="fa-solid fa-magnifying-glass mr-2 text-emerald-600"></i> Lacak Status Laporan Anda
+                            class="fa-solid fa-magnifying-glass mr-2 text-emerald-600"></i> Masukkan Kode Laporan Anda
                     </h2>
                     <form id="cek-form" class="flex flex-col sm:flex-row gap-4">
                         <input id="kode-input" class="field flex-1 font-bold tracking-widest uppercase bg-white"
@@ -566,6 +577,17 @@
                         <div id="riwayat-kode" class="flex gap-2 flex-wrap"></div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- LAPOR -->
+        <section id="view-lapor" class="view fade w-full py-24 bg-white" hidden>
+            <div class="max-w-5xl mx-auto px-6 pt-8">
+                <div class="mb-10 text-center">
+                    <h1 class="font-serif-elegant text-4xl text-gray-900 font-bold">Pusat Pengaduan Darurat</h1>
+                    <p class="text-gray-500 mt-2">Laporkan insiden dengan cepat untuk meminta pertolongan segera.</p>
+                </div>
+                
                 <div id="sukses" hidden class="card p-10 text-center mb-10 bg-emerald-50 border-emerald-200">
                     <p class="font-bold text-emerald-700">Laporan Berhasil Diterima</p>
                     <strong id="kode-besar"
@@ -574,23 +596,31 @@
                         class="bg-emerald-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-md">Salin
                         Kode</button>
                 </div>
+                
                 <form id="lapor-form" class="card card-static p-8 md:p-10 shadow-lg border-gray-100 space-y-8">
                     <div>
                         <h3 class="font-bold text-lg mb-4 text-gray-800">1. Jenis Kejadian</h3>
-                        <div class="grid sm:grid-cols-2 gap-4">
+                        <div class="grid sm:grid-cols-3 gap-4">
                             <label
                                 class="border rounded-xl p-5 cursor-pointer hover:bg-gray-50 transition flex items-center gap-4 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50">
                                 <input type="radio" name="jenis" value="Kebakaran" checked
                                     onchange="pilihJenisLaporan(this.value)" class="w-5 h-5 accent-emerald-600">
                                 <div><span class="font-bold block text-gray-900">Kebakaran Hutan</span><span
-                                        class="text-xs text-gray-500">Titik api atau asap tebal</span></div>
+                                        class="text-xs text-gray-500">Titik api/asap tebal</span></div>
                             </label>
                             <label
                                 class="border rounded-xl p-5 cursor-pointer hover:bg-gray-50 transition flex items-center gap-4 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50">
                                 <input type="radio" name="jenis" value="Hewan Masuk Kampung"
                                     onchange="pilihJenisLaporan(this.value)" class="w-5 h-5 accent-emerald-600">
                                 <div><span class="font-bold block text-gray-900">Konflik Satwa</span><span
-                                        class="text-xs text-gray-500">Hewan liar di area warga</span></div>
+                                        class="text-xs text-gray-500">Hewan masuk area warga</span></div>
+                            </label>
+                            <label
+                                class="border rounded-xl p-5 cursor-pointer hover:bg-gray-50 transition flex items-center gap-4 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-50">
+                                <input type="radio" name="jenis" value="Orang Hilang"
+                                    onchange="pilihJenisLaporan(this.value)" class="w-5 h-5 accent-emerald-600">
+                                <div><span class="font-bold block text-gray-900">Orang Hilang</span><span
+                                        class="text-xs text-gray-500">Tersesat di kawasan hutan</span></div>
                             </label>
                         </div>
                     </div>
@@ -716,14 +746,21 @@
         const kawasan = [['TN Gunung Gede Pangrango', -6.78, 106.98, 8.8], ['TN Gunung Halimun-Salak', -6.72, 106.60, 14], ['TN Gunung Ciremai', -6.89, 108.40, 7], ['CA Gunung Tilu', -7.17, 107.50, 5], ['TWA Gunung Papandayan', -7.32, 107.73, 4], ['Tahura Ir. H. Djuanda', -6.86, 107.63, 2.5]];
         const titik = [['Pintu Masuk Cibodas', 'Pos Jaga', -6.746, 107.005, '#10b981'], ['Permukiman Cibodas', 'Permukiman', -6.74, 107, '#eab308']];
         const STATUS_INSIDEN = [{ nama: 'Dilaporkan', warna: '#dc2626' }, { nama: 'Dalam Penanganan', warna: '#f59e0b' }, { nama: 'Selesai', warna: '#16a34a' }];
-        const JENIS_INSIDEN = { 'Kebakaran': { label: 'Kebakaran Hutan', warna: '#dc2626', ikon: 'fa-fire' }, 'Hewan Masuk Kampung': { label: 'Konflik Satwa', warna: '#f97316', ikon: 'fa-paw' } };
+        
+        // Pembaruan Penambahan Kategori Orang Hilang
+        const JENIS_INSIDEN = { 
+            'Kebakaran': { label: 'Kebakaran Hutan', warna: '#dc2626', ikon: 'fa-fire' }, 
+            'Hewan Masuk Kampung': { label: 'Konflik Satwa', warna: '#f97316', ikon: 'fa-paw' },
+            'Orang Hilang': { label: 'Orang Hilang', warna: '#3b82f6', ikon: 'fa-person-circle-question' }
+        };
+        
         const INSIDEN_SIMULASI = [
             { id: 'SIM-001', jenis: 'Kebakaran', lokasi: 'Sekitar TWA Gunung Papandayan', lat: -7.30, lng: 107.72, waktu: '2026-10-20 09:30', status: 'Dilaporkan', deskripsi: 'Contoh: asap tipis terlihat dari lereng sisi timur.', simulasi: true },
             { id: 'SIM-002', jenis: 'Kebakaran', lokasi: 'Sekitar TN Gunung Ciremai', lat: -6.91, lng: 108.38, waktu: '2026-10-19 15:10', status: 'Dalam Penanganan', deskripsi: 'Contoh: titik api kecil di semak kering, tim sedang menuju lokasi.', simulasi: true },
             { id: 'SIM-003', jenis: 'Kebakaran', lokasi: 'Sekitar CA Gunung Tilu', lat: -7.19, lng: 107.52, waktu: '2026-10-17 11:45', status: 'Selesai', deskripsi: 'Contoh: kebakaran rumput kering sudah dipadamkan dan area dipantau.', simulasi: true },
             { id: 'SIM-004', jenis: 'Hewan Masuk Kampung', lokasi: 'Tepi TN Gunung Gede Pangrango', lat: -6.76, lng: 107.01, waktu: '2026-10-20 06:20', status: 'Dalam Penanganan', deskripsi: 'Contoh: kawanan primata terlihat di kebun warga.', simulasi: true },
             { id: 'SIM-005', jenis: 'Hewan Masuk Kampung', lokasi: 'Tepi TN Gunung Halimun-Salak', lat: -6.70, lng: 106.63, waktu: null, status: 'Dilaporkan', deskripsi: 'Contoh: babi hutan merusak ladang di dekat batas kawasan.', simulasi: true }];
-        function ambilInsiden() { return Promise.resolve(INSIDEN_SIMULASI) } // ganti: fetch('/api/insiden').then(r=>r.json())
+        function ambilInsiden() { return Promise.resolve(INSIDEN_SIMULASI) }
         let dataInsiden = [];
 
         /* ===== DATA FLORA (unggulan:true = tampil di slider) ===== */
@@ -755,18 +792,30 @@
         let petaHutan, petaLapor, lapisan = {}, penandaLapor, kodeAktif = 'JHD-7K3M9P';
         const sliderIdx = { flora: 0, fauna: 0 };
 
-        /* ===== NAVIGASI ===== */
-        function updateHeaderVisibility() { const h = document.getElementById('public-header'); const gelap = ['beranda', 'flora', 'fauna'].some(n => !document.getElementById('view-' + n).hidden); if (gelap && window.scrollY < 50) h.classList.remove('header-scrolled'); else h.classList.add('header-scrolled') }
+        /* ===== NAVIGASI & PERBARUAN NAVBAR AKTIF ===== */
+        function updateHeaderVisibility() { 
+            const h = document.getElementById('public-header'); 
+            const gelap = ['beranda', 'flora', 'fauna'].some(n => !document.getElementById('view-' + n).hidden); 
+            if (gelap && window.scrollY < 50) h.classList.remove('header-scrolled'); 
+            else h.classList.add('header-scrolled');
+        }
         function bukaView(nama) {
             if (!document.getElementById('view-' + nama)) nama = 'beranda';
             document.querySelectorAll('.view').forEach(el => el.hidden = (el.id !== 'view-' + nama));
             document.getElementById('menu-mobile').hidden = true;
+            
+            // Pemberian kelas 'active' di navigasi navbar
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.dataset.view === nama) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
             window.scrollTo(0, 0); updateHeaderVisibility();
             if (nama === 'info') { tutupBerita(); renderDaftarBerita() }
-            setTimeout(() => { if (nama === 'peta') siapkanPetaHutan(); if (nama === 'lapor') { siapkanPetaLapor(); tampilRiwayat() } }, 100);
+            setTimeout(() => { if (nama === 'peta') siapkanPetaHutan(); if (nama === 'lapor' || nama === 'cek-status') { siapkanPetaLapor(); tampilRiwayat() } }, 100);
         }
 
-        /* ===== FLORA & FAUNA: slider unggulan + katalog lengkap ===== */
+        /* ===== FLORA & FAUNA ===== */
         const SPESIES = { flora: () => floraData, fauna: () => faunaData };
         const JUDUL = { flora: { n: 'Flora', h: 'Katalog Flora Jawa Barat', p: 'Daftar lengkap seluruh tumbuhan terdata di kawasan konservasi.', cari: 'Cari flora...', semua: 'Semua Kategori Flora' }, fauna: { n: 'Fauna', h: 'Katalog Fauna Jawa Barat', p: 'Daftar lengkap satwa liar di hutan Jawa Barat.', cari: 'Cari fauna...', semua: 'Semua Kategori Fauna' } };
         const unggulan = t => SPESIES[t]().filter(x => x.unggulan);
@@ -920,7 +969,12 @@
         function setPenanda(lat, lng) { if (penandaLapor) petaLapor.removeLayer(penandaLapor); penandaLapor = L.circleMarker([lat, lng], { radius: 8, color: '#fff', fillColor: '#ef4444', fillOpacity: 1 }).addTo(petaLapor) }
         function siapkanPetaLapor() { if (petaLapor) { petaLapor.invalidateSize(); return } petaLapor = petaDasar('map-lapor', 8); petaLapor.on('click', e => { document.getElementById('latitude').value = e.latlng.lat.toFixed(6); document.getElementById('longitude').value = e.latlng.lng.toFixed(6); setPenanda(e.latlng.lat, e.latlng.lng) }) }
         function gunakanLokasi() { if (!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(p => { const lat = p.coords.latitude, lng = p.coords.longitude; document.getElementById('latitude').value = lat.toFixed(6); document.getElementById('longitude').value = lng.toFixed(6); if (petaLapor) { setPenanda(lat, lng); petaLapor.setView([lat, lng], 12) } }) }
-        function pilihJenisLaporan(j) { document.querySelectorAll('input[name="jenis"]').forEach(el => el.checked = (el.value === j)); document.getElementById('hewan-field').hidden = (j !== 'Hewan Masuk Kampung') }
+        
+        function pilihJenisLaporan(j) { 
+            document.querySelectorAll('input[name="jenis"]').forEach(el => el.checked = (el.value === j)); 
+            // Sembunyikan field tambahan jika bukan konflik satwa
+            document.getElementById('hewan-field').hidden = (j !== 'Hewan Masuk Kampung') 
+        }
 
         /* ===== TAB INFO ===== */
         function bukaTab(n) {
@@ -932,9 +986,33 @@
         /* ===== FORM LAPORAN & PELACAKAN ===== */
         function getJSON(k) { try { return JSON.parse(localStorage.getItem(k) || '[]') } catch (e) { return [] } }
         function setJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true } catch (e) { return false } }
-        function tampilRiwayat() { const box = document.getElementById('riwayat-kode'); box.innerHTML = ''; getJSON('jhd-riwayat').forEach(i => { const b = document.createElement('button'); b.className = 'bg-gray-100 text-gray-600 px-3 py-1 rounded text-xs font-bold hover:bg-gray-200 border border-gray-200'; b.textContent = i; b.onclick = () => { document.getElementById('kode-input').value = i; document.getElementById('cek-form').dispatchEvent(new Event('submit')) }; box.appendChild(b) }) }
+        function tampilRiwayat() { 
+            const box = document.getElementById('riwayat-kode'); 
+            if(!box) return;
+            box.innerHTML = ''; 
+            getJSON('jhd-riwayat').forEach(i => { 
+                const b = document.createElement('button'); 
+                b.className = 'bg-gray-100 text-gray-600 px-3 py-1 rounded text-xs font-bold hover:bg-gray-200 border border-gray-200'; 
+                b.textContent = i; 
+                b.onclick = () => { document.getElementById('kode-input').value = i; document.getElementById('cek-form').dispatchEvent(new Event('submit')) }; 
+                box.appendChild(b) 
+            }) 
+        }
         function salinKode() { navigator.clipboard.writeText(kodeAktif); alert('Kode Laporan Disalin!') }
-        document.getElementById('lapor-form').onsubmit = e => { e.preventDefault(); const r = getJSON('jhd-riwayat'); kodeAktif = 'JHD-' + Math.random().toString(36).substring(2, 8).toUpperCase(); r.push(kodeAktif); setJSON('jhd-riwayat', r); document.getElementById('sukses').hidden = false; document.getElementById('kode-besar').textContent = kodeAktif; document.getElementById('lapor-form').reset(); document.getElementById('sukses').scrollIntoView({ behavior: 'smooth' }); tampilRiwayat() };
+        
+        document.getElementById('lapor-form').onsubmit = e => { 
+            e.preventDefault(); 
+            const r = getJSON('jhd-riwayat'); 
+            kodeAktif = 'JHD-' + Math.random().toString(36).substring(2, 8).toUpperCase(); 
+            r.push(kodeAktif); 
+            setJSON('jhd-riwayat', r); 
+            document.getElementById('sukses').hidden = false; 
+            document.getElementById('kode-besar').textContent = kodeAktif; 
+            document.getElementById('lapor-form').reset(); 
+            document.getElementById('sukses').scrollIntoView({ behavior: 'smooth' }); 
+            tampilRiwayat() 
+        };
+        
         document.getElementById('cek-form').onsubmit = e => {
             e.preventDefault(); const k = document.getElementById('kode-input').value.toUpperCase(), res = document.getElementById('hasil-status'); if (!k) return;
             res.innerHTML = (getJSON('jhd-riwayat').includes(k) || k === 'JHD-7K3M9P') ? `<div class="bg-emerald-50 text-emerald-800 p-4 rounded-lg text-sm border border-emerald-200"><b>Laporan Ditemukan.</b> Tim lapangan sedang memproses aduan Anda.</div>` : `<div class="bg-red-50 text-red-700 p-4 rounded-lg text-sm border border-red-200">Kode tidak valid atau tidak terdaftar.</div>`
