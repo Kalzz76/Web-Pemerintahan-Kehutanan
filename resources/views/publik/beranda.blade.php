@@ -1191,7 +1191,18 @@
                 </div>
             </div>
         </div>
-        <div class="bg-[#04201a] border-t border-emerald-900/50 py-16">
+
+        <!-- PEMBATAS GELOMBANG ABSTRAK ATAS (Slider ke Katalog) -->
+        <div class="w-full overflow-hidden leading-none select-none pointer-events-none -mb-[1px] relative z-10" aria-hidden="true">
+            <svg class="w-full h-14 sm:h-18 md:h-24 block text-[#04201a]" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+                <!-- Layer gelombang 1 (aksen hijau rimba elegan) -->
+                <path d="M0,35 C180,95 340,15 520,55 C700,95 865,20 1045,60 C1220,95 1350,35 1440,50 L1440,120 L0,120 Z" fill="#047857" opacity="0.3"></path>
+                <!-- Layer gelombang 2 (menyatu dengan katalog #04201a) -->
+                <path d="M0,60 C200,115 380,35 580,75 C780,115 940,40 1140,80 C1280,105 1380,60 1440,70 L1440,120 L0,120 Z" fill="currentColor"></path>
+            </svg>
+        </div>
+
+        <div class="bg-[#04201a] pt-4 pb-16 relative">
             <div class="max-w-7xl mx-auto px-6">
                 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
                     <div>
@@ -1209,6 +1220,16 @@
                 </div>
                 <div id="katalog-${t}-grid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
             </div>
+        </div>
+
+        <!-- PEMBATAS GELOMBANG ABSTRAK BAWAH (Katalog ke Pemandangan Footer) -->
+        <div class="w-full overflow-hidden leading-none select-none pointer-events-none -mt-1 relative z-20 bg-[#04201a]" aria-hidden="true">
+            <svg class="w-full h-16 sm:h-24 md:h-32 lg:h-40 block" viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none">
+                <!-- Layer gelombang aksen (lapisan transisi hijau mint/sage lembut) -->
+                <path d="M0,25 C180,85 340,10 520,50 C700,90 865,15 1045,55 C1220,90 1350,30 1440,45 L1440,120 L0,120 Z" fill="#d1fae5" opacity="0.45"></path>
+                <!-- Layer gelombang putih utama yang memotong warna hijau gelap menjadi putih bersih secara bergelombang -->
+                <path d="M0,50 C200,105 380,30 580,70 C780,110 940,35 1140,75 C1280,100 1380,55 1440,65 L1440,120 L0,120 Z" fill="#ffffff"></path>
+            </svg>
         </div>`;
 
         renderSliderItem(t, 0);
