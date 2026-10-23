@@ -142,12 +142,20 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
             <div>
-                <label for="latitude" class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1.5">Latitude Titik Api</label>
+                <div class="flex items-center justify-between mb-1.5">
+                    <label for="latitude" class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Latitude Titik Api</label>
+                    <button type="button" onclick="ambilLokasiGpsAdmin()" class="text-[10px] text-stone-900 font-bold hover:underline flex items-center gap-1 cursor-pointer">
+                        <i class="fa-solid fa-location-crosshairs text-red-600"></i> GPS Saya
+                    </button>
+                </div>
                 <input type="number" step="0.0000001" id="latitude" name="latitude" value="{{ old('latitude', $inputLat ?? $pengaturan->lat_pusat) }}" required class="w-full px-3.5 py-2 rounded-xl border border-stone-200 text-xs sm:text-sm focus:border-stone-900 outline-none transition font-mono">
             </div>
 
             <div>
-                <label for="longitude" class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1.5">Longitude Titik Api</label>
+                <div class="flex items-center justify-between mb-1.5">
+                    <label for="longitude" class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider">Longitude Titik Api</label>
+                    <span id="status-gps-admin" class="text-[10px] text-stone-400"></span>
+                </div>
                 <input type="number" step="0.0000001" id="longitude" name="longitude" value="{{ old('longitude', $inputLong ?? $pengaturan->long_pusat) }}" required class="w-full px-3.5 py-2 rounded-xl border border-stone-200 text-xs sm:text-sm focus:border-stone-900 outline-none transition font-mono">
             </div>
 
@@ -384,6 +392,27 @@ function pasangTitikSimulasi(lat, lng, idLaporan = null) {
             weight: 3
         }).addTo(map);
     }
+}
+
+function ambilLokasiGpsAdmin() {
+    var statusEl = document.getElementById('status-gps-admin');
+    if (!navigator.geolocation) {
+        alert('Browser Anda tidak mendukung deteksi lokasi GPS.');
+        return;
+    }
+    if (statusEl) statusEl.innerText = 'Mencari GPS...';
+    navigator.geolocation.getCurrentPosition(function (pos) {
+        var lat = pos.coords.latitude;
+        var lng = pos.coords.longitude;
+        pasangTitikSimulasi(lat, lng);
+        if (map) {
+            map.setView([lat, lng], 14);
+        }
+        if (statusEl) statusEl.innerText = 'GPS Terkunci';
+    }, function (err) {
+        alert('Gagal mendeteksi lokasi GPS: ' + err.message);
+        if (statusEl) statusEl.innerText = '';
+    }, { enableHighAccuracy: true, timeout: 10000 });
 }
 
 function inisialisasiPetaPrediksi() {

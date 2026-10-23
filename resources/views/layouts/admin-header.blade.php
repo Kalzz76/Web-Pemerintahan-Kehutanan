@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-stone-200/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xs transition-all">
+<header class="sticky top-0 z-40 bg-white border-b border-stone-200/80 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-xs transition-all">
     <div class="flex items-center space-x-3">
         <button id="sidebarToggle" type="button" class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-stone-200 bg-white hover:bg-stone-100 text-stone-700 hover:text-stone-900 focus:outline-none transition cursor-pointer shadow-xs shrink-0" title="Buka/Tutup Sidebar" aria-label="Buka/Tutup Sidebar">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

@@ -9,7 +9,7 @@
     </button>
 
     @if ($terbuka)
-        <div wire:click="tutup" class="fixed inset-0 z-40 bg-black/10"></div>
+        <div wire:click="tutup" class="fixed inset-0 z-40 bg-transparent"></div>
 
         <div id="wadah-dropdown-notifikasi" class="absolute right-0 top-full mt-2.5 z-50 w-80 sm:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-stone-200/80 overflow-hidden">
             <div class="p-3.5 bg-stone-50/90 border-b border-stone-200/80 flex items-center justify-between">

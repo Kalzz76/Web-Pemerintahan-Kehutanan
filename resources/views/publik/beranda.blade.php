@@ -138,7 +138,7 @@
                         </div>
                         <p class="text-[11px] text-red-800 leading-tight">Simulasi perambatan kebakaran hutan aktif dipantau oleh Satgas Kehutanan Jawa Barat.</p>
                         @foreach ($daftarPrediksiPublik as $pred)
-                        <button type="button" onclick="fokusPrediksi({{ $pred->latitude }}, {{ $pred->longitude }})" class="w-full text-left bg-white p-2 rounded-lg border border-red-200 hover:bg-red-100 transition flex items-center justify-between shadow-2xs">
+                        <button type="button" onclick="fokusPrediksi({{ $pred->latitude }}, {{ $pred->longitude }}, {{ $pred->id }})" class="w-full text-left bg-white p-2 rounded-lg border border-red-200 hover:bg-red-100 transition flex items-center justify-between shadow-2xs">
                             <div>
                                 <div class="font-bold text-gray-900 text-xs">Titik Pantau #{{ $pred->id }}</div>
                                 <div class="text-[10px] text-gray-500">Angin: {{ $pred->kecepatan_angin ?? 0 }} km/j &bull; Est. 6j: {{ $pred->luas_6jam ?? '-' }} ha</div>
@@ -230,8 +230,80 @@
                     </div>
                     @endif
                 </aside>
-                <div class="card card-static p-2 shadow-lg border-gray-100">
-                    <div id="map-hutan" class="map" role="application"></div>
+                <div class="space-y-6">
+                    <div class="card card-static p-2 shadow-lg border-gray-100">
+                        <div id="map-hutan" class="map" role="application"></div>
+                    </div>
+
+                    @if (isset($daftarPrediksiPublik) && $daftarPrediksiPublik->isNotEmpty())
+                    @php
+                        $prediksiUtama = $daftarPrediksiPublik->first();
+                    @endphp
+                    <div id="panel-simulasi-api" class="bg-gradient-to-br from-white to-red-50/50 rounded-2xl p-6 shadow-lg border-2 border-red-200 space-y-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-red-100 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-red-600 text-white flex items-center justify-center text-lg shadow-md shrink-0">
+                                    <i class="fa-solid fa-fire-flame-curved animate-pulse"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-base font-extrabold text-gray-900 leading-tight">Simulasi Perambatan Api (Wildfire Spread Simulator)</h3>
+                                    <p id="subteks-model-angin" class="text-xs text-gray-500 mt-0.5">Model elips Huygens berbasis dorongan angin {{ $prediksiUtama->arah_angin ?? 240 }}° &bull; Kecepatan {{ $prediksiUtama->kecepatan_angin ?? 14 }} km/j</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-2 shrink-0">
+                                @if ($daftarPrediksiPublik->count() > 1)
+                                <div class="flex items-center gap-1.5 bg-red-50/80 px-2 py-1 rounded-xl border border-red-200">
+                                    <label for="select-titik-simulasi" class="text-xs font-bold text-red-800">Titik:</label>
+                                    <select id="select-titik-simulasi" onchange="gantiTitikSimulasi(this.value)" class="bg-white border border-red-300 rounded-lg text-xs font-bold text-red-700 px-2 py-1 focus:outline-none">
+                                        @foreach ($daftarPrediksiPublik as $pItem)
+                                        <option value="{{ $pItem->id }}">Titik #{{ $pItem->id }} ({{ $pItem->luas_6jam ?? '-' }} Ha)</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                @endif
+                                <button type="button" id="btn-play-simulasi" onclick="toggleSimulasi()" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-2 cursor-pointer">
+                                    <i id="icon-play-simulasi" class="fa-solid fa-play"></i>
+                                    <span id="label-play-simulasi">Mulai Simulasi</span>
+                                </button>
+                                <button type="button" onclick="resetSimulasi()" class="px-3 py-2 bg-white hover:bg-gray-100 text-gray-700 border border-gray-200 rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                    <i class="fa-solid fa-rotate-left"></i>
+                                    <span>Reset</span>
+                                </button>
+                                <button type="button" onclick="fokusPrediksi(pusatApiLat, pusatApiLng)" class="px-3 py-2 bg-white hover:bg-red-50 text-red-600 border border-red-200 rounded-xl text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                    <i class="fa-solid fa-crosshairs"></i>
+                                    <span>Fokus</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex flex-wrap justify-between items-center text-xs font-bold text-gray-700 gap-2">
+                                <span id="teks-waktu-simulasi" class="text-gray-900 font-extrabold">Waktu Simulasi: +0.0 Jam (0 Menit)</span>
+                                <div class="flex items-center gap-2">
+                                    <span id="teks-titik-aktif" class="px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 font-extrabold text-[11px] border border-red-200">1 Titik Api Aktif</span>
+                                    <span id="teks-jarak-simulasi" class="text-red-600 font-extrabold">Perkiraan Menjalar: 0 m</span>
+                                </div>
+                            </div>
+                            <input type="range" id="slider-waktu" min="0" max="6" step="0.05" value="0" oninput="ubahWaktuSimulasi(parseFloat(this.value))" class="w-full accent-red-600 cursor-pointer h-2.5 bg-gray-200 rounded-lg">
+                            <div class="flex justify-between text-[11px] font-bold text-gray-500 px-1">
+                                <span>0 Jam (Titik Mula)</span>
+                                <span class="text-red-600">1 Jam (Inti Merah)</span>
+                                <span class="text-orange-600">3 Jam (Radius Oranye)</span>
+                                <span class="text-amber-600">6 Jam (Perimeter Kuning)</span>
+                            </div>
+                        </div>
+
+                        <div id="kotak-status-simulasi" class="p-4 rounded-xl bg-white border border-gray-200 flex items-start gap-3 shadow-sm transition-all duration-300">
+                            <div id="ikon-status-simulasi" class="w-9 h-9 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0 text-base mt-0.5">
+                                <i class="fa-solid fa-fire animate-pulse"></i>
+                            </div>
+                            <div class="text-xs">
+                                <div id="judul-status-simulasi" class="font-bold text-gray-900 mb-0.5 text-sm">Kondisi Awal Titik Api Terdeteksi</div>
+                                <div id="pesan-status-simulasi" class="text-gray-600 leading-relaxed">Titik api teridentifikasi pada kawasan vegetasi hutan. Tekan tombol "Mulai Simulasi" atau geser slider waktu untuk memantau perambatan lidah api dan titik api baru ke arah pemukiman warga.</div>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -1540,6 +1612,21 @@
     const boundsJabar = L.latLngBounds([PETA_PENGATURAN.bboxSelatan, PETA_PENGATURAN.bboxBarat], [PETA_PENGATURAN.bboxUtara, PETA_PENGATURAN.bboxTimur]);
     let petaHutan, petaLapor, penandaLapor;
     const lapisan = {};
+    var lajuRambatM = 960;
+    var arahAnginDerajat = 240;
+    var namaVegetasi = 'Hutan';
+    var pusatApiLat = null;
+    var pusatApiLng = null;
+    var poly0Coords = [];
+    var poly1Coords = [];
+    var poly3Coords = [];
+    var poly6Coords = [];
+    var permukimanTerancamList = [];
+    var layerApiAnimasi = null;
+    var simulasiInterval = null;
+    var waktuSimulasi = 0;
+    var daftarTitikApiSekunder = [];
+    var markerApiSekunder = [];
 
     const JENIS_INSIDEN = { 
         'Kebakaran': { label: 'Kebakaran Hutan', warna: '#dc2626', ikon: 'fa-fire' }, 
@@ -1565,7 +1652,7 @@
     }
 
     function petaDasar(id, zoom = PETA_PENGATURAN.zoomAwal, center = [PETA_PENGATURAN.latPusat, PETA_PENGATURAN.longPusat]) {
-        const m = L.map(id, { maxBounds: boundsJabar, minZoom: Math.max(1, PETA_PENGATURAN.zoomAwal - 2), scrollWheelZoom: false }).setView(center, zoom);
+        const m = L.map(id, { maxBounds: boundsJabar, minZoom: Math.max(1, PETA_PENGATURAN.zoomAwal - 2), scrollWheelZoom: true }).setView(center, zoom);
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { 
             attribution: 'Tiles &copy; Esri &mdash; Satellite Imagery' 
         }).addTo(m);
@@ -1667,45 +1754,58 @@
             }
         });
 
-        // Prediksi Perambatan Kebakaran (Tampil Publik)
         lapisan.prediksi = L.layerGroup().addTo(petaHutan);
-        if (Array.isArray(DB_PREDIKSI)) {
+        if (Array.isArray(DB_PREDIKSI) && DB_PREDIKSI.length > 0) {
+            var predUtama = DB_PREDIKSI[0];
+            if (predUtama.latitude && predUtama.longitude) {
+                pusatApiLat = parseFloat(predUtama.latitude);
+                pusatApiLng = parseFloat(predUtama.longitude);
+                arahAnginDerajat = parseFloat(predUtama.arah_angin || 240);
+                lajuRambatM = parseFloat(predUtama.laju_efektif || 960);
+                namaVegetasi = predUtama.jenis_lahan ? (predUtama.jenis_lahan.nama || 'Hutan') : 'Hutan';
+                poly0Coords = [[pusatApiLat, pusatApiLng]];
+                if (predUtama.area_terancam) {
+                    try {
+                        permukimanTerancamList = typeof predUtama.area_terancam === 'string' ? JSON.parse(predUtama.area_terancam) : predUtama.area_terancam;
+                    } catch (e) {}
+                }
+            }
+
             DB_PREDIKSI.forEach(p => {
                 if (p.latitude && p.longitude) {
-                    // Poligon 6 Jam (Terluar)
                     if (p.poligon_6jam) {
                         try {
                             const pts6 = typeof p.poligon_6jam === 'string' ? JSON.parse(p.poligon_6jam) : p.poligon_6jam;
+                            if (p === predUtama) poly6Coords = pts6;
                             L.polygon(pts6, { color: '#f87171', fillColor: '#ef4444', fillOpacity: 0.15, weight: 1.5, dashArray: '4, 4' })
                                 .bindPopup(`<b>Prediksi Rambatan 6 Jam</b><br>Estimasi Luas: <b>${p.luas_6jam || '-'} Ha</b>`)
                                 .addTo(lapisan.prediksi);
                         } catch(e) {}
                     }
-                    // Poligon 3 Jam (Tengah)
                     if (p.poligon_3jam) {
                         try {
                             const pts3 = typeof p.poligon_3jam === 'string' ? JSON.parse(p.poligon_3jam) : p.poligon_3jam;
+                            if (p === predUtama) poly3Coords = pts3;
                             L.polygon(pts3, { color: '#ea580c', fillColor: '#ea580c', fillOpacity: 0.25, weight: 2 })
                                 .bindPopup(`<b>Prediksi Rambatan 3 Jam</b><br>Estimasi Luas: <b>${p.luas_3jam || '-'} Ha</b>`)
                                 .addTo(lapisan.prediksi);
                         } catch(e) {}
                     }
-                    // Poligon 1 Jam (Inti)
                     if (p.poligon_1jam) {
                         try {
                             const pts1 = typeof p.poligon_1jam === 'string' ? JSON.parse(p.poligon_1jam) : p.poligon_1jam;
+                            if (p === predUtama) poly1Coords = pts1;
                             L.polygon(pts1, { color: '#dc2626', fillColor: '#b91c1c', fillOpacity: 0.4, weight: 2.5 })
                                 .bindPopup(`<b>Prediksi Rambatan 1 Jam</b><br>Estimasi Luas: <b>${p.luas_1jam || '-'} Ha</b>`)
                                 .addTo(lapisan.prediksi);
                         } catch(e) {}
                     }
-                    // Titik Awal Hotspot
                     const fireIcon = L.divIcon({
                         className: '',
-                        html: `<div class="marker-insiden" style="background:#dc2626; border:2px solid #fff; box-shadow:0 0 12px #ef4444; width:30px; height:30px; font-size:13px;"><i class="fa-solid fa-fire text-amber-300"></i></div>`,
-                        iconSize: [30, 30],
-                        iconAnchor: [15, 15],
-                        popupAnchor: [0, -15]
+                        html: `<div class="relative flex items-center justify-center -ml-3.5 -mt-3.5 w-8 h-8"><span class="absolute w-7 h-7 rounded-full bg-red-600/70 animate-ping"></span><div class="w-8 h-8 rounded-full bg-red-600 border-2 border-white shadow-lg flex items-center justify-center text-white text-xs z-10"><i class="fa-solid fa-fire text-amber-300"></i></div></div>`,
+                        iconSize: [32, 32],
+                        iconAnchor: [16, 16],
+                        popupAnchor: [0, -16]
                     });
                     L.marker([p.latitude, p.longitude], { icon: fireIcon, zIndexOffset: 1000 })
                         .bindPopup(`
@@ -1719,15 +1819,269 @@
                                     <tr><td style="color:#6b7280; padding-right:8px;">Luas 6 Jam</td><td><b>${p.luas_6jam || '-'} Ha</b></td></tr>
                                 </table>
                                 <div class="mt-2 text-[10px] text-red-600 bg-red-50 p-1.5 rounded font-semibold">Simulasi perambatan aktif satgas kehutanan.</div>
+                                <button type="button" onclick="gantiTitikSimulasi(${p.id})" class="mt-2 w-full py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 transition cursor-pointer shadow-xs"><i class="fa-solid fa-play"></i> Simulasikan Titik Ini</button>
                             </div>
                         `)
                         .addTo(lapisan.prediksi);
                 }
             });
+
+            inisialisasiTitikApiSekunder();
+
+            if (pusatApiLat && pusatApiLng) {
+                layerApiAnimasi = L.polygon([[pusatApiLat, pusatApiLng]], {
+                    color: '#ff2200',
+                    fillColor: '#ef4444',
+                    fillOpacity: 0.65,
+                    weight: 3,
+                    dashArray: '4, 4'
+                }).addTo(petaHutan);
+
+                setTimeout(() => {
+                    if (petaHutan && pusatApiLat && pusatApiLng) {
+                        petaHutan.setView([pusatApiLat, pusatApiLng], 14);
+                        petaHutan.invalidateSize();
+                    }
+                }, 250);
+
+                ubahWaktuSimulasi(0);
+            }
         }
 
         renderInsiden();
         setTimeout(() => petaHutan.invalidateSize(), 200);
+    }
+
+    function buatIconApiSekunder() {
+        return L.divIcon({
+            className: '',
+            html: '<div class="relative flex items-center justify-center -ml-2.5 -mt-2.5 w-6 h-6 pointer-events-none">' +
+                '<span class="absolute w-5 h-5 rounded-full bg-amber-500/70 animate-ping"></span>' +
+                '<span class="absolute w-4 h-4 rounded-full bg-red-600/80 animate-pulse"></span>' +
+                '<div class="w-5 h-5 rounded-full bg-gradient-to-t from-red-600 via-orange-500 to-amber-400 border border-white shadow-lg flex items-center justify-center text-white text-[10px] z-10">' +
+                '<i class="fa-solid fa-fire text-yellow-200"></i></div></div>',
+            iconSize: [22, 22],
+            iconAnchor: [11, 11]
+        });
+    }
+
+    function inisialisasiTitikApiSekunder() {
+        daftarTitikApiSekunder = [];
+        if (!pusatApiLat || !pusatApiLng || poly1Coords.length === 0) return;
+
+        var p1 = poly1Coords;
+        var p3 = poly3Coords.length > 0 ? poly3Coords : poly1Coords;
+        var p6 = poly6Coords.length > 0 ? poly6Coords : p3;
+
+        var n1 = p1.length;
+        var n3 = p3.length;
+        var n6 = p6.length;
+
+        daftarTitikApiSekunder = [
+            { jam: 0.35, lat: pusatApiLat + (p1[2 % n1][0] - pusatApiLat) * 0.45, lng: pusatApiLng + (p1[2 % n1][1] - pusatApiLng) * 0.45, label: 'Lidah Api Awal' },
+            { jam: 0.65, lat: pusatApiLat + (p1[34 % n1][0] - pusatApiLat) * 0.65, lng: pusatApiLng + (p1[34 % n1][1] - pusatApiLng) * 0.65, label: 'Lidah Api Samping' },
+            { jam: 0.95, lat: p1[0][0] * 0.95 + pusatApiLat * 0.05, lng: p1[0][1] * 0.95 + pusatApiLng * 0.05, label: 'Kepala Api 1 Jam' },
+            { jam: 1.25, lat: p1[5 % n1][0], lng: p1[5 % n1][1], label: 'Loncatan Bara Kanan' },
+            { jam: 1.55, lat: p1[31 % n1][0], lng: p1[31 % n1][1], label: 'Loncatan Bara Kiri' },
+            { jam: 1.85, lat: p1[1 % n1][0] + (p3[1 % n3][0] - p1[1 % n1][0]) * 0.35, lng: p1[1 % n1][1] + (p3[1 % n3][1] - p1[1 % n1][1]) * 0.35, label: 'Perambatan Aktif' },
+            { jam: 2.20, lat: p1[4 % n1][0] + (p3[4 % n3][0] - p1[4 % n1][0]) * 0.55, lng: p1[4 % n1][1] + (p3[4 % n3][1] - p1[4 % n1][1]) * 0.55, label: 'Lidah Api Hutan' },
+            { jam: 2.55, lat: p1[33 % n1][0] + (p3[33 % n3][0] - p1[33 % n1][0]) * 0.65, lng: p1[33 % n1][1] + (p3[33 % n3][1] - p1[33 % n1][1]) * 0.65, label: 'Fokus Api Menyebar' },
+            { jam: 2.90, lat: p3[0][0], lng: p3[0][1], label: 'Kepala Api 3 Jam' },
+            { jam: 3.25, lat: p3[6 % n3][0], lng: p3[6 % n3][1], label: 'Titik Api Dekat Jalur Lereng' },
+            { jam: 3.65, lat: p3[30 % n3][0], lng: p3[30 % n3][1], label: 'Lidah Api Sisi Barat' },
+            { jam: 4.05, lat: p3[2 % n3][0] + (p6[2 % n6][0] - p3[2 % n3][0]) * 0.35, lng: p3[2 % n3][1] + (p6[2 % n6][1] - p3[2 % n3][1]) * 0.35, label: 'Loncatan Bara 4 Jam' },
+            { jam: 4.45, lat: p3[32 % n3][0] + (p6[32 % n6][0] - p3[32 % n3][0]) * 0.50, lng: p3[32 % n3][1] + (p6[32 % n6][1] - p3[32 % n3][1]) * 0.50, label: 'Lidah Api Menjalar Luas' },
+            { jam: 4.90, lat: p6[1 % n6][0] * 0.9 + p3[1 % n3][0] * 0.1, lng: p6[1 % n6][1] * 0.9 + p3[1 % n3][1] * 0.1, label: 'Garis Depan Lidah Api' },
+            { jam: 5.35, lat: p6[5 % n6][0], lng: p6[5 % n6][1], label: 'Perimeter Terluar Timur' },
+            { jam: 5.80, lat: p6[0][0], lng: p6[0][1], label: 'Puncak Penjalaran 6 Jam' }
+        ];
+    }
+
+    function hitungPoligonInterp(jam) {
+        if (jam <= 0) return poly0Coords;
+        if (jam <= 1) {
+            var f = jam;
+            var hasil = [];
+            var n = poly1Coords.length;
+            if (n === 0) return poly0Coords;
+            for (var i = 0; i < n; i++) {
+                var lat = pusatApiLat + (poly1Coords[i][0] - pusatApiLat) * f;
+                var lng = pusatApiLng + (poly1Coords[i][1] - pusatApiLng) * f;
+                hasil.push([lat, lng]);
+            }
+            return hasil;
+        }
+        var sourceCoords, targetCoords, f;
+        if (jam <= 3) {
+            sourceCoords = poly1Coords;
+            targetCoords = poly3Coords.length > 0 ? poly3Coords : poly1Coords;
+            f = (jam - 1) / 2;
+        } else {
+            sourceCoords = poly3Coords.length > 0 ? poly3Coords : poly1Coords;
+            targetCoords = poly6Coords.length > 0 ? poly6Coords : sourceCoords;
+            f = (jam - 3) / 3;
+        }
+        var hasil = [];
+        var n = Math.min(sourceCoords.length, targetCoords.length);
+        for (var i = 0; i < n; i++) {
+            var lat = sourceCoords[i][0] + (targetCoords[i][0] - sourceCoords[i][0]) * f;
+            var lng = sourceCoords[i][1] + (targetCoords[i][1] - sourceCoords[i][1]) * f;
+            hasil.push([lat, lng]);
+        }
+        return hasil;
+    }
+
+    function ubahWaktuSimulasi(jam) {
+        waktuSimulasi = parseFloat(jam);
+        var slider = document.getElementById('slider-waktu');
+        if (slider) slider.value = waktuSimulasi;
+
+        var menitTotal = Math.round(waktuSimulasi * 60);
+        var jamTeks = Math.floor(menitTotal / 60);
+        var sisaMenit = menitTotal % 60;
+        var teksWaktu = document.getElementById('teks-waktu-simulasi');
+        if (teksWaktu) teksWaktu.innerText = 'Waktu Simulasi: +' + jamTeks + ' Jam ' + sisaMenit + ' Menit';
+
+        var jarakMeter = Math.round(waktuSimulasi * lajuRambatM);
+        var teksJarak = document.getElementById('teks-jarak-simulasi');
+        if (teksJarak) teksJarak.innerText = 'Perkiraan Menjalar: ~' + jarakMeter.toLocaleString('id-ID') + ' m';
+
+        if (!layerApiAnimasi && petaHutan && pusatApiLat && pusatApiLng) {
+            layerApiAnimasi = L.polygon([[pusatApiLat, pusatApiLng]], {
+                color: '#ff2200',
+                fillColor: '#ef4444',
+                fillOpacity: 0.65,
+                weight: 3,
+                dashArray: '4, 4'
+            }).addTo(petaHutan);
+        }
+
+        if (layerApiAnimasi) {
+            var polyCoords = hitungPoligonInterp(waktuSimulasi);
+            layerApiAnimasi.setLatLngs(polyCoords);
+        }
+
+        var jumlahSekunderAktif = 0;
+        daftarTitikApiSekunder.forEach(function (titik, i) {
+            if (waktuSimulasi >= titik.jam) {
+                jumlahSekunderAktif++;
+                if (!markerApiSekunder[i] && petaHutan) {
+                    var m = L.marker([titik.lat, titik.lng], { icon: buatIconApiSekunder() }).addTo(petaHutan);
+                    m.bindPopup('<div class="p-1 font-sans text-xs">' +
+                        '<div class="font-extrabold text-orange-600 flex items-center gap-1"><i class="fa-solid fa-fire"></i> ' + titik.label + '</div>' +
+                        '<div class="text-[11px] text-stone-600 mt-0.5">Loncatan api aktif pada jam ke +' + titik.jam.toFixed(1) + '</div>' +
+                        '</div>');
+                    markerApiSekunder[i] = m;
+                }
+            } else {
+                if (markerApiSekunder[i] && petaHutan) {
+                    petaHutan.removeLayer(markerApiSekunder[i]);
+                    markerApiSekunder[i] = null;
+                }
+            }
+        });
+
+        var totalTitikAktif = 1 + jumlahSekunderAktif;
+        var badgeTitik = document.getElementById('teks-titik-aktif');
+        if (badgeTitik) {
+            badgeTitik.innerText = totalTitikAktif + ' Titik Api Aktif';
+        }
+
+        var kotakStatus = document.getElementById('kotak-status-simulasi');
+        var ikonStatus = document.getElementById('ikon-status-simulasi');
+        var judulStatus = document.getElementById('judul-status-simulasi');
+        var pesanStatus = document.getElementById('pesan-status-simulasi');
+
+        if (!kotakStatus) return;
+
+        var desaTerdampakSekarang = [];
+        permukimanTerancamList.forEach(function (area) {
+            var jamBahaya = parseFloat(area.jam);
+            if (waktuSimulasi >= jamBahaya) {
+                desaTerdampakSekarang.push(area.nama);
+            }
+        });
+
+        if (desaTerdampakSekarang.length > 0) {
+            kotakStatus.className = 'p-4 rounded-xl bg-rose-50 border-2 border-rose-500 flex items-start gap-3 shadow-sm transition-all duration-300';
+            ikonStatus.className = 'w-9 h-9 rounded-lg bg-rose-600 text-white flex items-center justify-center shrink-0 text-base mt-0.5 animate-bounce';
+            judulStatus.className = 'font-black text-rose-900 mb-0.5 text-sm';
+            judulStatus.innerText = 'PERINGATAN KRITIS: Lidah Api Memasuki Area Permukiman!';
+            pesanStatus.className = 'text-rose-800 leading-relaxed font-medium';
+            pesanStatus.innerText = 'Pada waktu simulasi +' + jamTeks + 'j ' + sisaMenit + 'm, api diperkirakan telah menjalar sejauh ~' + jarakMeter.toLocaleString('id-ID') + ' m dengan ' + totalTitikAktif + ' titik api aktif yang mulai mengancam: ' + desaTerdampakSekarang.join(', ') + '. Warga diimbau evakuasi terarah!';
+        } else if (waktuSimulasi > 0) {
+            kotakStatus.className = 'p-4 rounded-xl bg-amber-50 border border-amber-300 flex items-start gap-3 shadow-sm transition-all duration-300';
+            ikonStatus.className = 'w-9 h-9 rounded-lg bg-amber-500 text-white flex items-center justify-center shrink-0 text-base mt-0.5';
+            judulStatus.className = 'font-black text-amber-900 mb-0.5 text-sm';
+            judulStatus.innerText = 'Api Sedang Merambat di Vegetasi ' + (namaVegetasi || 'Hutan');
+            pesanStatus.className = 'text-amber-800 leading-relaxed';
+            pesanStatus.innerText = 'Terdeteksi ' + totalTitikAktif + ' titik api aktif yang menyebar mengikuti dorongan angin ' + arahAnginDerajat + '° dengan kecepatan rambat ~' + lajuRambatM + ' m/jam. Jarak penjalaran api saat ini mencapai ~' + jarakMeter.toLocaleString('id-ID') + ' meter.';
+        } else {
+            kotakStatus.className = 'p-4 rounded-xl bg-white border border-gray-200 flex items-start gap-3 shadow-sm transition-all duration-300';
+            ikonStatus.className = 'w-9 h-9 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shrink-0 text-base mt-0.5';
+            judulStatus.className = 'font-bold text-gray-900 mb-0.5 text-sm';
+            judulStatus.innerText = 'Kondisi Awal Titik Api Terdeteksi';
+            pesanStatus.className = 'text-gray-600 leading-relaxed';
+            pesanStatus.innerText = 'Titik api teridentifikasi pada kawasan vegetasi hutan. Tekan tombol "Mulai Simulasi" atau geser slider waktu untuk memantau perambatan lidah api dan titik api baru ke arah pemukiman warga.';
+        }
+    }
+
+    function toggleSimulasi() {
+        var btnIcon = document.getElementById('icon-play-simulasi');
+        var btnLabel = document.getElementById('label-play-simulasi');
+
+        if (simulasiInterval) {
+            clearInterval(simulasiInterval);
+            simulasiInterval = null;
+            if (btnIcon) btnIcon.className = 'fa-solid fa-play';
+            if (btnLabel) btnLabel.innerText = 'Lanjutkan';
+        } else {
+            if (pusatApiLat && pusatApiLng && petaHutan) {
+                if (petaHutan.getZoom() < 13) {
+                    petaHutan.setView([pusatApiLat, pusatApiLng], 14, { animate: true });
+                }
+            }
+            if (waktuSimulasi >= 6) {
+                waktuSimulasi = 0;
+            }
+            if (btnIcon) btnIcon.className = 'fa-solid fa-pause';
+            if (btnLabel) btnLabel.innerText = 'Jeda';
+
+            simulasiInterval = setInterval(function () {
+                waktuSimulasi += 0.05;
+                if (waktuSimulasi >= 6) {
+                    waktuSimulasi = 6;
+                    clearInterval(simulasiInterval);
+                    simulasiInterval = null;
+                    if (btnIcon) btnIcon.className = 'fa-solid fa-rotate-right';
+                    if (btnLabel) btnLabel.innerText = 'Ulangi';
+                }
+                ubahWaktuSimulasi(waktuSimulasi);
+            }, 80);
+        }
+    }
+
+    function resetSimulasi() {
+        if (simulasiInterval) {
+            clearInterval(simulasiInterval);
+            simulasiInterval = null;
+        }
+        if (markerApiSekunder && markerApiSekunder.length > 0 && petaHutan) {
+            markerApiSekunder.forEach(function (m) {
+                if (m) {
+                    petaHutan.removeLayer(m);
+                }
+            });
+            markerApiSekunder = [];
+        }
+        var btnIcon = document.getElementById('icon-play-simulasi');
+        var btnLabel = document.getElementById('label-play-simulasi');
+        if (btnIcon) btnIcon.className = 'fa-solid fa-play';
+        if (btnLabel) btnLabel.innerText = 'Mulai Simulasi';
+        ubahWaktuSimulasi(0);
+        if (pusatApiLat && pusatApiLng && petaHutan) {
+            petaHutan.setView([pusatApiLat, pusatApiLng], 14, { animate: true });
+        }
     }
 
     function toggleLapisan(j, a) {
@@ -1748,11 +2102,108 @@
         }
     }
 
-    function fokusPrediksi(lat, lng) {
+    function gantiTitikSimulasi(id) {
+        if (!Array.isArray(DB_PREDIKSI) || DB_PREDIKSI.length === 0) return;
+        var target = DB_PREDIKSI.find(p => p.id == id) || DB_PREDIKSI[0];
+        if (!target) return;
+
+        if (simulasiInterval) {
+            clearInterval(simulasiInterval);
+            simulasiInterval = null;
+        }
+
+        if (markerApiSekunder && markerApiSekunder.length > 0 && petaHutan) {
+            markerApiSekunder.forEach(m => {
+                if (m) petaHutan.removeLayer(m);
+            });
+            markerApiSekunder = [];
+        }
+
+        pusatApiLat = parseFloat(target.latitude);
+        pusatApiLng = parseFloat(target.longitude);
+        arahAnginDerajat = parseFloat(target.arah_angin || 240);
+        lajuRambatM = parseFloat(target.laju_efektif || 960);
+        namaVegetasi = target.jenis_lahan ? (target.jenis_lahan.nama || 'Hutan') : 'Hutan';
+        poly0Coords = [[pusatApiLat, pusatApiLng]];
+
+        poly1Coords = [];
+        poly3Coords = [];
+        poly6Coords = [];
+        if (target.poligon_1jam) {
+            try {
+                poly1Coords = typeof target.poligon_1jam === 'string' ? JSON.parse(target.poligon_1jam) : target.poligon_1jam;
+            } catch (e) {}
+        }
+        if (target.poligon_3jam) {
+            try {
+                poly3Coords = typeof target.poligon_3jam === 'string' ? JSON.parse(target.poligon_3jam) : target.poligon_3jam;
+            } catch (e) {}
+        }
+        if (target.poligon_6jam) {
+            try {
+                poly6Coords = typeof target.poligon_6jam === 'string' ? JSON.parse(target.poligon_6jam) : target.poligon_6jam;
+            } catch (e) {}
+        }
+
+        permukimanTerancamList = [];
+        if (target.area_terancam) {
+            try {
+                permukimanTerancamList = typeof target.area_terancam === 'string' ? JSON.parse(target.area_terancam) : target.area_terancam;
+            } catch (e) {}
+        }
+
+        var subtextEl = document.getElementById('subteks-model-angin');
+        if (subtextEl) {
+            subtextEl.innerText = 'Model elips Huygens berbasis dorongan angin ' + (target.arah_angin ?? 240) + '° • Kecepatan ' + (target.kecepatan_angin ?? 14) + ' km/j';
+        }
+
+        var selSimulasi = document.getElementById('select-titik-simulasi');
+        if (selSimulasi) {
+            selSimulasi.value = target.id;
+        }
+
+        inisialisasiTitikApiSekunder();
+
+        if (layerApiAnimasi && petaHutan) {
+            petaHutan.removeLayer(layerApiAnimasi);
+            layerApiAnimasi = null;
+        }
+
+        if (pusatApiLat && pusatApiLng && petaHutan) {
+            layerApiAnimasi = L.polygon([[pusatApiLat, pusatApiLng]], {
+                color: '#ff2200',
+                fillColor: '#ef4444',
+                fillOpacity: 0.65,
+                weight: 3,
+                dashArray: '4, 4'
+            }).addTo(petaHutan);
+        }
+
+        var btnIcon = document.getElementById('icon-play-simulasi');
+        var btnLabel = document.getElementById('label-play-simulasi');
+        if (btnIcon) btnIcon.className = 'fa-solid fa-play';
+        if (btnLabel) btnLabel.innerText = 'Mulai Simulasi';
+
+        ubahWaktuSimulasi(0);
+
+        if (petaHutan && pusatApiLat && pusatApiLng) {
+            petaHutan.setView([pusatApiLat, pusatApiLng], 14, { animate: true });
+        }
+    }
+
+    function fokusPrediksi(lat, lng, id) {
         if (!petaHutan) return;
-        petaHutan.setView([lat, lng], 13);
+        if (id) {
+            gantiTitikSimulasi(id);
+        } else if (lat && lng) {
+            petaHutan.setView([lat, lng], 14, { animate: true });
+        }
         if (lapisan.prediksi && !petaHutan.hasLayer(lapisan.prediksi)) {
             lapisan.prediksi.addTo(petaHutan);
+        }
+        var elMap = document.getElementById('map-hutan');
+        if (elMap) {
+            elMap.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
 
