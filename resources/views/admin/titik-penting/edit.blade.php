@@ -171,8 +171,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     map = L.map('peta-titik', {
         maxBounds: boundsJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([latPusat, longPusat], zoomAwal);
+    map.scrollWheelZoom.enable();
+
+    var wadahPetaTitik = document.getElementById('peta-titik');
+    if (wadahPetaTitik) {
+        wadahPetaTitik.addEventListener('mouseenter', function () {
+            if (map && map.scrollWheelZoom) {
+                map.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

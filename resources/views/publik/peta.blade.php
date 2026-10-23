@@ -121,8 +121,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     map = L.map('peta-publik', {
         maxBounds: boundsJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([latPusat, longPusat], zoomAwal);
+    map.scrollWheelZoom.enable();
+
+    var wadahPetaPublik = document.getElementById('peta-publik');
+    if (wadahPetaPublik) {
+        wadahPetaPublik.addEventListener('mouseenter', function () {
+            if (map && map.scrollWheelZoom) {
+                map.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

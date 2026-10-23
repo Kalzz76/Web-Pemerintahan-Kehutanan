@@ -1652,7 +1652,18 @@
     }
 
     function petaDasar(id, zoom = PETA_PENGATURAN.zoomAwal, center = [PETA_PENGATURAN.latPusat, PETA_PENGATURAN.longPusat]) {
-        const m = L.map(id, { maxBounds: boundsJabar, minZoom: Math.max(1, PETA_PENGATURAN.zoomAwal - 2), scrollWheelZoom: true }).setView(center, zoom);
+        const m = L.map(id, { 
+            maxBounds: boundsJabar, 
+            minZoom: Math.max(1, PETA_PENGATURAN.zoomAwal - 2), 
+            scrollWheelZoom: true 
+        }).setView(center, zoom);
+        m.scrollWheelZoom.enable();
+        const wadah = document.getElementById(id);
+        if (wadah) {
+            wadah.addEventListener('mouseenter', function () {
+                m.scrollWheelZoom.enable();
+            });
+        }
         L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { 
             attribution: 'Tiles &copy; Esri &mdash; Satellite Imagery' 
         }).addTo(m);

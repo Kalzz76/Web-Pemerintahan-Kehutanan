@@ -168,8 +168,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var map = L.map('peta-kawasan', {
         maxBounds: boundsJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([latPusat, longPusat], zoomAwal);
+    map.scrollWheelZoom.enable();
+
+    var wadahPetaKawasan = document.getElementById('peta-kawasan');
+    if (wadahPetaKawasan) {
+        wadahPetaKawasan.addEventListener('mouseenter', function () {
+            if (map && map.scrollWheelZoom) {
+                map.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'

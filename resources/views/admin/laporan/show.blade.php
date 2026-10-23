@@ -368,8 +368,19 @@ document.addEventListener('DOMContentLoaded', function () {
     var batasJabar = L.latLngBounds(L.latLng(-7.9, 106.3), L.latLng(-5.9, 108.9));
     var map = L.map('peta-laporan-detail', {
         maxBounds: batasJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([lat, lng], 14);
+    map.scrollWheelZoom.enable();
+
+    var wadahPetaLaporan = document.getElementById('peta-laporan-detail');
+    if (wadahPetaLaporan) {
+        wadahPetaLaporan.addEventListener('mouseenter', function () {
+            if (map && map.scrollWheelZoom) {
+                map.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

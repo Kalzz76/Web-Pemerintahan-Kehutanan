@@ -918,8 +918,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     mapLapor = L.map('peta-lapor', {
         maxBounds: boundsJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([latPusat, longPusat], zoomAwal);
+    mapLapor.scrollWheelZoom.enable();
+
+    var wadahPetaLapor = document.getElementById('peta-lapor');
+    if (wadahPetaLapor) {
+        wadahPetaLapor.addEventListener('mouseenter', function () {
+            if (mapLapor && mapLapor.scrollWheelZoom) {
+                mapLapor.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap'

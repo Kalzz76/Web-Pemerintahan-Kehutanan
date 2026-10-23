@@ -426,8 +426,18 @@ function inisialisasiPetaPrediksi() {
     var batasJabar = L.latLngBounds(L.latLng(-7.9, 106.3), L.latLng(-5.9, 108.9));
     map = L.map('peta-prediksi', {
         maxBounds: batasJabar,
-        minZoom: 7
+        minZoom: 7,
+        scrollWheelZoom: true
     }).setView([latPusat, longPusat], zoomAwal);
+    map.scrollWheelZoom.enable();
+
+    if (petaEl) {
+        petaEl.addEventListener('mouseenter', function () {
+            if (map && map.scrollWheelZoom) {
+                map.scrollWheelZoom.enable();
+            }
+        });
+    }
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
