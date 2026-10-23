@@ -31,6 +31,25 @@ class TitikPenting extends Model
         ];
     }
 
+    protected $appends = ['foto_url'];
+
+    public function getFotoUrlAttribute(): ?string
+    {
+        if (empty($this->foto)) {
+            return null;
+        }
+        if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://')) {
+            return $this->foto;
+        }
+        if (file_exists(public_path($this->foto))) {
+            return asset($this->foto);
+        }
+        if (file_exists(public_path('storage/' . $this->foto))) {
+            return asset('storage/' . $this->foto);
+        }
+        return null;
+    }
+
     public function kawasanHutan()
     {
         return $this->belongsTo(KawasanHutan::class, 'id_kawasan');

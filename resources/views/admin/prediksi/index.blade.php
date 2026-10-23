@@ -3,6 +3,12 @@
 @section('title', 'Prediksi Kebakaran')
 
 @section('content')
+<style>
+.custom-kebakaran-marker {
+    background: transparent !important;
+    border: none !important;
+}
+</style>
 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
     <div>
         <h1 class="text-lg md:text-xl font-bold text-stone-900 tracking-tight">Prediksi Perambatan Kebakaran</h1>
@@ -13,7 +19,7 @@
         @csrf
         <button type="submit" class="inline-flex items-center px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white font-semibold rounded-xl text-xs sm:text-sm shadow-sm transition active:scale-95 shrink-0 space-x-1.5">
             <i class="fa-solid fa-satellite text-xs"></i>
-            <span>Ambil Titik Api Satelit (FIRMS)</span>
+            <span>Ambil Titik Api Satelit</span>
         </button>
     </form>
 </div>
@@ -26,11 +32,29 @@
         </h2>
         <div class="flex flex-wrap items-center gap-3 text-xs text-stone-600">
             <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-[#7e22ce] mr-1.5"></span> Satelit ({{ $daftarTitikApi->count() }})</span>
-            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-[#dc2626] mr-1.5"></span> Laporan Api ({{ $daftarKebakaranAktif->count() }})</span>
+            <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-[#dc2626] mr-1.5"></span> Laporan Api Aktif ({{ $daftarKebakaranAktif->count() }})</span>
             <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-full bg-[#ca8a04] mr-1.5"></span> Permukiman</span>
             <span class="flex items-center"><span class="w-2.5 h-2.5 rounded-sm border-2 border-stone-800 bg-stone-200 mr-1.5"></span> Kawasan</span>
         </div>
     </div>
+
+    @if ($daftarKebakaranAktif->count() > 0)
+        <div class="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-900 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="flex items-center space-x-2.5">
+                <span class="relative flex h-3 w-3 shrink-0">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+                </span>
+                <div>
+                    <span class="font-bold">Ada {{ $daftarKebakaranAktif->count() }} Laporan Kebakaran Aktif dari Warga!</span>
+                    <span class="text-stone-600 block sm:inline sm:ml-1">Ditandai dengan pin api merah di peta. Jika status laporan di Kelola Laporan diubah menjadi <strong>Selesai</strong>, titik api otomatis hilang dari peta.</span>
+                </div>
+            </div>
+            <a href="{{ route('admin.laporan.index', ['jenis' => 'Kebakaran']) }}" class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-[11px] transition text-center shrink-0">
+                Kelola Laporan &rarr;
+            </a>
+        </div>
+    @endif
 
     <div class="p-3 rounded-xl bg-stone-100 border border-stone-200 text-stone-700 text-xs flex items-center space-x-2">
         <i class="fa-solid fa-crosshairs text-stone-500 text-xs shrink-0"></i>
@@ -109,7 +133,7 @@
             <i class="fa-solid fa-calculator text-stone-700 mr-2"></i>
             <span>Formulir Perhitungan Prediksi</span>
         </h2>
-        <p class="text-stone-500 text-xs mt-0.5">Tentukan koordinat titik api dan ambil parameter cuaca Open-Meteo secara otomatis.</p>
+        <p class="text-stone-500 text-xs mt-0.5">Tentukan koordinat titik api dan ambil parameter cuaca secara otomatis.</p>
     </div>
 
     <form method="POST" action="{{ route('admin.prediksi.hitung') }}" class="space-y-5">
@@ -144,7 +168,7 @@
                 <span class="text-xs font-bold uppercase tracking-wider text-stone-600">Parameter Cuaca & Angin</span>
                 <button type="button" onclick="ambilDataCuaca()" id="tombol-cuaca" class="px-3.5 py-1.5 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs transition shadow-sm flex items-center justify-center space-x-1.5 active:scale-95 shrink-0">
                     <i class="fa-solid fa-cloud-bolt text-xs"></i>
-                    <span id="label-tombol-cuaca">Ambil Data Cuaca (Open-Meteo)</span>
+                    <span id="label-tombol-cuaca">Ambil Data Cuaca</span>
                 </button>
             </div>
 
@@ -340,17 +364,22 @@ function ambilDataCuaca() {
     });
 }
 
-function pasangTitikSimulasi(lat, lng) {
+function pasangTitikSimulasi(lat, lng, idLaporan = null) {
     document.getElementById('latitude').value = parseFloat(lat).toFixed(7);
     document.getElementById('longitude').value = parseFloat(lng).toFixed(7);
+
+    var inputIdLaporan = document.querySelector('input[name="id_laporan"]');
+    if (inputIdLaporan) {
+        inputIdLaporan.value = idLaporan ? idLaporan : '';
+    }
 
     if (markerTitikApi) {
         markerTitikApi.setLatLng([lat, lng]);
     } else {
         markerTitikApi = L.circleMarker([lat, lng], {
-            radius: 10,
-            color: '#dc2626',
-            fillColor: '#dc2626',
+            radius: 11,
+            color: '#1c1917',
+            fillColor: '#ef4444',
             fillOpacity: 1,
             weight: 3
         }).addTo(map);
@@ -414,29 +443,55 @@ function inisialisasiPetaPrediksi() {
             fillOpacity: 0.9,
             weight: 2
         }).addTo(map);
-        marker.bindPopup('<strong>Titik Api Satelit (FIRMS)</strong><br><span class="text-xs">Waktu: ' + ta.tanggal_deteksi + ' ' + ta.waktu_deteksi + '</span><br><button onclick="pasangTitikSimulasi(' + ta.latitude + ',' + ta.longitude + ')" class="text-xs text-stone-900 font-bold underline mt-1">Gunakan Titik Ini</button>');
+        var waktuText = ta.waktu_deteksi ? ta.waktu_deteksi : '';
+        marker.bindPopup('<strong>Titik Api Satelit (FIRMS)</strong><br><span class="text-xs">Waktu: ' + ta.tanggal_deteksi + ' ' + waktuText + '</span><br><button onclick="pasangTitikSimulasi(' + ta.latitude + ',' + ta.longitude + ', null)" class="text-xs text-stone-900 font-bold underline mt-1">Gunakan Titik Ini</button>');
     });
 
     var dataKebakaran = @json($daftarKebakaranAktif);
     dataKebakaran.forEach(function (kb) {
-        var marker = L.circleMarker([kb.latitude, kb.longitude], {
-            radius: 9,
-            color: '#dc2626',
-            fillColor: '#dc2626',
-            fillOpacity: 0.9,
-            weight: 2
-        }).addTo(map);
-        marker.bindPopup('<strong>Laporan: ' + kb.kode + '</strong><br><span class="text-xs">' + kb.deskripsi + '</span><br><button onclick="pasangTitikSimulasi(' + kb.latitude + ',' + kb.longitude + ')" class="text-xs text-stone-900 font-bold underline mt-1">Gunakan Titik Ini</button>');
+        var fireIcon = L.divIcon({
+            className: 'custom-kebakaran-marker',
+            html: '<div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-red-600 text-white shadow-lg ring-4 ring-red-200 cursor-pointer transition hover:scale-110"><i class="fa-solid fa-fire text-sm"></i></div>',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16],
+            popupAnchor: [0, -16]
+        });
+
+        var marker = L.marker([kb.latitude, kb.longitude], { icon: fireIcon }).addTo(map);
+
+        var lokasiNama = (kb.kabupaten_kota ? kb.kabupaten_kota.nama : '') + (kb.kawasan_hutan ? ' (' + kb.kawasan_hutan.nama + ')' : '');
+        var popupContent = '<div class="p-1 space-y-2 min-w-[220px]">' +
+            '<div class="flex items-center justify-between gap-2 border-b border-stone-200 pb-1.5">' +
+                '<span class="font-bold font-mono text-red-600 text-xs flex items-center gap-1"><i class="fa-solid fa-fire text-[11px]"></i> ' + kb.kode + '</span>' +
+                '<span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-red-100 text-red-800">' + kb.status + '</span>' +
+            '</div>' +
+            (lokasiNama ? '<div class="text-[11px] text-stone-500 font-semibold">' + lokasiNama + '</div>' : '') +
+            '<div class="text-xs text-stone-700 leading-relaxed font-normal line-clamp-2">' + (kb.deskripsi || 'Laporan kebakaran aktif dari warga') + '</div>' +
+            '<div class="pt-1 flex flex-col gap-1.5">' +
+                '<button type="button" onclick="pasangTitikSimulasi(' + kb.latitude + ',' + kb.longitude + ',' + kb.id + ')" class="w-full px-2.5 py-1.5 bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-semibold rounded-lg transition text-center shadow-sm flex items-center justify-center gap-1.5">' +
+                    '<i class="fa-solid fa-calculator text-[10px]"></i><span>Gunakan Titik Untuk Prediksi</span>' +
+                '</button>' +
+                '<a href="/admin/laporan/' + kb.id + '" class="w-full px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 text-[11px] font-semibold rounded-lg transition text-center border border-stone-300 flex items-center justify-center gap-1.5">' +
+                    '<i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i><span>Buka di Kelola Laporan</span>' +
+                '</a>' +
+            '</div>' +
+        '</div>';
+
+        marker.bindPopup(popupContent);
     });
 
     var latAwal = document.getElementById('latitude').value;
     var lngAwal = document.getElementById('longitude').value;
+    var idLaporanAwal = '{{ $inputIdLaporan ?? "" }}';
     if (latAwal && lngAwal) {
-        pasangTitikSimulasi(parseFloat(latAwal), parseFloat(lngAwal));
+        pasangTitikSimulasi(parseFloat(latAwal), parseFloat(lngAwal), idLaporanAwal || null);
+        @if ($inputIdLaporan)
+            map.setView([parseFloat(latAwal), parseFloat(lngAwal)], 13);
+        @endif
     }
 
     map.on('click', function (e) {
-        pasangTitikSimulasi(e.latlng.lat, e.latlng.lng);
+        pasangTitikSimulasi(e.latlng.lat, e.latlng.lng, null);
     });
 
     @if ($prediksiAktif)

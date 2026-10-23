@@ -108,10 +108,9 @@
                                     <p class="text-[11px] text-stone-600 leading-relaxed font-mono">
                                         Lat: {{ number_format($ta->latitude, 4) }}, Long: {{ number_format($ta->longitude, 4) }}
                                     </p>
-                                    <div class="mt-1 flex items-center gap-2 text-[10px] text-stone-400">
-                                        <span class="text-purple-700 font-semibold bg-purple-50 px-1.5 py-0.5 rounded">{{ $ta->kepercayaan }}% Yakin</span>
-                                        <span>&bull;</span>
-                                        <span>{{ $ta->tanggal_deteksi ? $ta->tanggal_deteksi->format('d M Y') : '' }} {{ $ta->waktu_deteksi }}</span>
+                                    <div class="mt-1 flex items-center gap-1.5 text-[10px] text-stone-400">
+                                        <i class="fa-regular fa-clock text-[10px] text-stone-400"></i>
+                                        <span>{{ $ta->tanggal_deteksi ? $ta->tanggal_deteksi->format('d M Y') : '' }} &bull; {{ $ta->waktu_deteksi_formatted }}</span>
                                     </div>
                                 </div>
                             </a>

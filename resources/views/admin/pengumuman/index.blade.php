@@ -83,7 +83,7 @@
                 <label class="block text-[11px] font-bold text-stone-700 uppercase tracking-wider mb-1.5">Gambar (Maks 2 MB, Opsional)</label>
                 <input type="file" name="gambar" id="input-gambar" accept="image/png,image/jpeg,image/jpg" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-3.5 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-stone-100 file:text-stone-800 hover:file:bg-stone-200">
                 <div id="pratinjau-gambar-wadah" class="mt-2 hidden">
-                    <img id="pratinjau-gambar" src="" alt="Pratinjau" class="w-24 h-24 rounded-xl object-cover border border-stone-200">
+                    <img id="pratinjau-gambar" src="" alt="Pratinjau" class="w-24 h-24 rounded-xl object-cover border border-stone-200" onerror="this.parentElement.classList.add('hidden');">
                 </div>
             </div>
 

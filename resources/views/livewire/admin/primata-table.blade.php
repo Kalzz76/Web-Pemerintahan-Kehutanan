@@ -39,13 +39,18 @@
                     @forelse ($daftarPrimata as $primata)
                         <tr class="hover:bg-stone-50 transition-colors">
                             <td class="py-3.5 px-4 whitespace-nowrap">
-                                @if ($primata->foto)
-                                    <img src="{{ asset('storage/' . $primata->foto) }}" alt="{{ $primata->nama_lokal }}" class="w-10 h-10 rounded-xl object-cover border border-stone-200">
-                                @else
-                                    <div class="w-10 h-10 rounded-xl bg-stone-100 text-stone-500 flex items-center justify-center text-sm border border-stone-200">
-                                        <i class="fa-solid fa-paw"></i>
-                                    </div>
-                                @endif
+                                <div class="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 overflow-hidden shrink-0 flex items-center justify-center relative">
+                                    @if ($primata->foto_url)
+                                        <img src="{{ $primata->foto_url }}" alt="{{ $primata->nama_lokal }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                        <div class="hidden w-full h-full flex items-center justify-center bg-stone-100 text-stone-500 text-sm">
+                                            <i class="fa-solid fa-paw"></i>
+                                        </div>
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-stone-500 text-sm">
+                                            <i class="fa-solid fa-paw"></i>
+                                        </div>
+                                    @endif
+                                </div>
                             </td>
                             <td class="py-3.5 px-4 font-bold text-stone-900 whitespace-nowrap">
                                 {{ $primata->nama_lokal }}

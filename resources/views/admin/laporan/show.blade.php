@@ -24,11 +24,18 @@
             </p>
         </div>
 
-        @if ($laporan->jenis === 'Kebakaran')
-            <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index', ['id_laporan' => $laporan->id, 'lat' => $laporan->latitude, 'long' => $laporan->longitude]) : '#' }}" class="inline-flex items-center px-4 py-2.5 bg-stone-900 hover:bg-stone-800 text-white font-bold rounded-xl shadow-sm transition text-xs shrink-0 active:scale-95">
-                <i class="fa-solid fa-fire-flame-curved mr-2 text-stone-300"></i>
-                <span>Hitung Prediksi dari Titik Ini</span>
-            </a>
+        @if ($laporan->jenis === 'Kebakaran' && $laporan->latitude && $laporan->longitude)
+            @if ($laporan->status !== 'Selesai')
+                <a href="{{ Route::has('admin.prediksi.index') ? route('admin.prediksi.index', ['id_laporan' => $laporan->id, 'lat' => $laporan->latitude, 'long' => $laporan->longitude]) : '#' }}" class="inline-flex items-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-sm transition text-xs shrink-0 active:scale-95">
+                    <i class="fa-solid fa-fire mr-2 text-white"></i>
+                    <span>Hitung Prediksi di Peta Kebakaran</span>
+                </a>
+            @else
+                <span class="inline-flex items-center px-3.5 py-2 bg-stone-100 text-stone-600 font-semibold rounded-xl text-xs shrink-0 border border-stone-200">
+                    <i class="fa-solid fa-circle-check mr-1.5 text-stone-500"></i>
+                    <span>Status Selesai (Titik Dinonaktifkan dari Peta Prediksi)</span>
+                </span>
+            @endif
         @endif
     </div>
 </div>
@@ -284,7 +291,12 @@
                         <option value="Ditangani" {{ old('status', $laporan->status) === 'Ditangani' ? 'selected' : '' }}>Ditangani (Petugas di Lapangan)</option>
                         <option value="Selesai" {{ old('status', $laporan->status) === 'Selesai' ? 'selected' : '' }}>Selesai (Penanganan Tuntas)</option>
                     </select>
-                    <p class="text-[11px] text-stone-400 mt-1">Laporan baru tidak muncul di peta warga sebelum diubah ke Diverifikasi atau Ditangani.</p>
+                    <p class="text-[11px] text-stone-400 mt-1">
+                        Laporan baru tidak muncul di peta warga sebelum diubah ke Diverifikasi atau Ditangani.
+                        @if ($laporan->jenis === 'Kebakaran')
+                            <span class="block text-stone-500 font-medium mt-0.5"><i class="fa-solid fa-fire text-red-500 mr-1"></i>Jika diubah ke <strong>Selesai</strong>, titik api akan otomatis hilang dari peta simulasi Prediksi Kebakaran.</span>
+                        @endif
+                    </p>
                 </div>
 
                 <div>

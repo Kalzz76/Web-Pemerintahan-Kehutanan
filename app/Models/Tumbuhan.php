@@ -33,13 +33,19 @@ class Tumbuhan extends Model
 
     public function getFotoUrlAttribute(): ?string
     {
-        if (!$this->foto) {
+        if (empty($this->foto)) {
             return null;
         }
-        if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://') || str_starts_with($this->foto, 'assets/') || str_starts_with($this->foto, 'images/')) {
+        if (str_starts_with($this->foto, 'http://') || str_starts_with($this->foto, 'https://')) {
+            return $this->foto;
+        }
+        if (file_exists(public_path($this->foto))) {
             return asset($this->foto);
         }
-        return asset('storage/' . $this->foto);
+        if (file_exists(public_path('storage/' . $this->foto))) {
+            return asset('storage/' . $this->foto);
+        }
+        return null;
     }
 
     public function kawasanHutan()

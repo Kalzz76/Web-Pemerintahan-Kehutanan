@@ -51,9 +51,16 @@
                         <tr class="hover:bg-stone-50/80 transition">
                             <td class="px-4 py-3.5 font-bold text-stone-900 max-w-xs text-xs sm:text-sm">
                                 <div class="flex items-center space-x-3">
-                                    @if ($item->gambar)
-                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="{{ $item->judul }}" class="w-9 h-9 rounded-lg object-cover shrink-0 border border-stone-200">
-                                    @endif
+                                    <div class="w-9 h-9 rounded-lg bg-stone-100 border border-stone-200 overflow-hidden shrink-0 flex items-center justify-center relative">
+                                        @if ($item->gambar_url)
+                                            <img src="{{ $item->gambar_url }}" alt="{{ $item->judul }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                            <div class="hidden w-full h-full flex items-center justify-center bg-stone-100 text-stone-400">
+                                                <i class="fa-solid fa-newspaper text-xs"></i>
+                                            </div>
+                                        @else
+                                            <i class="fa-solid fa-newspaper text-stone-400 text-xs"></i>
+                                        @endif
+                                    </div>
                                     <span class="truncate block">{{ $item->judul }}</span>
                                 </div>
                             </td>
@@ -82,7 +89,7 @@
                                     data-isi="{{ $item->isi }}"
                                     data-tanggal="{{ $item->tanggal ? $item->tanggal->format('Y-m-d') : '' }}"
                                     data-status="{{ $item->status }}"
-                                    data-gambar-url="{{ $item->gambar ? asset('storage/' . $item->gambar) : '' }}"
+                                    data-gambar-url="{{ $item->gambar_url ?? '' }}"
                                     class="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 font-semibold rounded-lg text-xs transition">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                     <span>Edit</span>

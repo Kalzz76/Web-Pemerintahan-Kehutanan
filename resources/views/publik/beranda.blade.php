@@ -791,7 +791,7 @@
 
                         <div>
                             <label for="no_hp" class="block text-xs font-medium text-gray-700 mb-1">Nomor WhatsApp / HP</label>
-                            <input type="tel" id="no_hp" name="no_hp" placeholder="Contoh: 08123456789" class="field text-xs sm:text-sm bg-gray-50 focus:bg-white font-mono">
+                            <input type="tel" id="no_hp" name="no_hp" inputmode="numeric" pattern="[0-9]*" maxlength="20" placeholder="Contoh: 08123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="field text-xs sm:text-sm bg-gray-50 focus:bg-white font-mono">
                         </div>
                     </div>
                 </div>
@@ -824,7 +824,8 @@
     function esc(s) { 
         return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); 
     }
-    const IMG_FAIL = "this.onerror=null;this.removeAttribute('src');this.alt='';this.classList.add('img-fail')";
+    const DEFAULT_FALLBACK_IMG = '{{ asset("assets/pemandangan.jpg") }}';
+    const IMG_FAIL = `this.onerror=null;this.src='${DEFAULT_FALLBACK_IMG}';`;
     const src = p => p ? encodeURI(p) : '';
 
     /* Badges IUCN Helper */
@@ -892,7 +893,7 @@
     const beritaData = DB_BERITA.map(b => ({
         id: b.id,
         kategori: b.kategori || 'Pengumuman',
-        gambar: b.gambar_url || 'assets/berita-panorama.jpg',
+        gambar: b.gambar_url || DEFAULT_FALLBACK_IMG,
         judul: b.judul,
         ringkas: b.isi ? b.isi.substring(0, 130) + '...' : '',
         isi: (b.isi || '').split("\n\n").filter(Boolean)
@@ -902,12 +903,14 @@
 
     function kartuBerita(b, tinggiImg) {
         return `
-        <article class="card cursor-pointer flex flex-col" onclick="bukaBerita(${b.id})">
-            <img src="${esc(b.gambar)}" alt="${esc(b.judul)}" loading="lazy" class="w-full ${tinggiImg} object-cover" onerror="${IMG_FAIL}">
+        <article class="card cursor-pointer flex flex-col group overflow-hidden" onclick="bukaBerita(${b.id})">
+            <div class="w-full ${tinggiImg} relative overflow-hidden bg-gradient-to-br from-emerald-800 to-green-950 flex items-center justify-center">
+                <img src="${esc(b.gambar)}" alt="${esc(b.judul)}" loading="lazy" class="w-full h-full object-cover transition duration-300 group-hover:scale-105" onerror="${IMG_FAIL}">
+            </div>
             <div class="p-6 flex-1 flex flex-col justify-between">
                 <div>
                     <span class="text-xs font-bold ${KATEGORI_BERITA[b.kategori] || 'text-gray-500'} uppercase tracking-widest">${esc(b.kategori)}</span>
-                    <h3 class="font-bold text-lg mt-2 text-gray-900 line-clamp-2">${esc(b.judul)}</h3>
+                    <h3 class="font-bold text-lg mt-2 text-gray-900 group-hover:text-emerald-700 transition line-clamp-2">${esc(b.judul)}</h3>
                     <p class="text-gray-500 text-sm mt-2 line-clamp-2 leading-relaxed">${esc(b.ringkas)}</p>
                 </div>
                 <div class="mt-4 pt-3 border-t border-gray-100 flex items-center text-xs font-semibold text-emerald-600">
@@ -965,7 +968,9 @@
                 <i class="fa-solid fa-arrow-left mr-2"></i>Kembali ke daftar pengumuman
             </button>
             <article class="card card-static shadow-lg border-gray-100 overflow-hidden">
-                <img src="${esc(b.gambar)}" alt="${esc(b.judul)}" class="w-full h-72 md:h-96 object-cover" onerror="${IMG_FAIL}">
+                <div class="w-full h-72 md:h-96 relative overflow-hidden bg-gradient-to-br from-emerald-800 to-green-950 flex items-center justify-center">
+                    <img src="${esc(b.gambar)}" alt="${esc(b.judul)}" class="w-full h-full object-cover" onerror="${IMG_FAIL}">
+                </div>
                 <div class="p-8 md:p-10">
                     <span class="text-xs font-bold ${KATEGORI_BERITA[b.kategori] || 'text-gray-500'} uppercase tracking-widest">${esc(b.kategori)}</span>
                     <h2 class="font-serif-elegant text-3xl md:text-4xl font-bold text-gray-900 mt-2 mb-6">${esc(b.judul)}</h2>
@@ -2192,11 +2197,118 @@
         });
     }
 
+    /* ===== SCROLL & FOKUS KE FIELD YANG BELUM DIISI ===== */
+    function sorotField(el) {
+        if (!el) return;
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => {
+            try { el.focus(); } catch (e) {}
+        }, 350);
+
+        el.classList.add('ring-4', 'ring-rose-400', 'border-rose-500');
+        const bersihkan = () => {
+            el.classList.remove('ring-4', 'ring-rose-400', 'border-rose-500');
+            el.removeEventListener('input', bersihkan);
+            el.removeEventListener('change', bersihkan);
+        };
+        el.addEventListener('input', bersihkan);
+        el.addEventListener('change', bersihkan);
+        setTimeout(bersihkan, 5000);
+    }
+
+    function fokusKeFieldBelumDiisi(fieldKey = null) {
+        // 1. Jika koordinat lokasi belum ditentukan
+        if (fieldKey === 'latitude' || fieldKey === 'longitude') {
+            const mapBox = document.getElementById('map-lapor');
+            const wrap = mapBox ? (mapBox.closest('.rounded-2xl') || mapBox) : null;
+            if (wrap) {
+                wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                wrap.classList.add('ring-4', 'ring-rose-400', 'border-rose-500');
+                setTimeout(() => {
+                    wrap.classList.remove('ring-4', 'ring-rose-400', 'border-rose-500');
+                }, 5000);
+            }
+            const labelStatus = document.getElementById('label-status-lokasi');
+            if (labelStatus) {
+                labelStatus.innerHTML = '<span class="text-rose-600 font-bold animate-pulse"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Wajib tentukan titik lokasi kejadian pada peta!</span>';
+            }
+            return;
+        }
+
+        // 2. Jika ada fieldKey tertentu dari respons validasi
+        if (fieldKey) {
+            const target = document.getElementById(fieldKey) || document.querySelector(`[name="${fieldKey}"]`);
+            if (target) {
+                sorotField(target);
+                return;
+            }
+        }
+
+        // 3. Cek apakah koordinat peta masih kosong
+        const latVal = document.getElementById('latitude')?.value;
+        const lngVal = document.getElementById('longitude')?.value;
+        if (!latVal || !lngVal) {
+            fokusKeFieldBelumDiisi('latitude');
+            return;
+        }
+
+        // 4. Cari input/select/textarea yang kosong di dalam form yang aktif
+        const form = document.getElementById('lapor-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([type="hidden"]), select, textarea');
+        for (let el of inputs) {
+            if (el.closest('.hidden')) continue;
+            if (el.hasAttribute('required') && (!el.value || el.value.trim() === '')) {
+                sorotField(el);
+                return;
+            }
+        }
+    }
+
     /* ===== KIRIM FORM LAPORAN AJAX ===== */
     function handleKirimLaporan(e) {
         e.preventDefault();
         const form = document.getElementById('lapor-form');
         const submitBtn = document.getElementById('btn-submit-lapor');
+
+        // Validasi awal di browser sebelum kirim: titik lokasi di peta
+        const latVal = document.getElementById('latitude')?.value;
+        const lngVal = document.getElementById('longitude')?.value;
+        if (!latVal || !lngVal) {
+            alert('Titik lokasi kejadian pada peta belum ditentukan. Silakan klik pada peta.');
+            fokusKeFieldBelumDiisi('latitude');
+            return;
+        }
+
+        // Validasi awal di browser: field required yang masih kosong
+        const inputs = form.querySelectorAll('input:not([type="hidden"]), select, textarea');
+        for (let el of inputs) {
+            if (el.closest('.hidden')) continue;
+            if (el.hasAttribute('required') && (!el.value || el.value.trim() === '')) {
+                const label = el.closest('div')?.querySelector('label')?.innerText?.replace('*', '').trim() || 'Field ini';
+                alert(label + ' wajib diisi.');
+                sorotField(el);
+                return;
+            }
+        }
+
+        // Validasi nomor WhatsApp / HP hanya boleh angka
+        const noHpEl = document.getElementById('no_hp');
+        const noHpVal = noHpEl?.value?.trim();
+        if (noHpVal) {
+            if (!/^[0-9]+$/.test(noHpVal)) {
+                alert('Nomor WhatsApp / HP hanya boleh berisi angka.');
+                sorotField(noHpEl);
+                return;
+            }
+            if (noHpVal.length < 8) {
+                alert('Nomor WhatsApp / HP minimal 8 digit angka.');
+                sorotField(noHpEl);
+                return;
+            }
+        }
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim Laporan ke Satgas...';
 
@@ -2210,13 +2322,13 @@
                 'Accept': 'application/json'
             }
         })
-        .then(r => r.json())
-        .then(res => {
+        .then(r => r.json().then(data => ({ status: r.status, ok: r.ok, data })))
+        .then(({ status, ok, data }) => {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<span>Kirim Laporan Resmi</span> <i class="fa-solid fa-paper-plane text-sm"></i>';
 
-            if (res.sukses && res.kode) {
-                kodeAktif = res.kode;
+            if (ok && data.sukses && data.kode) {
+                kodeAktif = data.kode;
                 const r = getJSON('jhd-riwayat');
                 if (!r.includes(kodeAktif)) {
                     r.unshift(kodeAktif);
@@ -2230,7 +2342,29 @@
                 document.getElementById('sukses').scrollIntoView({ behavior: 'smooth' });
                 tampilRiwayat();
             } else {
-                alert(res.pesan || 'Gagal mengirim laporan. Periksa kelengkapan form.');
+                let pesanError = data.pesan || '';
+                let firstErrorKey = null;
+
+                if (data.errors && typeof data.errors === 'object') {
+                    const keys = Object.keys(data.errors);
+                    if (keys.length > 0) {
+                        firstErrorKey = keys[0];
+                        const errList = data.errors[firstErrorKey];
+                        if (Array.isArray(errList) && errList.length > 0) {
+                            pesanError = errList[0];
+                        }
+                    }
+                }
+
+                if (!pesanError && data.message) {
+                    pesanError = data.message;
+                }
+                if (!pesanError) {
+                    pesanError = 'Gagal mengirim laporan. Periksa kelengkapan form.';
+                }
+
+                alert(pesanError);
+                fokusKeFieldBelumDiisi(firstErrorKey);
             }
         })
         .catch(err => {

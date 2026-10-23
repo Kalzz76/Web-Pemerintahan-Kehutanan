@@ -40,8 +40,11 @@ class PrediksiController extends Controller
         $daftarKawasan = KawasanHutan::select('id', 'nama', 'geojson')->get();
         $daftarPermukiman = TitikPenting::where('jenis', 'Permukiman')->get();
         $daftarTitikApi = TitikApi::latest('tanggal_deteksi')->take(50)->get();
-        $daftarKebakaranAktif = Laporan::where('jenis', 'Kebakaran')
+        $daftarKebakaranAktif = Laporan::with(['kabupatenKota', 'kawasanHutan'])
+            ->where('jenis', 'Kebakaran')
             ->whereIn('status', ['Baru', 'Diverifikasi', 'Ditangani'])
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
             ->get();
         $daftarJenisLahan = JenisLahan::orderBy('nama')->get();
         $riwayatPrediksi = PrediksiApi::with(['laporan', 'jenisLahan', 'admin'])->latest()->paginate(10)->withQueryString();

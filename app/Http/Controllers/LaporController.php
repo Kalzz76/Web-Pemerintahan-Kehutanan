@@ -101,7 +101,7 @@ class LaporController extends Controller
             'deskripsi' => 'required|max:1000',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'nama_pelapor' => 'nullable|max:100',
-            'no_hp' => ['nullable', 'max:20', 'regex:/^[0-9\+\-\s]+$/'],
+            'no_hp' => ['nullable', 'min:8', 'max:20', 'regex:/^[0-9]+$/'],
         ], [
             'jenis.required' => 'Jenis laporan wajib dipilih.',
             'jenis.in' => 'Jenis laporan tidak valid.',
@@ -116,8 +116,9 @@ class LaporController extends Controller
             'foto.image' => 'Berkas foto harus berupa gambar.',
             'foto.mimes' => 'Format foto harus berupa JPG, JPEG, atau PNG.',
             'foto.max' => 'Ukuran foto maksimal 5MB.',
-            'no_hp.regex' => 'Nomor HP hanya boleh berisi angka dan tanda +.',
-            'no_hp.max' => 'Nomor HP maksimal 20 karakter.',
+            'no_hp.regex' => 'Nomor WhatsApp / HP hanya boleh berisi angka.',
+            'no_hp.min' => 'Nomor WhatsApp / HP minimal 8 digit angka.',
+            'no_hp.max' => 'Nomor WhatsApp / HP maksimal 20 digit angka.',
         ]);
 
         $pengaturan = PengaturanHutan::first();
@@ -128,6 +129,13 @@ class LaporController extends Controller
                 $request->longitude < $pengaturan->bbox_barat ||
                 $request->longitude > $pengaturan->bbox_timur
             ) {
+                if ($request->ajax() || $request->wantsJson()) {
+                    return response()->json([
+                        'sukses' => false,
+                        'pesan' => 'Lokasi laporan harus berada di wilayah Jawa Barat.',
+                        'errors' => ['latitude' => ['Lokasi laporan harus berada di wilayah Jawa Barat.']],
+                    ], 422);
+                }
                 return back()->withInput()->withErrors(['latitude' => 'Lokasi laporan harus berada di wilayah Jawa Barat.']);
             }
         }
@@ -180,7 +188,7 @@ class LaporController extends Controller
             'id_kabupaten_kota' => 'nullable|exists:kabupaten_kota,id',
             'deskripsi' => 'required|max:1000',
             'nama_pelapor' => 'nullable|max:100',
-            'no_hp' => ['nullable', 'max:20', 'regex:/^[0-9\+\-\s]+$/'],
+            'no_hp' => ['nullable', 'min:8', 'max:20', 'regex:/^[0-9]+$/'],
         ]);
 
         $pengaturan = PengaturanHutan::first();

@@ -30,18 +30,21 @@ class Pengumuman extends Model
 
     protected $appends = ['gambar_url'];
 
-    public function getGambarUrlAttribute()
+    public function getGambarUrlAttribute(): ?string
     {
         if (empty($this->gambar)) {
-            return asset('assets/pemandangan.jpg');
+            return null;
         }
         if (str_starts_with($this->gambar, 'http://') || str_starts_with($this->gambar, 'https://')) {
             return $this->gambar;
         }
-        if (str_starts_with($this->gambar, 'assets/')) {
+        if (file_exists(public_path($this->gambar))) {
             return asset($this->gambar);
         }
-        return asset('storage/' . $this->gambar);
+        if (file_exists(public_path('storage/' . $this->gambar))) {
+            return asset('storage/' . $this->gambar);
+        }
+        return null;
     }
 
     public function user()

@@ -44,9 +44,12 @@
                             <tr class="hover:bg-stone-50 transition-colors">
                                 <td class="px-4 py-3.5">
                                     <div class="flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0 overflow-hidden">
-                                            @if ($item->foto)
-                                                <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}" class="w-full h-full object-cover">
+                                        <div class="w-10 h-10 rounded-xl bg-stone-100 border border-stone-200 flex items-center justify-center shrink-0 overflow-hidden relative">
+                                            @if ($item->foto_url)
+                                                <img src="{{ $item->foto_url }}" alt="{{ $item->nama }}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');">
+                                                <div class="hidden w-full h-full flex items-center justify-center bg-stone-100 text-stone-500 text-sm">
+                                                    <i class="fa-solid fa-location-dot"></i>
+                                                </div>
                                             @else
                                                 <i class="fa-solid fa-location-dot text-stone-500 text-sm"></i>
                                             @endif

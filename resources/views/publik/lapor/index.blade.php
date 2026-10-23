@@ -462,7 +462,7 @@
 
                     <div>
                         <label for="no_hp" class="block text-xs font-medium text-stone-700 mb-1">Nomor WhatsApp / HP</label>
-                        <input type="tel" id="no_hp" name="no_hp" value="{{ old('no_hp') }}" placeholder="Contoh: 08123456789" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm bg-white focus:border-stone-900 outline-none transition font-mono">
+                        <input type="tel" id="no_hp" name="no_hp" inputmode="numeric" pattern="[0-9]*" maxlength="20" value="{{ old('no_hp') }}" placeholder="Contoh: 08123456789" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-3.5 py-2.5 rounded-xl border border-stone-200 text-xs sm:text-sm bg-white focus:border-stone-900 outline-none transition font-mono">
                     </div>
                 </div>
             </div>

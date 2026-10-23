@@ -134,6 +134,12 @@
                                 </td>
                                 <td class="px-4 py-3.5 text-right whitespace-nowrap">
                                     <div class="inline-flex items-center gap-1.5 justify-end">
+                                        @if ($laporan->jenis === 'Kebakaran' && $laporan->status !== 'Selesai' && $laporan->latitude && $laporan->longitude)
+                                            <a href="{{ route('admin.prediksi.index', ['id_laporan' => $laporan->id, 'lat' => $laporan->latitude, 'long' => $laporan->longitude]) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 font-semibold rounded-lg text-xs transition" title="Buka dan Prediksi di Peta Kebakaran">
+                                                <i class="fa-solid fa-fire text-[11px] text-red-600"></i>
+                                                <span>Prediksi</span>
+                                            </a>
+                                        @endif
                                         <a href="{{ route('admin.laporan.show', $laporan->id) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 font-semibold rounded-lg text-xs transition">
                                             <i class="fa-solid fa-eye text-[11px] text-stone-600"></i>
                                             <span>Detail</span>
