@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
             guests: '/login',
             users: '/admin'
         );
+        $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
             'lapor',
             'lapor/sinkron',
